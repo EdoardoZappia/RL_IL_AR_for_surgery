@@ -1,0 +1,50 @@
+Traceback (most recent call last):
+  File "/orfeo/cephfs/home/dssc/ezappia/RL_tracking/ddpg.py", line 274, in <module>
+    trained_agent = train_ddpg()
+  File "/orfeo/cephfs/home/dssc/ezappia/RL_tracking/ddpg.py", line 246, in train_ddpg
+    agent.update()
+  File "/orfeo/cephfs/home/dssc/ezappia/RL_tracking/ddpg.py", line 152, in update
+    next_actions = self.actor_target(next_states)
+  File "/u/dssc/ezappia/miniconda3/envs/tracking_env/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/u/dssc/ezappia/miniconda3/envs/tracking_env/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/orfeo/cephfs/home/dssc/ezappia/RL_tracking/ddpg.py", line 55, in forward
+    x = F.relu(self.fc1(state))
+  File "/u/dssc/ezappia/miniconda3/envs/tracking_env/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/u/dssc/ezappia/miniconda3/envs/tracking_env/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/u/dssc/ezappia/miniconda3/envs/tracking_env/lib/python3.10/site-packages/torch/nn/modules/linear.py", line 125, in forward
+    return F.linear(input, self.weight, self.bias)
+RuntimeError: Expected all tensors to be on the same device, but found at least two devices, cpu and cuda:0! (when checking argument for argument mat1 in method wrapper_CUDA_addmm)
+E0503 16:03:43.701000 2551724 /orfeo/cephfs/home/dssc/ezappia/miniconda3/envs/tracking_env/lib/python3.10/site-packages/torch/distributed/elastic/multiprocessing/api.py:869] failed (exitcode: 1) local_rank: 0 (pid: 2551783) of binary: /u/dssc/ezappia/miniconda3/envs/tracking_env/bin/python
+Traceback (most recent call last):
+  File "/u/dssc/ezappia/miniconda3/envs/tracking_env/bin/torchrun", line 8, in <module>
+    sys.exit(main())
+  File "/u/dssc/ezappia/miniconda3/envs/tracking_env/lib/python3.10/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 355, in wrapper
+    return f(*args, **kwargs)
+  File "/u/dssc/ezappia/miniconda3/envs/tracking_env/lib/python3.10/site-packages/torch/distributed/run.py", line 918, in main
+    run(args)
+  File "/u/dssc/ezappia/miniconda3/envs/tracking_env/lib/python3.10/site-packages/torch/distributed/run.py", line 909, in run
+    elastic_launch(
+  File "/u/dssc/ezappia/miniconda3/envs/tracking_env/lib/python3.10/site-packages/torch/distributed/launcher/api.py", line 138, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+  File "/u/dssc/ezappia/miniconda3/envs/tracking_env/lib/python3.10/site-packages/torch/distributed/launcher/api.py", line 269, in launch_agent
+    raise ChildFailedError(
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+============================================================
+ddpg.py FAILED
+------------------------------------------------------------
+Failures:
+  <NO_OTHER_FAILURES>
+------------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2025-05-03_16:03:43
+  host      : gpu002.hpc.rd.areasciencepark.it
+  rank      : 0 (local_rank: 0)
+  exitcode  : 1 (pid: 2551783)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+============================================================

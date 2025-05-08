@@ -1,0 +1,33 @@
+<mujoco model="tracking_simulation">
+    <compiler angle="degree" coordinate="local"/>
+    <option timestep="0.01"/>
+    
+    <worldbody>
+        <!-- Piano di riferimento -->
+        <geom name="ground" type="plane" size="5 5 0.1" rgba="0.8 0.8 0.8 1"/>
+
+        <!-- Agente mobile (quadrato) -->
+        <body name="agent" pos="0 -0.5 0.1">
+            <geom name="agent_geom" type="box" size="0.05 0.05 0.02" rgba="0 0 1 1" contype="0" conaffinity="0"/>
+            <joint name="agent_x" type="slide" axis="1 0 0" damping="1.0"/>
+            <joint name="agent_y" type="slide" axis="0 1 0" damping="1.0"/>
+        </body>
+
+        <!-- Target (ellissoide mobile) -->
+        <body name="target" pos="2 2 0.05">
+            <geom name="target_geom" type="ellipsoid" size="0.07 0.05 0.02" rgba="1 0.6 0 1" contype="0" conaffinity="0"/>
+            <joint name="target_x" type="slide" axis="1 0 0" damping="1.0"/>
+            <joint name="target_y" type="slide" axis="0 1 0" damping="1.0"/>
+        </body>
+    </worldbody>
+
+    <actuator>
+        <!-- Motori per l'agente -->
+        <motor joint="agent_x" ctrllimited="true" ctrlrange="-10 10"/>
+        <motor joint="agent_y" ctrllimited="true" ctrlrange="-10 10"/>
+
+        <!-- Motori per il target -->
+        <motor joint="target_x" ctrllimited="true" ctrlrange="-10 10"/>
+        <motor joint="target_y" ctrllimited="true" ctrlrange="-10 10"/>
+    </actuator>
+</mujoco>

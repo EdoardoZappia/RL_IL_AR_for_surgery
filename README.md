@@ -1,1 +1,3 @@
-# RL_IL_AR_for_surgery
+# RL_tracking
+
+The idea is to teach to a RL model to catch a target
