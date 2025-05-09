@@ -77,7 +77,7 @@ class TrackingEnv(gym.Env):
         mujoco.mj_resetData(self.model, self.data)
 
         #self.data.qpos[:] = np.random.uniform(low=-0.6, high=0.6, size=(6,))  # Posizione casuale dell'agente e del target
-        self.data.qpos[:] = np.random.uniform(low=-1.6, high=1.6, size=(6,))  # Posizione casuale dell'agente e del target
+        self.data.qpos[:] = np.random.uniform(low=-0.5, high=0.5, size=(6,))  # Posizione casuale dell'agente e del target
         #self.data.qpos[:] = np.random.uniform(low=-0.01, high=0.01, size=(6,))  # Agente parte dentro la tolleranza
         
         obs = np.array([self.data.qpos[2], self.data.qpos[5]])
