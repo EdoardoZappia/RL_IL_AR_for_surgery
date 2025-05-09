@@ -1,5 +1,5 @@
 <mujoco model="tracking_simulation">
-    <compiler angle="degree" coordinate="local"/>
+    <compiler coordinate="local"/>
     <option timestep="0.01"/>
     
     <worldbody>
@@ -10,7 +10,7 @@
         <body name="agent" pos="0 -0.5 0.1">
             <joint name="agent_x" type="slide" axis="1 0 0" damping="1.0"/>
             <joint name="agent_y" type="slide" axis="0 1 0" damping="1.0"/>
-            <joint name="agent_rot" type="hinge" axis="0 0 1" range="-3.14 3.14" damping="0.1"/>
+            <joint name="agent_rot" type="hinge" axis="0 0 1" damping="0.0" frictionloss="0.0"/>
             <geom name="agent_geom" type="box" size="0.05 0.05 0.02" rgba="0 0 1 1" contype="0" conaffinity="0"/>
         </body>
 
@@ -18,7 +18,7 @@
         <body name="target" pos="2 2 0.05">
             <joint name="target_x" type="slide" axis="1 0 0" damping="1.0"/>
             <joint name="target_y" type="slide" axis="0 1 0" damping="1.0"/>
-            <joint name="target_rot" type="hinge" axis="0 0 1" range="-100 100" damping="0.1"/>
+            <joint name="target_rot" type="hinge" axis="0 0 1" damping="0.0" frictionloss="0.0"/>
             <geom name="target_geom" type="ellipsoid" size="0.07 0.05 0.02" rgba="1 0.6 0 1" contype="0" conaffinity="0"/>
         </body>
     </worldbody>

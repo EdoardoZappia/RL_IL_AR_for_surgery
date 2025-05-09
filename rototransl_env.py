@@ -75,7 +75,6 @@ class TrackingEnv(gym.Env):
 
         return rimbalzato
 
-
     def step(self, action):
         """Esegue un passo nel simulatore MuJoCo"""
         # Converti il tensor di PyTorch in NumPy
@@ -84,7 +83,7 @@ class TrackingEnv(gym.Env):
             action = action.detach().cpu().numpy()
         #self.data.ctrl[:2] = action     # muovo solo l'agente
         self.data.qvel[:3] = action  # muovo solo l'agente
-        mujoco.mj_step(self.model, self.data)
+        #mujoco.mj_step(self.model, self.data)
 
         target_pos = self.data.qpos[3:5]
 
@@ -101,18 +100,15 @@ class TrackingEnv(gym.Env):
         # else: nessun movimento (rimane fermo)
 
         # ROTAZIONI
-        print(f"angolo prima: {self.data.qpos[5]}")
-        theta = 0.5#np.random.uniform(-0.02, 0.02)  # angolo di rotazione casuale
+        #print(f"angolo prima: {self.data.qpos[5]}, velocità prima: {self.data.qvel[5]}")
+        theta = np.random.uniform(-0.1, 0.1)  # angolo di rotazione casuale
         self.data.qpos[5] += theta  # aggiorna l'angolo di rotazione del target
-        print(f"angolo dopo: {self.data.qpos[5]}")
-        
+        #self.data.ctrl[5] = 0.1
 
-        # qpos = self.data.qpos
+        #self.data.qvel[5] = 1  # aggiorna la velocità angolare del target
+        #print(f"angolo dopo: {self.data.qpos[5]}, velocità dopo: {self.data.qvel[5]}")
 
-        # x_agent, y_agent = qpos[:2]  # Posizione dell'agente
-        # x_target, y_target = qpos[3:5]
-
-        # obs = np.array([x_agent, y_agent, x_target, y_target], dtype=np.float32)
+        mujoco.mj_step(self.model, self.data)
 
         obs = self.data.qpos
 
@@ -127,6 +123,7 @@ class TrackingEnv(gym.Env):
 
         return obs, reward, done, truncated, {}, rimbalzato
 
+
     def reset(self, seed=None, options=None):
         """Resetta l'ambiente"""
         super().reset(seed=seed)
@@ -139,7 +136,12 @@ class TrackingEnv(gym.Env):
         self.data.qpos[:2] = np.random.uniform(low=-0.2, high=0.2, size=(2,))  # Posizione casuale dell'agente
         self.data.qpos[3:5] = np.random.uniform(low=-0.2, high=0.2, size=(2,))  # Posizione casuale del target
         self.data.qpos[2] = np.random.uniform(low=-1.6, high=1.6)  # Angolo casuale dell'agente
-        self.data.qpos[5] = np.random.uniform(low=-1.6, high=1.6)  # Angolo casuale del target
+        #self.data.qpos[5] = np.random.uniform(low=-1.6, high=1.6)  # Angolo casuale del target
+
+
+        self.data.qpos[5] = 0.0  # Angolo iniziale del target
+
+
         #self.data.qpos[:] = np.random.uniform(low=-0.2, high=0.2, size=(6,))  # Posizione casuale dell'agente e del target
         #self.data.qpos[:] = np.random.uniform(low=-0.01, high=0.01, size=(6,))  # Agente parte dentro la tolleranza
         self.target_center = self.data.qpos[3:5]  # Posizione iniziale del target

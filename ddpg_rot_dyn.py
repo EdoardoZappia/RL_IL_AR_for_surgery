@@ -24,7 +24,7 @@ EARLY_STOPPING_EPISODES = 50
 CHECKPOINT_INTERVAL = 100
 
 now = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-RUN_DIR = f"runs_SOLO_ROT_dyn/ddpg_mov_0.01_noisy_target_0.001_{now}"
+RUN_DIR = f"Rotazioni-dinamiche/No-noise/ddpg_mov_0.05_{now}"
 os.makedirs(RUN_DIR, exist_ok=True)
 
 class PolicyNet(nn.Module):
@@ -220,8 +220,8 @@ def train_ddpg(env=None, num_episodes=10001):
         real_state = torch.tensor(state, dtype=torch.float32)
         state = torch.tensor(state, dtype=torch.float32)
 
-        state = state.clone()
-        state[1:] += torch.normal(mean=0.0, std=0.001, size=(1,), device=state.device)
+        # state = state.clone()
+        # state[1:] += torch.normal(mean=0.0, std=0.001, size=(1,), device=state.device)
 
         agent.noise_std = max(agent.min_noise_std, agent.noise_std * agent.noise_decay)     # Exploration
         trajectory, target_trajectory = [], []
@@ -242,8 +242,8 @@ def train_ddpg(env=None, num_episodes=10001):
             next_state = torch.tensor(next_state, dtype=torch.float32)
             
 
-            next_state = next_state.clone()
-            next_state[1:] += torch.normal(mean=0.0, std=0.001, size=(1,), device=next_state.device)
+            # next_state = next_state.clone()
+            # next_state[1:] += torch.normal(mean=0.0, std=0.001, size=(1,), device=next_state.device)
 
 
             if torch.norm(real_next_state[0] - real_state[1]) < tolerance:
