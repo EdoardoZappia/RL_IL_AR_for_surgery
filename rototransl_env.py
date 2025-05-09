@@ -99,7 +99,7 @@ class TrackingEnv(gym.Env):
 
         # ROTAZIONI
         #print(f"angolo prima: {self.data.qpos[5]}, velocità prima: {self.data.qvel[5]}")
-        theta = np.random.uniform(-0.02, 0.02)  # angolo di rotazione casuale
+        theta = np.random.uniform(-0.01, 0.01)  # angolo di rotazione casuale
         proposed_theta = self.data.qpos[5] + theta
         proposed_theta = torch.tensor(proposed_theta, dtype=torch.float32)
 
