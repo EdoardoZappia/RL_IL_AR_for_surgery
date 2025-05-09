@@ -41,12 +41,17 @@ class TrackingEnv(gym.Env):
         self.step_counter += 1
         if isinstance(action, torch.Tensor):
             action = action.detach().cpu().numpy()
-        self.data.qvel[2] = action  # muovo solo la rotazione dell'agente
+        self.data.qvel[2] = action
+        
         mujoco.mj_step(self.model, self.data)
 
         # ROTAZIONI
-        theta = np.random.uniform(-0.05, 0.05)  # angolo di rotazione casuale
-        self.data.qpos[5] += theta  # aggiorna l'angolo di rotazione del target
+        theta = np.random.uniform(-0.01, 0.01)  # angolo di rotazione casuale
+        proposed_theta = self.data.qpos[5] + theta
+        proposed_theta = torch.tensor(proposed_theta, dtype=torch.float32)
+
+        if proposed_theta >= -3.14 and proposed_theta <= 3.14:
+            self.data.qpos[5] = proposed_theta
 
         obs = np.array([self.data.qpos[2], self.data.qpos[5]])  # theta, theta_target
 
