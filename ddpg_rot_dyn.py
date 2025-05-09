@@ -24,7 +24,7 @@ EARLY_STOPPING_EPISODES = 50
 CHECKPOINT_INTERVAL = 100
 
 now = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-RUN_DIR = f"Rotazioni-dinamiche/No-noise/ddpg_mov_0.02_{now}"
+RUN_DIR = f"Rotazioni-dinamiche/Noisy/ddpg_mov_0.02_std_0.001_{now}"
 os.makedirs(RUN_DIR, exist_ok=True)
 
 class PolicyNet(nn.Module):
