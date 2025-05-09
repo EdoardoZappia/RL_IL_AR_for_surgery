@@ -87,24 +87,24 @@ class TrackingEnv(gym.Env):
 
         # TRASLAZIONI
         # Movimento casuale vincolato in un cerchio di raggio 1
-        movement = np.random.uniform(low=-0.05, high=0.05, size=2)  # spostamento casuale
-        proposed_pos = target_pos + movement
-        proposed_pos = torch.tensor(proposed_pos, dtype=torch.float32)
+        # movement = np.random.uniform(low=-0.05, high=0.05, size=2)  # spostamento casuale
+        # proposed_pos = target_pos + movement
+        # proposed_pos = torch.tensor(proposed_pos, dtype=torch.float32)
 
-        # Calcola distanza dalla posizione iniziale
-        displacement = proposed_pos - self.target_center
-        if np.linalg.norm(displacement) <= 1 and proposed_pos[0] >= -2 and proposed_pos[0] <= 2 and proposed_pos[1] >= -2 and proposed_pos[1] <= 2:
-            self.data.qpos[3:5] = proposed_pos  # accetta lo spostamento
-        # else: nessun movimento (rimane fermo)
+        # # Calcola distanza dalla posizione iniziale
+        # displacement = proposed_pos - self.target_center
+        # if np.linalg.norm(displacement) <= 1 and proposed_pos[0] >= -2 and proposed_pos[0] <= 2 and proposed_pos[1] >= -2 and proposed_pos[1] <= 2:
+        #     self.data.qpos[3:5] = proposed_pos  # accetta lo spostamento
+        # # else: nessun movimento (rimane fermo)
 
-        # ROTAZIONI
-        #print(f"angolo prima: {self.data.qpos[5]}, velocità prima: {self.data.qvel[5]}")
-        theta = np.random.uniform(-0.01, 0.01)  # angolo di rotazione casuale
-        proposed_theta = self.data.qpos[5] + theta
-        proposed_theta = torch.tensor(proposed_theta, dtype=torch.float32)
+        # # ROTAZIONI
+        # #print(f"angolo prima: {self.data.qpos[5]}, velocità prima: {self.data.qvel[5]}")
+        # theta = np.random.uniform(-0.01, 0.01)  # angolo di rotazione casuale
+        # proposed_theta = self.data.qpos[5] + theta
+        # proposed_theta = torch.tensor(proposed_theta, dtype=torch.float32)
 
-        if proposed_theta >= -3.14 and proposed_theta <= 3.14:
-            self.data.qpos[5] = proposed_theta
+        # if proposed_theta >= -3.14 and proposed_theta <= 3.14:
+        #     self.data.qpos[5] = proposed_theta
 
         mujoco.mj_step(self.model, self.data)
 

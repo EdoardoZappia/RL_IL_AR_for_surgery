@@ -22,11 +22,11 @@ LR_ACTOR_ROT = 0.001    #0.0008
 LR_CRITIC = 0.001   #0.0005
 GAMMA = 0.99
 TAU = 0.005
-EARLY_STOPPING_EPISODES = 30
+EARLY_STOPPING_EPISODES = 50
 CHECKPOINT_INTERVAL = 50
 
 now = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-RUN_DIR = f"runs_rototransl_static_2d/ddpg_2actor_1critic{now}"
+RUN_DIR = f"Rototraslazioni-statiche/No-noise/ddpg_{now}"
 os.makedirs(RUN_DIR, exist_ok=True)
 
 class PolicyNet(nn.Module):
