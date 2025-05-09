@@ -45,7 +45,7 @@ class TrackingEnv(gym.Env):
         mujoco.mj_step(self.model, self.data)
 
         # ROTAZIONI
-        theta = np.random.uniform(-0.01, 0.01)  # angolo di rotazione casuale
+        theta = np.random.uniform(-0.1, 0.1)  # angolo di rotazione casuale
         self.data.qpos[5] += theta  # aggiorna l'angolo di rotazione del target
 
         obs = np.array([self.data.qpos[2], self.data.qpos[5]])  # theta, theta_target
