@@ -108,7 +108,7 @@ def test_dual_agents(agent_transl, agent_rot, env=None, num_episodes=1001, toler
 
 # --- MAIN ---
 if __name__ == "__main__":
-    ckpt_transl = "RL_IL_AR_for_surgery/Traslazioni-dinamiche/No-noise/ddpg_run_dyn20250503_160754/checkpoint_ep2930.pth"
-    ckpt_rot = "RL_IL_AR_for_surgery/Rotazioni-dinamiche/No-noise/ddpg_mov_0.01_20250509_163508/checkpoint_ep782.pth"
+    ckpt_transl = "Traslazioni-dinamiche/No-noise/ddpg_run_dyn20250503_160754/checkpoint_ep2930.pth"
+    ckpt_rot = "Rotazioni-dinamiche/No-noise/ddpg_mov_0.01_20250509_163508/checkpoint_ep782.pth"
     agent_transl, agent_rot = load_agents(ckpt_transl, ckpt_rot)
     test_dual_agents(agent_transl, agent_rot, num_episodes=1000)
