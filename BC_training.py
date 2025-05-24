@@ -1,6 +1,7 @@
 import numpy as np
 import torch
 from torch.utils.data import Dataset, DataLoader
+import os
 
 class TrajectoryDataset(Dataset):
     def __init__(self, npz_path):
