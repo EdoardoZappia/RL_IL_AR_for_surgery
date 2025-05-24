@@ -30,7 +30,10 @@ class BCModel(torch.nn.Module):
         x = self.fc3(x)
         return x
 
-def train_bc_model(model, dataloader, num_epochs=50, learning_rate=1e-3, device=None, save_path="BC/bc_policy.pth"):
+def train_bc_model(model, dataloader, num_epochs=50, learning_rate=1e-3, device=None, save_path="IL/bc_policy.pth"):
+
+    # Crea la cartella se non esiste
+    os.makedirs(os.path.dirname(save_path), exist_ok=True)
 
     if device is None:
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
