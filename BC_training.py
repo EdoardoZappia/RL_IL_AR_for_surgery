@@ -66,5 +66,7 @@ def train_bc_model(model, dataloader, num_epochs=50, learning_rate=1e-3, device=
     torch.save(model.state_dict(), save_path)
     print(f"Modello salvato in '{save_path}'")
 
-model = BCModel(input_dim=6, output_dim=3)
-train_bc_model(model, dataloader)
+if __name__ == "__main__":
+    model = BCModel(input_dim=6, output_dim=3)
+    train_bc_model(model, dataloader)
+
