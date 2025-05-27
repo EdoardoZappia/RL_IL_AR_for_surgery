@@ -26,12 +26,14 @@ def load_agents(checkpoint_path_transl, checkpoint_path_rot, env=None):
 
     return agent_transl, agent_rot
 
-def test_dual_agents(agent_transl, agent_rot, env=None, num_episodes=1001, tolerance_transl=0.02, tolerance_rot=0.01):
+def test_dual_agents(agent_transl, agent_rot, env=None, num_episodes=2001, tolerance_transl=0.02, tolerance_rot=0.01):
     if env is None:
         env = TrackingEnv()
 
-    all_obs = []
-    all_actions = []
+    all_obs_xy = []
+    all_obs_rot = []
+    all_actions_xy = []
+    all_actions_rot = []
     saved_counter = 0
 
     for ep in range(num_episodes):
@@ -47,8 +49,10 @@ def test_dual_agents(agent_transl, agent_rot, env=None, num_episodes=1001, toler
         total_attached_counter_transl = 0
         total_attached_counter_rot = 0
 
-        episode_obs = []
-        episode_actions = []
+        episode_obs_xy = []
+        episode_obs_rot = []
+        episode_actions_xy = []
+        episode_actions_rot = []
 
         while not done:
             with torch.no_grad():
@@ -60,8 +64,10 @@ def test_dual_agents(agent_transl, agent_rot, env=None, num_episodes=1001, toler
             action = torch.cat([action_xy, action_rot], dim=0).detach().numpy()
             action = np.clip(action, env.action_space.low, env.action_space.high)
 
-            episode_obs.append(state.detach().numpy())
-            episode_actions.append(action.copy())
+            episode_obs_xy.append(state_pos.detach().numpy())
+            episode_obs_rot.append(state_rot.detach().numpy())
+            episode_actions_xy.append(action_xy.copy())
+            episode_actions_rot.append(action_rot.copy())
 
             next_state, _, done, truncated, _, _ = env.step(action)
             next_state = torch.tensor(next_state, dtype=torch.float32)
@@ -88,8 +94,10 @@ def test_dual_agents(agent_transl, agent_rot, env=None, num_episodes=1001, toler
             state = next_state
 
         if total_attached_counter > 90:
-            all_obs.extend(episode_obs)
-            all_actions.extend(episode_actions)
+            all_obs_xy.extend(episode_obs_xy)
+            all_obs_rot.extend(episode_obs_rot)
+            all_actions_xy.extend(episode_actions_xy)
+            all_actions_rot.extend(episode_actions_rot)
             saved_counter += 1
             print(f"[Episode {ep}] SALVATO ({total_attached_counter} attached)")
         else:
@@ -99,9 +107,12 @@ def test_dual_agents(agent_transl, agent_rot, env=None, num_episodes=1001, toler
 
     if all_obs:
         os.makedirs("trajectories", exist_ok=True)
-        np.savez("trajectories/dataset_filtered.npz",
-                 observations=np.array(all_obs),
-                 actions=np.array(all_actions))
+        np.savez("trajectories/dataset_transl.npz",
+                 observations=np.array(all_obs_xy),
+                 actions=np.array(all_actions_xy))
+        np.savez("trajectories/dataset_rot.npz",
+                    observations=np.array(all_obs_rot),
+                    actions=np.array(all_actions_rot))
         print(f"\nDataset salvato con {len(all_obs)} passi totali da {saved_counter} episodi validi")
     else:
         print("\nNessun episodio valido, dataset non salvato.")
