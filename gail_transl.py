@@ -51,22 +51,27 @@ class Discriminator(nn.Module):
 
 # === UTILS ===
 def rollout(policy, env, max_steps=100):
-    obs_list, act_list, log_probs, rewards = [], [], [], []
-    obs, _ = env.reset()
-    obs = torch.tensor(obs, dtype=torch.float32)
+    obs_list, act_list, log_probs = [], [], []
+    state, _ = env.reset()
+    state = torch.tensor(state, dtype=torch.float32)
 
     for _ in range(max_steps):
-        dist = policy(obs.unsqueeze(0))
+        obs_transl = torch.cat([state[:2], state[3:5]])
+        dist = policy(obs_transl.unsqueeze(0))
         action = dist.sample().squeeze(0)
         log_prob = dist.log_prob(action).sum()
 
-        next_obs, _, done, truncated, _, _ = env.step(action.detach().numpy())
+        # Costruisci azione completa per l'env
+        full_action = torch.zeros(3)
+        full_action[:2] = action  # dx, dy
 
-        obs_list.append(obs)
+        next_state, _, done, truncated, _, _ = env.step(full_action.detach().numpy())
+
+        obs_list.append(obs_transl)
         act_list.append(action)
         log_probs.append(log_prob)
 
-        obs = torch.tensor(next_obs, dtype=torch.float32)
+        state = torch.tensor(next_state, dtype=torch.float32)
         if truncated:
             break
 
@@ -92,7 +97,6 @@ def train_gail(policy, discriminator, expert_data, num_iterations=1000, device="
         log_probs_old = log_probs_old.detach()
 
         # 2. Train discriminator
-        #if it % 5 == 0:  # Update discriminator every 5 iterations
         disc_optim.zero_grad()
         N = agent_obs.shape[0]
         idx = torch.randint(0, expert_obs.shape[0], (N,))
@@ -112,7 +116,7 @@ def train_gail(policy, discriminator, expert_data, num_iterations=1000, device="
 
         # 4. Compute advantage
         values = value_fn(agent_obs)
-        returns = rewards  # reward-to-go for simplicity
+        returns = rewards
         advantages = returns - values.detach()
 
         # 5. PPO policy update
@@ -136,12 +140,12 @@ def train_gail(policy, discriminator, expert_data, num_iterations=1000, device="
         print(f"Iter {it} | Disc loss: {loss_disc.item():.4f} | Policy loss: {policy_loss.item():.4f} | Value loss: {value_loss.item():.4f} | Reward mean: {rewards.mean().item():.4f}")
 
     env.close()
-    torch.save(policy.state_dict(), "IL/gail_policy.pth")
-    print("\nGAIL training terminato e policy salvata in 'IL/gail_policy.pth'")
+    torch.save(policy.state_dict(), "IL/gail_policy_transl.pth")
+    print("\nGAIL training terminato e policy salvata in 'IL/gail_policy_transl.pth'")
 
 # === AVVIO ===
 if __name__ == "__main__":
-    expert_data = np.load("trajectories/dataset_filtered.npz")
+    expert_data = np.load("trajectories/dataset_transl_0.2_0.05.npz")
     policy = GaussianPolicy()
     discriminator = Discriminator()
     train_gail(policy, discriminator, expert_data)
