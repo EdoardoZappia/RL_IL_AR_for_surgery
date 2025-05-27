@@ -43,13 +43,14 @@ print(f"  → Caricate {len(expert_trajs)} traiettorie")
 
 # === 2. Setup ambiente ===
 print("Inizializzazione ambiente...")
-from imitation.util.util import make_vec_env_compat
+from gymnasium.wrappers import EnvCompatibility
+from stable_baselines3.common.vec_env import DummyVecEnv
+from imitation.data.wrappers import RolloutInfoWrapper
 
-venv = make_vec_env_compat(
-    lambda: TrackingEnv(),  # tua funzione ambiente
-    n_envs=1,
-    wrapper_class=RolloutInfoWrapper,
-)
+compatible_env = lambda: EnvCompatibility(TrackingEnv())
+venv = DummyVecEnv([compatible_env])
+venv = RolloutInfoWrapper(venv)
+
 
 
 # === 3. Inizializza PPO e GAIL ===
