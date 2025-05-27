@@ -105,7 +105,7 @@ def test_dual_agents(agent_transl, agent_rot, env=None, num_episodes=2001, toler
 
     env.close()
 
-    if all_obs:
+    if all_obs_xy and all_obs_rot:
         os.makedirs("trajectories", exist_ok=True)
         np.savez("trajectories/dataset_transl.npz",
                  observations=np.array(all_obs_xy),
