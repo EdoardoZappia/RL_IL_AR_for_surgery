@@ -43,12 +43,18 @@ print(f"  → Caricate {len(expert_trajs)} traiettorie")
 
 # === 2. Setup ambiente ===
 print("Inizializzazione ambiente...")
-venv = DummyVecEnv([lambda: TrackingEnv()])
-venv = RolloutInfoWrapper(venv)
+from imitation.util.util import make_vec_env_compat
+
+venv = make_vec_env_compat(
+    lambda: TrackingEnv(),  # tua funzione ambiente
+    n_envs=1,
+    wrapper_class=RolloutInfoWrapper,
+)
+
 
 # === 3. Inizializza PPO e GAIL ===
 print("Inizializzazione GAIL...")
-policy = PPO("MlpPolicy", venv, verbose=1)
+policy = PPO("MlpPolicy", venv, verbose=1, device="cpu")
 
 from imitation.rewards.reward_nets import BasicRewardNet
 
