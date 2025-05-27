@@ -50,6 +50,13 @@ venv = RolloutInfoWrapper(venv)
 print("Inizializzazione GAIL...")
 policy = PPO("MlpPolicy", venv, verbose=1)
 
+from imitation.rewards.reward_nets import BasicRewardNet
+
+reward_net = BasicRewardNet(
+    observation_space=venv.observation_space,
+    action_space=venv.action_space,
+)
+
 gail_trainer = GAIL(
     demonstrations=expert_trajs,
     demo_batch_size=64,
@@ -57,7 +64,9 @@ gail_trainer = GAIL(
     n_disc_updates_per_round=4,
     venv=venv,
     gen_algo=policy,
+    reward_net=reward_net,
 )
+
 
 # === 4. Training ===
 print("Inizio training GAIL...")
