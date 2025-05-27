@@ -6,7 +6,7 @@ from torch.utils.data import DataLoader, TensorDataset
 from rototransl_env import TrackingEnv
 
 # === POLICY ===
-class GaussianPolicy(nn.Module):
+class GaussianPolicy_transl(nn.Module):
     def __init__(self, obs_dim=4, act_dim=2):
         super().__init__()
         self.mean_net = nn.Sequential(
@@ -146,6 +146,6 @@ def train_gail(policy, discriminator, expert_data, num_iterations=1000, device="
 # === AVVIO ===
 if __name__ == "__main__":
     expert_data = np.load("trajectories/dataset_transl.npz")
-    policy = GaussianPolicy()
+    policy = GaussianPolicy_transl()
     discriminator = Discriminator()
     train_gail(policy, discriminator, expert_data)
