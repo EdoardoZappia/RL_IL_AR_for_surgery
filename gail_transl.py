@@ -145,7 +145,7 @@ def train_gail(policy, discriminator, expert_data, num_iterations=1000, device="
 
 # === AVVIO ===
 if __name__ == "__main__":
-    expert_data = np.load("trajectories/dataset_transl_0.2_0.05.npz")
+    expert_data = np.load("trajectories/dataset_transl.npz")
     policy = GaussianPolicy()
     discriminator = Discriminator()
     train_gail(policy, discriminator, expert_data)
