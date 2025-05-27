@@ -97,18 +97,19 @@ def train_gail(policy, discriminator, expert_data, num_iterations=1000, device="
         log_probs_old = log_probs_old.detach()
 
         # 2. Train discriminator
-        disc_optim.zero_grad()
-        N = agent_obs.shape[0]
-        idx = torch.randint(0, expert_obs.shape[0], (N,))
-        expert_batch_obs = expert_obs[idx]
-        expert_batch_acts = expert_acts[idx]
+        if it % 5 == 0:
+            disc_optim.zero_grad()
+            N = agent_obs.shape[0]
+            idx = torch.randint(0, expert_obs.shape[0], (N,))
+            expert_batch_obs = expert_obs[idx]
+            expert_batch_acts = expert_acts[idx]
 
-        expert_logits = discriminator(expert_batch_obs, expert_batch_acts)
-        agent_logits = discriminator(agent_obs, agent_acts)
+            expert_logits = discriminator(expert_batch_obs, expert_batch_acts)
+            agent_logits = discriminator(agent_obs, agent_acts)
 
-        loss_disc = -torch.mean(torch.log(expert_logits + 1e-8) + torch.log(1 - agent_logits + 1e-8))
-        loss_disc.backward()
-        disc_optim.step()
+            loss_disc = -torch.mean(torch.log(expert_logits + 1e-8) + torch.log(1 - agent_logits + 1e-8))
+            loss_disc.backward()
+            disc_optim.step()
 
         # 3. Compute rewards from discriminator
         with torch.no_grad():
