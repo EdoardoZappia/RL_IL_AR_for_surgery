@@ -66,8 +66,8 @@ def test_dual_agents(agent_transl, agent_rot, env=None, num_episodes=2001, toler
 
             episode_obs_xy.append(state_pos.detach().numpy())
             episode_obs_rot.append(state_rot.detach().numpy())
-            episode_actions_xy.append(action_xy.copy())
-            episode_actions_rot.append(action_rot.copy())
+            episode_actions_xy.append(action_xy.numpy().copy())
+            episode_actions_rot.append(action_rot.numpy().copy())
 
             next_state, _, done, truncated, _, _ = env.step(action)
             next_state = torch.tensor(next_state, dtype=torch.float32)
