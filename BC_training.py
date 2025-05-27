@@ -15,7 +15,7 @@ class TrajectoryDataset(Dataset):
     def __getitem__(self, idx):
         return self.observations[idx], self.actions[idx]
 
-dataset = TrajectoryDataset("trajectories/dataset_filtered.npz")
+dataset = TrajectoryDataset("trajectories/dataset_transl.npz")
 dataloader = DataLoader(dataset, batch_size=64, shuffle=True)
 
 class BCModel(torch.nn.Module):
@@ -31,7 +31,7 @@ class BCModel(torch.nn.Module):
         x = self.fc3(x)
         return x
 
-def train_bc_model(model, dataloader, num_epochs=500, learning_rate=1e-3, device=None, save_path="IL/bc_policy.pth"):
+def train_bc_model(model, dataloader, num_epochs=500, learning_rate=1e-3, device=None, save_path="IL/bc_policy_transl_0.2_0.05.pth"):
 
     # Crea la cartella se non esiste
     os.makedirs(os.path.dirname(save_path), exist_ok=True)
@@ -67,6 +67,6 @@ def train_bc_model(model, dataloader, num_epochs=500, learning_rate=1e-3, device
     print(f"Modello salvato in '{save_path}'")
 
 if __name__ == "__main__":
-    model = BCModel(input_dim=6, output_dim=3)
+    model = BCModel(input_dim=4, output_dim=2)
     train_bc_model(model, dataloader)
 
