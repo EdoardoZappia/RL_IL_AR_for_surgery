@@ -82,7 +82,7 @@ def train_gail(policy, discriminator, expert_data, num_iterations=1000, device="
     env = TrackingEnv()
     value_fn = ValueFunction().to(device)
 
-    disc_optim = optim.Adam(discriminator.parameters(), lr=1e-3)
+    disc_optim = optim.Adam(discriminator.parameters(), lr=5e-4)
     policy_optim = optim.Adam(policy.parameters(), lr=3e-4)
     value_optim = optim.Adam(value_fn.parameters(), lr=1e-3)
 
