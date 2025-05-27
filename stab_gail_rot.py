@@ -28,14 +28,17 @@ expert_trajs = []
 for i in range(num_episodes):
     start = i * EPISODE_LEN
     end = start + EPISODE_LEN
-    expert_trajs.append(
-        Trajectory(
-            obs=obs[start:end],
-            acts=acts[start:end],
-            terminal=True,
-            infos=None
-        )
+
+    last_obs = obs[end - 1 : end]  # ripeti ultima osservazione
+    extended_obs = np.concatenate([obs[start:end], last_obs], axis=0)
+
+    traj = Trajectory(
+        obs=extended_obs,       # shape (101, obs_dim)
+        acts=acts[start:end],   # shape (100, act_dim)
+        terminal=True,
+        infos=None
     )
+    expert_trajs.append(traj)
 print(f"  → Caricate {len(expert_trajs)} traiettorie")
 
 # === 2. Setup ambiente ===
