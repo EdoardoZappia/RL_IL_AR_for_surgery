@@ -113,7 +113,8 @@ def test_dual_agents(agent_transl, agent_rot, env=None, num_episodes=2001, toler
         np.savez("trajectories/dataset_rot.npz",
                     observations=np.array(all_obs_rot),
                     actions=np.array(all_actions_rot))
-        print(f"\nDataset salvato con {len(all_obs)} passi totali da {saved_counter} episodi validi")
+        print(f"\nDataset salvato con {len(all_obs_xy)} passi totali da {saved_counter} episodi validi")
+        print(f"Dataset salvato con {len(all_obs_rot)} passi totali da {saved_counter} episodi validi")
     else:
         print("\nNessun episodio valido, dataset non salvato.")
 
@@ -122,4 +123,4 @@ if __name__ == "__main__":
     ckpt_transl = "Traslazioni-dinamiche/No-noise/ddpg_run_dyn20250503_160754/checkpoint_ep2930.pth"
     ckpt_rot = "Rotazioni-dinamiche/No-noise/ddpg_mov_0.01_20250509_163508/checkpoint_ep782.pth"
     agent_transl, agent_rot = load_agents(ckpt_transl, ckpt_rot)
-    test_dual_agents(agent_transl, agent_rot, num_episodes=1000)
+    test_dual_agents(agent_transl, agent_rot)

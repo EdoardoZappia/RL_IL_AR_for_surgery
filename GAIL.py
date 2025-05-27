@@ -7,7 +7,7 @@ from rototransl_env import TrackingEnv
 
 # === POLICY ===
 class GaussianPolicy(nn.Module):
-    def __init__(self, obs_dim=6, act_dim=3):
+    def __init__(self, obs_dim=4, act_dim=2):
         super().__init__()
         self.mean_net = nn.Sequential(
             nn.Linear(obs_dim, 256), nn.ReLU(),
@@ -24,7 +24,7 @@ class GaussianPolicy(nn.Module):
 
 # === VALUE FUNCTION ===
 class ValueFunction(nn.Module):
-    def __init__(self, obs_dim=6):
+    def __init__(self, obs_dim=4):
         super().__init__()
         self.net = nn.Sequential(
             nn.Linear(obs_dim, 256), nn.ReLU(),
@@ -37,7 +37,7 @@ class ValueFunction(nn.Module):
 
 # === DISCRIMINATORE ===
 class Discriminator(nn.Module):
-    def __init__(self, obs_dim=6, act_dim=3):
+    def __init__(self, obs_dim=4, act_dim=2):
         super().__init__()
         self.net = nn.Sequential(
             nn.Linear(obs_dim + act_dim, 256), nn.ReLU(),
