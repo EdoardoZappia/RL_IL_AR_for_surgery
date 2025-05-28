@@ -61,25 +61,37 @@ def dagger(env, expert_model, agent_model, initial_obs, initial_act, iterations=
         for _ in range(episodes_per_iter):
             obs = env.reset()
             done = False
-            steps = 0
+            attached_counter = 0
             episode_obs = []
             episode_act = []
 
             while not done:
-                obs_tensor = torch.tensor(obs, dtype=torch.float32).unsqueeze(0)
+                state = torch.tensor(obs, dtype=torch.float32)
+
+                obs_tensor = state.unsqueeze(0)
                 with torch.no_grad():
                     action = agent_model(obs_tensor).squeeze(0).numpy()
-                obs, _, done, _ = env.step(action)
-                steps += 1
+                next_obs, _, done, _ = env.step(action)
+                next_state = torch.tensor(next_obs, dtype=torch.float32)
+
+                dist_transl = torch.norm(next_state[:2] - state[3:5])
+                dist_rot = torch.abs(next_state[2] - state[5])
+
+                if dist_transl < tolerance_transl and dist_rot < tolerance_rot:
+                    attached_counter += 1
+                else:
+                    attached_counter = 0
 
                 with torch.no_grad():
-                    expert_action = expert_model(torch.tensor(obs, dtype=torch.float32).unsqueeze(0)).squeeze(0).numpy()
+                    expert_action = expert_model(next_state.unsqueeze(0)).squeeze(0).numpy()
 
-                episode_obs.append(obs)
+                episode_obs.append(next_obs)
                 episode_act.append(expert_action)
 
-            # Aggiungi solo se episodio >= 90 step (comportamento ritenuto ottimale)
-            if steps >= 90:
+                obs = next_obs
+
+            # Considera l'episodio valido solo se almeno 90 step "attached"
+            if attached_counter >= 90:
                 new_obs.extend(episode_obs)
                 new_act.extend(episode_act)
 
