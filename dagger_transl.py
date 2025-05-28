@@ -80,7 +80,7 @@ def dagger(env, expert_model, agent_model, initial_obs, initial_act, iterations=
 
                 dist_transl = torch.abs(next_state[0:2] - state[2:4])
 
-                if dist_rot < tolerance_transl:
+                if dist_transl < tolerance_transl:
                     attached_counter += 1
 
                 with torch.no_grad():
