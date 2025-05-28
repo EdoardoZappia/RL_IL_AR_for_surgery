@@ -23,7 +23,7 @@ class PolicyNetwork(nn.Module):
         return self.net(x)
 
 # ==== FUNZIONE DI TRAINING PER BEHAVIORAL CLONING ====
-def train_model(model, observations, actions, epochs=50, batch_size=64):
+def train_model(model, observations, actions, epochs=30, batch_size=64):
     dataset = TensorDataset(torch.tensor(observations, dtype=torch.float32),
                             torch.tensor(actions, dtype=torch.float32))
     dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
@@ -43,7 +43,7 @@ def train_model(model, observations, actions, epochs=50, batch_size=64):
         print(f"Epoch {epoch+1}, Loss: {total_loss:.4f}")
 
 # ==== LOOP PRINCIPALE DI DAGGER ====
-def dagger(env, expert_model, agent_model, initial_obs, initial_act, iterations=100, episodes_per_iter=30):
+def dagger(env, expert_model, agent_model, initial_obs, initial_act, iterations=50, episodes_per_iter=10):
     observations = list(initial_obs)
     actions = list(initial_act)
 
