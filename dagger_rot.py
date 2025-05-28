@@ -79,8 +79,6 @@ def dagger(env, expert_model, agent_model, initial_obs, initial_act, iterations=
 
                 if dist_transl < tolerance_transl and dist_rot < tolerance_rot:
                     attached_counter += 1
-                else:
-                    attached_counter = 0
 
                 with torch.no_grad():
                     expert_action = expert_model(next_state.unsqueeze(0)).squeeze(0).numpy()
@@ -92,6 +90,7 @@ def dagger(env, expert_model, agent_model, initial_obs, initial_act, iterations=
 
             # Considera l'episodio valido solo se almeno 90 step "attached"
             if attached_counter >= 90:
+                print("[INFO] Episodio valido con attached_counter:", attached_counter, "dataset aumentato.")
                 new_obs.extend(episode_obs)
                 new_act.extend(episode_act)
 
