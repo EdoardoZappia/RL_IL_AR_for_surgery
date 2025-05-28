@@ -43,7 +43,7 @@ def train_model(model, observations, actions, epochs=10, batch_size=64):
         print(f"Epoch {epoch+1}, Loss: {total_loss:.4f}")
 
 # ==== LOOP PRINCIPALE DI DAGGER ====
-def dagger(env, expert_model, agent_model, initial_obs, initial_act, iterations=10, episodes_per_iter=5):
+def dagger(env, expert_model, agent_model, initial_obs, initial_act, iterations=20, episodes_per_iter=10):
     observations = list(initial_obs)
     actions = list(initial_act)
 
@@ -52,7 +52,7 @@ def dagger(env, expert_model, agent_model, initial_obs, initial_act, iterations=
 
     # Allena il modello iniziale con BC
     print("[INFO] Inizio training BC iniziale")
-    train_model(agent_model, observations, actions, epochs=20)
+    train_model(agent_model, observations, actions, epochs=40)
 
     # Inizia il loop DAgger
     for it in range(iterations):
@@ -102,7 +102,7 @@ def dagger(env, expert_model, agent_model, initial_obs, initial_act, iterations=
         actions.extend(new_act)
 
         # Ri-allena il modello
-        train_model(agent_model, observations, actions, epochs=10)
+        train_model(agent_model, observations, actions)
 
     # Salva il modello finale
     torch.save(agent_model.state_dict(), "IL/dagger_model_rot_0.5_0.01.pth")
@@ -142,4 +142,4 @@ if __name__ == "__main__":
     initial_obs = expert_data['observations']
     initial_act = expert_data['actions']
 
-    dagger(env, expert_model, agent_model, initial_obs, initial_act, iterations=10, episodes_per_iter=5)
+    dagger(env, expert_model, agent_model, initial_obs, initial_act)
