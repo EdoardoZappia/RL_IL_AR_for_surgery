@@ -78,11 +78,6 @@ def dagger(env, expert_model, agent_model, initial_obs, initial_act, iterations=
                 next_state = torch.tensor(next_obs, dtype=torch.float32)
                 done = truncated
 
-                dist_rot = torch.abs(next_state[0] - state[1])
-
-                if dist_rot < tolerance_rot:
-                    attached_counter += 1
-
                 with torch.no_grad():
                     expert_action = expert_model.actor(next_state.unsqueeze(0)).squeeze(0).numpy()
 
