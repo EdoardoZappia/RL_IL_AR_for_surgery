@@ -78,7 +78,7 @@ def dagger(env, expert_model, agent_model, initial_obs, initial_act, iterations=
                 next_state = torch.tensor(next_obs, dtype=torch.float32)
                 done = truncated
 
-                dist_transl = torch.abs(next_state[0:2] - state[2:4])
+                dist_transl = torch.norm(next_state[0:2] - state[2:4])
 
                 if dist_transl < tolerance_transl:
                     attached_counter += 1
