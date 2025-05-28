@@ -65,7 +65,6 @@ def dagger(env, expert_model, agent_model, initial_obs, initial_act, iterations=
         for _ in range(episodes_per_iter):
             obs, _ = env.reset()
             done = False
-            attached_counter = 0
             episode_obs = []
             episode_act = []
 
@@ -86,12 +85,10 @@ def dagger(env, expert_model, agent_model, initial_obs, initial_act, iterations=
                 episode_act.append(expert_action)
 
                 obs = next_obs
-
-            # Considera l'episodio valido solo se almeno 90 step "attached"
-            if attached_counter >= 90:
-                print("[INFO] Episodio valido con attached_counter:", attached_counter, "dataset aumentato.")
-                new_obs.extend(episode_obs)
-                new_act.extend(episode_act)
+            
+            print("Dataset aumentato.")
+            new_obs.extend(episode_obs)
+            new_act.extend(episode_act)
 
         # Aggrega i nuovi dati
         observations.extend(new_obs)

@@ -24,7 +24,7 @@ class PolicyNetwork(nn.Module):
         return self.net(x) * 5.0
 
 # ==== FUNZIONE DI TRAINING PER BEHAVIORAL CLONING ====
-def train_model(model, observations, actions, epochs=10, batch_size=64):
+def train_model(model, observations, actions, epochs=30, batch_size=64):
     dataset = TensorDataset(torch.tensor(observations, dtype=torch.float32),
                             torch.tensor(actions, dtype=torch.float32))
     dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
@@ -44,7 +44,7 @@ def train_model(model, observations, actions, epochs=10, batch_size=64):
         print(f"Epoch {epoch+1}, Loss: {total_loss:.4f}")
 
 # ==== LOOP PRINCIPALE DI DAGGER ====
-def dagger(env, expert_model, agent_model, initial_obs, initial_act, iterations=20, episodes_per_iter=10):
+def dagger(env, expert_model, agent_model, initial_obs, initial_act, iterations=30, episodes_per_iter=10):
     observations = list(initial_obs)
     actions = list(initial_act)
 
@@ -53,7 +53,7 @@ def dagger(env, expert_model, agent_model, initial_obs, initial_act, iterations=
 
     # Allena il modello iniziale con BC
     print("[INFO] Inizio training BC iniziale")
-    train_model(agent_model, observations, actions, epochs=40)
+    train_model(agent_model, observations, actions)
 
     # Inizia il loop DAgger
     for it in range(iterations):
@@ -87,11 +87,9 @@ def dagger(env, expert_model, agent_model, initial_obs, initial_act, iterations=
 
                 obs = next_obs
 
-            # Considera l'episodio valido solo se almeno 90 step "attached"
-            if attached_counter >= 90:
-                print("[INFO] Episodio valido con attached_counter:", attached_counter, "dataset aumentato.")
-                new_obs.extend(episode_obs)
-                new_act.extend(episode_act)
+            print("Dataset aumentato")
+            new_obs.extend(episode_obs)
+            new_act.extend(episode_act)
 
         # Aggrega i nuovi dati
         observations.extend(new_obs)
