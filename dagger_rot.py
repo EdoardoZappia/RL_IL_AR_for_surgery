@@ -107,7 +107,6 @@ def dagger(env, expert_model, agent_model, initial_obs, initial_act, iterations=
 
 # ==== ESECUZIONE ====
 if __name__ == "__main__":
-    from envs import TrackingEnv  # O il tuo ambiente custom
 
     # Parametri dell'ambiente
     input_dim = 2    # Modifica per rotazione (es. 2) o traslazione (es. 4)
