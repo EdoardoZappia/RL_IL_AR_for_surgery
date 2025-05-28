@@ -63,8 +63,7 @@ def dagger(env, expert_model, agent_model, initial_obs, initial_act, iterations=
         new_act = []
 
         for _ in range(episodes_per_iter):
-            obs = env.reset()
-            print("obs shape ",obs.shape)
+            obs, _ = env.reset()
             done = False
             attached_counter = 0
             episode_obs = []
@@ -72,13 +71,13 @@ def dagger(env, expert_model, agent_model, initial_obs, initial_act, iterations=
 
             while not done:
                 state = torch.tensor(obs, dtype=torch.float32)
-                print("state shape ",state.shape)
 
                 obs_tensor = state.unsqueeze(0)
                 with torch.no_grad():
                     action = agent_model(obs_tensor).squeeze(0).numpy()
-                next_obs, _, done, _ = env.step(action)
+                next_obs, _, done, truncated, _ = env.step(action)
                 next_state = torch.tensor(next_obs, dtype=torch.float32)
+                done = truncated
 
                 dist_transl = torch.norm(next_state[:2] - state[3:5])
                 dist_rot = torch.abs(next_state[2] - state[5])
