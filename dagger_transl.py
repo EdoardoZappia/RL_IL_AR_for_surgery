@@ -114,13 +114,13 @@ def load_agents(checkpoint_path_rot, env=None):
 
     state_dim_rot = 4    # theta, theta_target
 
-    agent_rot = DDPGAgent(state_dim_rot, 1)
+    agent_transl = DDPGAgent(state_dim_rot, 2)
 
-    ckpt_rot = torch.load(checkpoint_path_rot, map_location=torch.device('cpu'))
+    ckpt_transl = torch.load(checkpoint_path_rot, map_location=torch.device('cpu'))
 
-    agent_rot.actor.load_state_dict(ckpt_rot['actor_state_dict'])
+    agent_transl.actor.load_state_dict(ckpt_transl['actor_state_dict'])
 
-    return agent_rot
+    return agent_transl
 
 # ==== ESECUZIONE ====
 if __name__ == "__main__":
