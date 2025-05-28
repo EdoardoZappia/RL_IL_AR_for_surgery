@@ -133,7 +133,7 @@ if __name__ == "__main__":
     # Istanzia ambiente ed esperto
     env = TrackingEnv()
 
-    expert_model = load_agents("Rotazioni-dinamiche/No-noise/ddpg_rot_0.01_20250509_163508/checkpoint_ep782.pth", env)
+    expert_model = load_agents("Rotazioni-dinamiche/No-noise/ddpg_mov_0.01_20250509_163508/checkpoint_ep782.pth", env)
     expert_model.actor.eval()
 
     agent_model = PolicyNetwork(input_dim, output_dim)
