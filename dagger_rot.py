@@ -16,11 +16,12 @@ class PolicyNetwork(nn.Module):
             nn.ReLU(),
             nn.Linear(64, 64),
             nn.ReLU(),
-            nn.Linear(64, output_dim)
+            nn.Linear(64, output_dim),
+            nn.Tanh()
         )
 
     def forward(self, x):
-        return self.net(x)
+        return self.net(x) * 5.0
 
 # ==== FUNZIONE DI TRAINING PER BEHAVIORAL CLONING ====
 def train_model(model, observations, actions, epochs=10, batch_size=64):

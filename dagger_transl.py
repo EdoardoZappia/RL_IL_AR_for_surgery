@@ -16,11 +16,12 @@ class PolicyNetwork(nn.Module):
             nn.ReLU(),
             nn.Linear(64, 64),
             nn.ReLU(),
-            nn.Linear(64, output_dim)
+            nn.Linear(64, output_dim),
+            nn.Tanh()
         )
 
     def forward(self, x):
-        return self.net(x)
+        return self.net(x) * 5.0
 
 # ==== FUNZIONE DI TRAINING PER BEHAVIORAL CLONING ====
 def train_model(model, observations, actions, epochs=30, batch_size=64):
@@ -43,7 +44,7 @@ def train_model(model, observations, actions, epochs=30, batch_size=64):
         print(f"Epoch {epoch+1}, Loss: {total_loss:.4f}")
 
 # ==== LOOP PRINCIPALE DI DAGGER ====
-def dagger(env, expert_model, agent_model, initial_obs, initial_act, iterations=50, episodes_per_iter=10):
+def dagger(env, expert_model, agent_model, initial_obs, initial_act, iterations=30, episodes_per_iter=10):
     observations = list(initial_obs)
     actions = list(initial_act)
 
