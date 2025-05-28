@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 import numpy as np
-import pickle
+import os
 from torch.utils.data import DataLoader, TensorDataset
 from ddpg_rot_dyn import DDPGAgent
 from env_rot import TrackingEnv
@@ -135,8 +135,7 @@ if __name__ == "__main__":
     agent_model = PolicyNetwork(input_dim, output_dim)
 
     # Carica dati esperti
-    with open("trajectories/dataset_rot.npz", "rb") as f:
-        expert_data = pickle.load(f)
+    expert_data = np.load("trajectories/dataset_rot.npz")
     initial_obs, initial_act = zip(*expert_data)
 
     dagger(env, expert_model, agent_model, initial_obs, initial_act, iterations=10, episodes_per_iter=5)
