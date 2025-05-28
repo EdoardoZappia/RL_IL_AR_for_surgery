@@ -5,7 +5,7 @@ import numpy as np
 import os
 from torch.utils.data import DataLoader, TensorDataset
 from ddpg_rot_dyn import DDPGAgent
-from env_rot import TrackingEnv
+from environment import TrackingEnv
 
 # ==== DEFINIZIONE DEL MODELLO (es. MLP per continui) ====
 class PolicyNetwork(nn.Module):
@@ -48,7 +48,7 @@ def dagger(env, expert_model, agent_model, initial_obs, initial_act, iterations=
     actions = list(initial_act)
 
     # Tolleranze per comportamento "attached"
-    tolerance_rot = 0.01
+    tolerance_transl = 0.02
 
     # Allena il modello iniziale con BC
     print("[INFO] Inizio training BC iniziale")
@@ -74,13 +74,13 @@ def dagger(env, expert_model, agent_model, initial_obs, initial_act, iterations=
                 obs_tensor = state.unsqueeze(0)
                 with torch.no_grad():
                     action = agent_model(obs_tensor).squeeze(0).numpy()
-                next_obs, _, done, truncated, _ = env.step(action)
+                next_obs, _, done, truncated, _, _ = env.step(action)
                 next_state = torch.tensor(next_obs, dtype=torch.float32)
                 done = truncated
 
-                dist_rot = torch.abs(next_state[0] - state[1])
+                dist_transl = torch.abs(next_state[0:2] - state[2:4])
 
-                if dist_rot < tolerance_rot:
+                if dist_rot < tolerance_transl:
                     attached_counter += 1
 
                 with torch.no_grad():
@@ -105,14 +105,14 @@ def dagger(env, expert_model, agent_model, initial_obs, initial_act, iterations=
         train_model(agent_model, observations, actions, epochs=10)
 
     # Salva il modello finale
-    torch.save(agent_model.state_dict(), "IL/dagger_model_rot_0.5_0.01.pth")
+    torch.save(agent_model.state_dict(), "IL/dagger_model_transl_0.2_0.05.pth")
     print("[INFO] Modello DAgger salvato.")
 
 def load_agents(checkpoint_path_rot, env=None):
     if env is None:
         env = TrackingEnv()
 
-    state_dim_rot = 2    # theta, theta_target
+    state_dim_rot = 4    # theta, theta_target
 
     agent_rot = DDPGAgent(state_dim_rot, 1)
 
@@ -126,19 +126,19 @@ def load_agents(checkpoint_path_rot, env=None):
 if __name__ == "__main__":
 
     # Parametri dell'ambiente
-    input_dim = 2    # Modifica per rotazione (es. 2) o traslazione (es. 4)
-    output_dim = 1   # Modifica per rotazione (es. 1) o traslazione (es. 2)
+    input_dim = 4    # Modifica per rotazione (es. 2) o traslazione (es. 4)
+    output_dim = 2   # Modifica per rotazione (es. 1) o traslazione (es. 2)
 
     # Istanzia ambiente ed esperto
     env = TrackingEnv()
 
-    expert_model = load_agents("Rotazioni-dinamiche/No-noise/ddpg_mov_0.01_20250509_163508/checkpoint_ep782.pth", env)
+    expert_model = load_agents("Traslazioni-dinamiche/No-noise/ddpg_run_dyn20250503_160754/checkpoint_ep2930.pth", env)
     expert_model.actor.eval()
 
     agent_model = PolicyNetwork(input_dim, output_dim)
 
     # Carica dati esperti
-    expert_data = np.load("trajectories/dataset_rot.npz")
+    expert_data = np.load("trajectories/dataset_transl.npz")
     initial_obs = expert_data['observations']
     initial_act = expert_data['actions']
 
