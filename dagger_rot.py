@@ -105,6 +105,20 @@ def dagger(env, expert_model, agent_model, initial_obs, initial_act, iterations=
     torch.save(agent_model.state_dict(), "IL/dagger_model_rot_0.5_0.01.pth")
     print("[INFO] Modello DAgger salvato.")
 
+def load_agents(checkpoint_path_rot, env=None):
+    if env is None:
+        env = TrackingEnv()
+
+    state_dim_rot = 2    # theta, theta_target
+
+    agent_rot = DDPGRotAgent(state_dim_rot, 1)
+
+    ckpt_rot = torch.load(checkpoint_path_rot, map_location=torch.device('cpu'))
+
+    agent_rot.actor.load_state_dict(ckpt_rot['actor_state_dict'])
+
+    return agent_rot
+
 # ==== ESECUZIONE ====
 if __name__ == "__main__":
 
@@ -116,6 +130,7 @@ if __name__ == "__main__":
     env = TrackingEnv()
 
     expert_model = DDPGAgent(input_dim, output_dim)
+    expert_model = load_agents("Rotazioni-dinamiche/No-noise/ddpg_rot_0.01_20250509_163508/checkpoint_ep782.pth", env)
     expert_model.load_state_dict(torch.load("Rotazioni-dinamiche/No-noise/ddpg_mov_0.01_20250509_163508/checkpoint_ep782.pth"))
     expert_model.eval()
 
