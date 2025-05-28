@@ -47,6 +47,10 @@ def dagger(env, expert_model, agent_model, initial_obs, initial_act, iterations=
     observations = list(initial_obs)
     actions = list(initial_act)
 
+    # Tolleranze per comportamento "attached"
+    tolerance_transl = 0.02
+    tolerance_rot = 0.01
+
     # Allena il modello iniziale con BC
     print("[INFO] Inizio training BC iniziale")
     train_model(agent_model, observations, actions, epochs=20)
@@ -81,7 +85,7 @@ def dagger(env, expert_model, agent_model, initial_obs, initial_act, iterations=
                     attached_counter += 1
 
                 with torch.no_grad():
-                    expert_action = expert_model(next_state.unsqueeze(0)).squeeze(0).numpy()
+                    expert_action = expert_model.actor(next_state.unsqueeze(0)).squeeze(0).numpy()
 
                 episode_obs.append(next_obs)
                 episode_act.append(expert_action)
@@ -130,12 +134,13 @@ if __name__ == "__main__":
     env = TrackingEnv()
 
     expert_model = load_agents("Rotazioni-dinamiche/No-noise/ddpg_rot_0.01_20250509_163508/checkpoint_ep782.pth", env)
-    expert_model.eval()
+    expert_model.actor.eval()
 
     agent_model = PolicyNetwork(input_dim, output_dim)
 
     # Carica dati esperti
     expert_data = np.load("trajectories/dataset_rot.npz")
-    initial_obs, initial_act = zip(*expert_data)
+    initial_obs = expert_data['observations']
+    initial_act = expert_data['actions']
 
     dagger(env, expert_model, agent_model, initial_obs, initial_act, iterations=10, episodes_per_iter=5)
