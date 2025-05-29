@@ -67,7 +67,7 @@ def dagger(env, expert_model, agent_model, initial_obs, initial_act, iterations=
             state = torch.tensor(obs, dtype=torch.float32)
 
             state = state.clone()
-            state[1] += torch.normal(mean=0.0, std=0.001, size=(1,), device=state.device)
+            state[1:] += torch.normal(mean=0.0, std=0.001, size=(1,), device=state.device)
 
             done = False
             attached_counter = 0
@@ -84,7 +84,7 @@ def dagger(env, expert_model, agent_model, initial_obs, initial_act, iterations=
                 next_state = torch.tensor(next_obs, dtype=torch.float32)
 
                 next_state = next_state.clone()
-                next_state[1] += torch.normal(mean=0.0, std=0.001, size=(1,), device=next_state.device)
+                next_state[1:] += torch.normal(mean=0.0, std=0.001, size=(1,), device=next_state.device)
 
                 done = truncated
 
