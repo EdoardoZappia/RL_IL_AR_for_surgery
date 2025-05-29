@@ -64,19 +64,28 @@ def dagger(env, expert_model, agent_model, initial_obs, initial_act, iterations=
 
         for _ in range(episodes_per_iter):
             obs, _ = env.reset()
+            state = torch.tensor(obs, dtype=torch.float32)
+
+            state = state.clone()
+            state[1] += torch.normal(mean=0.0, std=0.001, size=(1,), device=state.device)
+
             done = False
             attached_counter = 0
             episode_obs = []
             episode_act = []
 
             while not done:
-                state = torch.tensor(obs, dtype=torch.float32)
+                #state = torch.tensor(obs, dtype=torch.float32)
 
                 obs_tensor = state.unsqueeze(0)
                 with torch.no_grad():
                     action = agent_model(obs_tensor).squeeze(0).numpy()
                 next_obs, _, done, truncated, _ = env.step(action)
                 next_state = torch.tensor(next_obs, dtype=torch.float32)
+
+                next_state = next_state.clone()
+                next_state[1] += torch.normal(mean=0.0, std=0.001, size=(1,), device=next_state.device)
+
                 done = truncated
 
                 with torch.no_grad():
@@ -85,7 +94,8 @@ def dagger(env, expert_model, agent_model, initial_obs, initial_act, iterations=
                 episode_obs.append(next_obs)
                 episode_act.append(expert_action)
 
-                obs = next_obs
+                #obs = next_obs
+                state = next_state
 
             print("Dataset aumentato")
             new_obs.extend(episode_obs)
@@ -99,7 +109,7 @@ def dagger(env, expert_model, agent_model, initial_obs, initial_act, iterations=
         train_model(agent_model, observations, actions)
 
     # Salva il modello finale
-    torch.save(agent_model.state_dict(), "IL/dagger_model_rot_0.5_0.01.pth")
+    torch.save(agent_model.state_dict(), "IL/dagger_model_rot_0.5_0.01_std_0.001.pth")
     print("[INFO] Modello DAgger salvato.")
 
 def load_agents(checkpoint_path_rot, env=None):
@@ -126,13 +136,13 @@ if __name__ == "__main__":
     # Istanzia ambiente ed esperto
     env = TrackingEnv()
 
-    expert_model = load_agents("Rotazioni-dinamiche/No-noise/ddpg_mov_0.01_20250509_163508/checkpoint_ep782.pth", env)
+    expert_model = load_agents("Rotazioni-dinamiche/Noisy/ddpg_mov_0.01_std_0.001_20250509_173413/checkpoint_ep769.pth", env)
     expert_model.actor.eval()
 
     agent_model = PolicyNetwork(input_dim, output_dim)
 
     # Carica dati esperti
-    expert_data = np.load("trajectories/dataset_rot.npz")
+    expert_data = np.load("trajectories/dataset_rot_std_0.005_0,001.npz")
     initial_obs = expert_data['observations']
     initial_act = expert_data['actions']
 

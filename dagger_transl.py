@@ -64,6 +64,11 @@ def dagger(env, expert_model, agent_model, initial_obs, initial_act, iterations=
 
         for _ in range(episodes_per_iter):
             obs, _ = env.reset()
+            state = torch.tensor(obs, dtype=torch.float32)
+
+            state = state.clone()
+            state[2:4] += torch.normal(mean=0.0, std=0.005, size=(2,), device=state.device)
+
             done = False
             episode_obs = []
             episode_act = []
@@ -71,13 +76,17 @@ def dagger(env, expert_model, agent_model, initial_obs, initial_act, iterations=
             i = 0
 
             while not done:
-                state = torch.tensor(obs, dtype=torch.float32)
+                #state = torch.tensor(obs, dtype=torch.float32)
 
                 obs_tensor = state.unsqueeze(0)
                 with torch.no_grad():
                     action = agent_model(obs_tensor).squeeze(0).numpy()
                 next_obs, _, done, truncated, _, _ = env.step(action)
                 next_state = torch.tensor(next_obs, dtype=torch.float32)
+
+                next_state = next_state.clone()
+                next_state[2:4] += torch.normal(mean=0.0, std=0.005, size=(2,), device=next_state.device)
+
                 done = truncated
 
                 backup = env.get_state()
@@ -86,12 +95,14 @@ def dagger(env, expert_model, agent_model, initial_obs, initial_act, iterations=
                     expert_action = expert_model.actor(next_state.unsqueeze(0)).squeeze(0).numpy()
                 
                 virtual_next, _, _, _, _, _ = env.step(expert_action)
-                if np.linalg.norm(virtual_next[:2]- next_obs[2:4]) < tolerance_transl:
+                virtual_next = torch.tensor(virtual_next, dtype=torch.float32)
+                if torch.norm(virtual_next[:2]- next_state[2:4]) < tolerance_transl:
                     episode_obs.append(next_obs)
                     episode_act.append(expert_action)
                     i += 1
                 env.set_state(backup)
-                obs = next_obs
+                #obs = next_obs
+                state = next_state
             
             print(f"Dataset aumentato {i} volte")
             new_obs.extend(episode_obs)
@@ -105,7 +116,7 @@ def dagger(env, expert_model, agent_model, initial_obs, initial_act, iterations=
         train_model(agent_model, observations, actions)
 
     # Salva il modello finale
-    torch.save(agent_model.state_dict(), "IL/dagger_model_transl_0.2_0.05.pth")
+    torch.save(agent_model.state_dict(), "IL/dagger_model_transl_0.2_0.05_std_0.005.pth")
     print("[INFO] Modello DAgger salvato.")
 
 def load_agents(checkpoint_path_rot, env=None):
@@ -132,13 +143,13 @@ if __name__ == "__main__":
     # Istanzia ambiente ed esperto
     env = TrackingEnv()
 
-    expert_model = load_agents("Traslazioni-dinamiche/No-noise/ddpg_run_dyn20250503_160754/checkpoint_ep2930.pth", env)
+    expert_model = load_agents("Traslazioni-dinamiche/Noisy/ddpg_run_dyn_mov_0.05_noisy_target_0.00520250504_150841/checkpoint_ep3639.pth", env)
     expert_model.actor.eval()
 
     agent_model = PolicyNetwork(input_dim, output_dim)
 
     # Carica dati esperti
-    expert_data = np.load("trajectories/dataset_transl.npz")
+    expert_data = np.load("trajectories/dataset_transl_std_0.005_0.001.npz")
     initial_obs = expert_data['observations']
     initial_act = expert_data['actions']
 
