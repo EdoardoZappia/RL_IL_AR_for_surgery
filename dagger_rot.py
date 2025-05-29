@@ -92,7 +92,7 @@ def dagger(env, expert_model, agent_model, initial_obs, initial_act, iterations=
                 with torch.no_grad():
                     expert_action = expert_model.actor(next_state.unsqueeze(0)).squeeze(0).numpy()
 
-                virtual_next, _, _, _, _, _ = env.step(expert_action)
+                virtual_next, _, _, _, _ = env.step(expert_action)
                 virtual_next = torch.tensor(virtual_next, dtype=torch.float32)
                 if torch.norm(virtual_next[0]- next_state[1]) < tolerance_rot:
                     episode_obs.append(next_obs)
