@@ -24,7 +24,7 @@ class PolicyNetwork(nn.Module):
         return self.net(x) * 5.0
 
 # ==== FUNZIONE DI TRAINING PER BEHAVIORAL CLONING ====
-def train_model(model, observations, actions, epochs=20, batch_size=128):
+def train_model(model, observations, actions, epochs=30, batch_size=64):
     dataset = TensorDataset(torch.tensor(observations, dtype=torch.float32),
                             torch.tensor(actions, dtype=torch.float32))
     dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
@@ -44,7 +44,7 @@ def train_model(model, observations, actions, epochs=20, batch_size=128):
         print(f"Epoch {epoch+1}, Loss: {total_loss:.4f}")
 
 # ==== LOOP PRINCIPALE DI DAGGER ====
-def dagger(env, expert_model, agent_model, initial_obs, initial_act, iterations=10, episodes_per_iter=5):
+def dagger(env, expert_model, agent_model, initial_obs, initial_act, iterations=15, episodes_per_iter=5):
     observations = list(initial_obs)
     actions = list(initial_act)
 
@@ -78,12 +78,16 @@ def dagger(env, expert_model, agent_model, initial_obs, initial_act, iterations=
                 next_state = torch.tensor(next_obs, dtype=torch.float32)
                 done = truncated
 
+                backup = env.get_state()
+
                 with torch.no_grad():
                     expert_action = expert_model.actor(next_state.unsqueeze(0)).squeeze(0).numpy()
-
-                episode_obs.append(next_obs)
-                episode_act.append(expert_action)
-
+                
+                virtual_next, _, _, _, _, _ = env.step(expert_action)
+                if np.linalg.norm(virtual_next[:2]- next_obs[2:4]) < tolerance_transl:
+                    episode_obs.append(next_obs)
+                    episode_act.append(expert_action)
+                env.set_state(backup)
                 obs = next_obs
             
             print("Dataset aumentato.")
