@@ -67,6 +67,6 @@ def train_bc_model(model, dataloader, num_epochs=200, learning_rate=1e-3, device
     print(f"Modello salvato in '{save_path}'")
 
 if __name__ == "__main__":
-    model = BCModel(input_dim=2, output_dim=1)
+    model = BCModel(input_dim=4, output_dim=2)
     train_bc_model(model, dataloader)
 
