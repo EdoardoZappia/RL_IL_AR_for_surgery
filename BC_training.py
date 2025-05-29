@@ -31,7 +31,7 @@ class BCModel(torch.nn.Module):
         x = self.fc3(x)
         return x
 
-def train_bc_model(model, dataloader, num_epochs=500, learning_rate=1e-3, device=None, save_path="IL/bc_policy_rot_0.5_0.01_std_0.001.pth"):
+def train_bc_model(model, dataloader, num_epochs=200, learning_rate=1e-3, device=None, save_path="IL/bc_policy_rot_0.5_0.01_std_0.001.pth"):
 
     # Crea la cartella se non esiste
     os.makedirs(os.path.dirname(save_path), exist_ok=True)
