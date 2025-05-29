@@ -68,6 +68,8 @@ def dagger(env, expert_model, agent_model, initial_obs, initial_act, iterations=
             episode_obs = []
             episode_act = []
 
+            i = 0
+
             while not done:
                 state = torch.tensor(obs, dtype=torch.float32)
 
@@ -87,10 +89,11 @@ def dagger(env, expert_model, agent_model, initial_obs, initial_act, iterations=
                 if np.linalg.norm(virtual_next[:2]- next_obs[2:4]) < tolerance_transl:
                     episode_obs.append(next_obs)
                     episode_act.append(expert_action)
-                    print("Dataset aumentato.")
+                    i += 1
                 env.set_state(backup)
                 obs = next_obs
             
+            print(f"Dataset aumentato {i} volte")
             new_obs.extend(episode_obs)
             new_act.extend(episode_act)
 
