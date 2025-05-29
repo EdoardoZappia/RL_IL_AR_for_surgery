@@ -89,6 +89,8 @@ def dagger(env, expert_model, agent_model, initial_obs, initial_act, iterations=
 
                 done = truncated
 
+                backup = env.get_state()
+
                 with torch.no_grad():
                     expert_action = expert_model.actor(next_state.unsqueeze(0)).squeeze(0).numpy()
 
