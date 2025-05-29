@@ -100,3 +100,18 @@ class TrackingEnv(gym.Env):
         """Chiude il simulatore"""
         if self.renderer is not None:
             self.renderer = None
+
+    def get_state(self):
+        return {
+            "qpos": self.data.qpos.copy(),
+            "qvel": self.data.qvel.copy(),
+            "step_counter": self.step_counter,
+            "target_center": self.target_center.copy() if hasattr(self, "target_center") else None
+        }
+
+    def set_state(self, state):
+        self.data.qpos[:] = state["qpos"]
+        self.data.qvel[:] = state["qvel"]
+        self.step_counter = state["step_counter"]
+        if state["target_center"] is not None:
+            self.target_center = state["target_center"].copy()
