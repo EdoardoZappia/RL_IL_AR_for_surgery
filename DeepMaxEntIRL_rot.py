@@ -1,4 +1,5 @@
 import torch
+import torch.nn as nn
 import numpy as np
 from env_rot import TrackingEnv
 
@@ -91,6 +92,7 @@ class MaxEntIRL(nn.Module):
         actions_expert_all = torch.tensor(actions_episodes, dtype=torch.float32)  # (N_ep, T, act_dim)
 
         for epoch in range(epochs):
+            print(f"Epoch {epoch + 1}/{epochs}")
             # 1. Campiona batch esperto
             idx = np.random.choice(obs_expert_all.shape[0], self.batch_size, replace=False)
             obs_expert = obs_expert_all[idx].reshape(-1, obs_expert_all.shape[2])
@@ -112,6 +114,10 @@ class MaxEntIRL(nn.Module):
                 r_exp = self.compute_mean_reward(obs_expert, actions_expert).item()
                 r_pol = self.compute_mean_reward(obs_policy, actions_policy).item()
                 print(f"[Epoch {epoch+1}] Loss: {loss.item():.4f} | R_exp: {r_exp:.4f} | R_pol: {r_pol:.4f}")
+            
+        torch.save(self.reward_net.state_dict(), "IL/DME_rot_reward_net.pth")
+        print("Rete di reward salvata in 'reward_net.pth'")
+
 
 
 if __name__ == "__main__":
