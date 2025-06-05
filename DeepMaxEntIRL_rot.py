@@ -1,5 +1,4 @@
 import torch
-import torch.nn as nn
 import numpy as np
 from env_rot import TrackingEnv
 
@@ -29,8 +28,9 @@ class RewardNet(torch.nn.Module):
         x = self.fc3(x)
         return x
 
-class MaxEntIRL(nn.Module):
+class MaxEntIRL(torch.nn.Module):
     def __init__(self, reward_net, env):
+        super(MaxEntIRL, self).__init__()
         self.env = env
         self.reward_net = reward_net
         self.optimizer = torch.optim.Adam(self.reward_net.parameters(), lr=0.001)
