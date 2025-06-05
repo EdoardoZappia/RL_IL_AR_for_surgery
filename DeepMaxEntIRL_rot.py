@@ -1,0 +1,128 @@
+import torch
+import numpy as np
+from env_rot import TrackingEnv
+
+# Carica dati
+data = np.load("trajectories/dataset_rot.npz")
+obs = data['observations']  # shape = (N, 2)
+actions = data['actions']   # shape = (N, 1)
+
+# Numero di step per episodio
+steps_per_episode = 100
+
+# Divisione in episodi
+obs_episodes = obs.reshape(-1, steps_per_episode, obs.shape[1])       # (num_episodes, 100, 2)
+actions_episodes = actions.reshape(-1, steps_per_episode, actions.shape[1])  # (num_episodes, 100, 1)
+
+
+class RewardNet(torch.nn.Module):
+    def __init__(self, input_dim=3, output_dim=1):
+        super(RewardNet, self).__init__()
+        self.fc1 = torch.nn.Linear(input_dim, 64)
+        self.fc2 = torch.nn.Linear(64, 64)
+        self.fc3 = torch.nn.Linear(64, output_dim)
+
+    def forward(self, x):
+        x = torch.relu(self.fc1(x))
+        x = torch.relu(self.fc2(x))
+        x = self.fc3(x)
+        return x
+
+class MaxEntIRL(nn.Module):
+    def __init__(self, reward_net, env):
+        self.env = env
+        self.reward_net = reward_net
+        self.optimizer = torch.optim.Adam(self.reward_net.parameters(), lr=0.001)
+        self.batch_size = 32
+
+    def compute_reward(self, obs, actions):
+        inputs = torch.cat((obs, actions), dim=-1)  # Concatenate observations and actions
+        return self.reward_net(inputs)
+
+    def compute_mean_reward(self, obs, actions):
+        rewards = self.compute_reward(obs, actions)
+        return rewards.mean()
+
+    def compute_mean_expert_reward(self, obs_expert, actions_expert):
+        rewards = self.compute_reward(obs_expert, actions_expert)
+        return rewards.mean()
+
+    def loss_function(self, obs_policy, actions_policy, obs_expert, actions_expert):
+        mean_reward_policy = self.compute_mean_reward(obs_policy, actions_policy)
+        mean_reward_expert = self.compute_mean_reward(obs_expert, actions_expert)
+        return -(mean_reward_expert - mean_reward_policy)
+
+    def generate_policy_trajectory(self, batch_size=32):
+        states_list = []
+        actions_list = []
+
+        for ep in range(batch_size):
+            ep_states, ep_actions = [], []
+            state, _ = self.env.reset()
+            done = False
+
+            while not done:
+                # Prepara il tensore stato
+                state_tensor = torch.tensor(state, dtype=torch.float32).unsqueeze(0)
+
+                # Azione random dalla action space
+                action = self.env.action_space.sample()
+
+                # Salva stato e azione
+                ep_states.append(state_tensor.squeeze(0).numpy())
+                ep_actions.append(np.array(action))
+
+                # Step ambiente
+                next_state, reward, _, truncated, _ = self.env.step(action)
+                done = truncated
+                state = next_state
+
+            states_list.append(np.array(ep_states))
+            actions_list.append(np.array(ep_actions))
+
+        states_tensor = torch.tensor(np.array(states_list), dtype=torch.float32)
+        actions_tensor = torch.tensor(np.array(actions_list), dtype=torch.float32)
+
+        return states_tensor, actions_tensor
+
+
+    def train(self, obs_episodes, actions_episodes, epochs=1000, steps_per_episode=100):
+        obs_expert_all = torch.tensor(obs_episodes, dtype=torch.float32)      # (N_ep, T, obs_dim)
+        actions_expert_all = torch.tensor(actions_episodes, dtype=torch.float32)  # (N_ep, T, act_dim)
+
+        for epoch in range(epochs):
+            # 1. Campiona batch esperto
+            idx = np.random.choice(obs_expert_all.shape[0], self.batch_size, replace=False)
+            obs_expert = obs_expert_all[idx].reshape(-1, obs_expert_all.shape[2])
+            actions_expert = actions_expert_all[idx].reshape(-1, actions_expert_all.shape[2])
+
+            # 2. Genera batch policy
+            obs_policy, actions_policy = self.generate_policy_trajectory(batch_size=self.batch_size)
+            obs_policy = obs_policy.reshape(-1, obs_policy.shape[2])
+            actions_policy = actions_policy.reshape(-1, actions_policy.shape[2])
+
+            # 3. Calcola loss e ottimizza
+            loss = self.loss_function(obs_policy, actions_policy, obs_expert, actions_expert)
+            self.optimizer.zero_grad()
+            loss.backward()
+            self.optimizer.step()
+
+            # 4. Logging
+            if (epoch + 1) % 50 == 0:
+                r_exp = self.compute_mean_reward(obs_expert, actions_expert).item()
+                r_pol = self.compute_mean_reward(obs_policy, actions_policy).item()
+                print(f"[Epoch {epoch+1}] Loss: {loss.item():.4f} | R_exp: {r_exp:.4f} | R_pol: {r_pol:.4f}")
+
+
+if __name__ == "__main__":
+    # Inizializza ambiente
+    env = TrackingEnv(render_mode=None)
+
+    # Inizializza rete di reward
+    reward_net = RewardNet(input_dim=3, output_dim=1)
+
+    # Inizializza MaxEnt IRL
+    maxent_irl = MaxEntIRL(reward_net, env)
+
+    # Addestra il modello
+    maxent_irl.train(obs_episodes, actions_episodes, epochs=1000, steps_per_episode=100)
