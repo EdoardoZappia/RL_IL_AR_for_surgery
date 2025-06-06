@@ -27,7 +27,7 @@ class RewardNet(torch.nn.Module):
         x = torch.relu(self.fc1(x))
         x = torch.relu(self.fc2(x))
         x = self.fc3(x)
-        return torch.tanh(x)
+        return x
 
 class MaxEntIRL(torch.nn.Module):
     def __init__(self, reward_net, env, policy_net):
@@ -146,7 +146,7 @@ class MaxEntIRL(torch.nn.Module):
 
         # 5 episodi esperti
         print("\n[Episodi esperti]")
-        for i in range(5):
+        for i in [1, 500, 1000, 1500, 2000]:
             obs_ep = obs_expert_all[i]
             act_ep = actions_expert_all[i]
             inputs = torch.cat([obs_ep, act_ep], dim=-1).to(device)
@@ -165,14 +165,15 @@ class MaxEntIRL(torch.nn.Module):
         # 5 episodi random
         print("\n[Episodi random]")
         env = self.env
-        for i in range(5):
+        for i in [1, 500, 1000, 1500, 2000]:
             ep_obs, ep_actions = [], []
             state, _ = env.reset()
             done = False
 
             while not done:
                 state_tensor = torch.tensor(state, dtype=torch.float32)
-                action = env.action_space.sample()
+                with torch.no_grad():
+                    action = self.actor(state_tensor).squeeze(0).numpy()
                 ep_obs.append(state_tensor.numpy())
                 ep_actions.append(action)
                 next_state, _, _, truncated, _ = env.step(action)
