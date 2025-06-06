@@ -153,7 +153,7 @@ def save_trajectory_plot(trajectory, target_trajectory, episode, tag="trajectory
     plt.savefig(os.path.join(RUN_DIR, f"{tag}_ep{episode}.png"))
     plt.close()
 
-def train_ddpg(env=None, num_episodes=10001):
+def train_ddpg(env=None, num_episodes=10001, reward_net):
     if env is None:
         env = TrackingEnv()
     state_dim = 2
@@ -249,7 +249,7 @@ def train_ddpg(env=None, num_episodes=10001):
 if __name__ == "__main__":
     
     reward_net = RewardNet(input_dim=3, output_dim=1)
-    reward_net.load_state_dict(torch.load("reward_net.pth"))
+    reward_net.load_state_dict(torch.load("IL/DME_rot_reward_net.pth"))
     reward_net.eval()
 
-    trained_agent = train_ddpg()
+    trained_agent = train_ddpg(reward_net)
