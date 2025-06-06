@@ -202,7 +202,7 @@ if __name__ == "__main__":
     # Inizializza rete di reward
     reward_net = RewardNet(input_dim=3, output_dim=1)
 
-    policy_net = PolicyNet(input_dim=2, output_dim=1)
+    policy_net = PolicyNet(2, 1)
     checkpoint = torch.load("Rotazioni-dinamiche/No-noise/ddpg_mov_0.01_20250509_163508/checkpoint_ep782.pth", map_location="cpu")
     policy_net.load_state_dict(checkpoint['actor_state_dict'])
     policy_net.eval()
