@@ -87,7 +87,7 @@ class MaxEntIRL(torch.nn.Module):
         return states_tensor, actions_tensor
 
 
-    def train(self, obs_episodes, actions_episodes, epochs=10000, steps_per_episode=100):
+    def train(self, obs_episodes, actions_episodes, epochs=2000, steps_per_episode=100):
         obs_expert_all = torch.tensor(obs_episodes, dtype=torch.float32)      # (N_ep, T, obs_dim)
         actions_expert_all = torch.tensor(actions_episodes, dtype=torch.float32)  # (N_ep, T, act_dim)
 
