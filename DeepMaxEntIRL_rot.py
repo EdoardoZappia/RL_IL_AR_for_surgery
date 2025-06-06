@@ -1,6 +1,7 @@
 import torch
 import numpy as np
 from env_rot import TrackingEnv
+from ddpg_rot_dyn import PolicyNet
 
 # Carica dati
 data = np.load("trajectories/dataset_rot.npz")
@@ -29,12 +30,13 @@ class RewardNet(torch.nn.Module):
         return torch.tanh(x)
 
 class MaxEntIRL(torch.nn.Module):
-    def __init__(self, reward_net, env):
+    def __init__(self, reward_net, env, policy_net):
         super(MaxEntIRL, self).__init__()
         self.env = env
         self.reward_net = reward_net
         self.optimizer = torch.optim.Adam(self.reward_net.parameters(), lr=0.0001)
         self.batch_size = 64
+        self.actor = policy_net
 
     def compute_reward(self, obs, actions):
         inputs = torch.cat((obs, actions), dim=-1)  # Concatenate observations and actions
@@ -66,8 +68,8 @@ class MaxEntIRL(torch.nn.Module):
                 # Prepara il tensore stato
                 state_tensor = torch.tensor(state, dtype=torch.float32).unsqueeze(0)
 
-                # Azione random dalla action space
-                action = self.env.action_space.sample()
+                with torch.no_grad():
+                    action = self.actor(state_tensor).squeeze(0).numpy()
 
                 # Salva stato e azione
                 ep_states.append(state_tensor.squeeze(0).numpy())
@@ -200,8 +202,13 @@ if __name__ == "__main__":
     # Inizializza rete di reward
     reward_net = RewardNet(input_dim=3, output_dim=1)
 
+    policy_net = PolicyNet(input_dim=2, output_dim=1)
+    checkpoint = torch.load("Rotazioni-dinamiche/No-noise/ddpg_mov_0.01_20250509_163508/checkpoint_ep782.pth", map_location="cpu")
+    policy_net.load_state_dict(checkpoint['actor_state_dict'])
+    policy_net.eval()
+
     # Inizializza MaxEnt IRL
-    maxent_irl = MaxEntIRL(reward_net, env)
+    maxent_irl = MaxEntIRL(reward_net, env, policy_net)
 
     # Addestra il modello
     maxent_irl.train(obs_episodes, actions_episodes, epochs=1000, steps_per_episode=100)
