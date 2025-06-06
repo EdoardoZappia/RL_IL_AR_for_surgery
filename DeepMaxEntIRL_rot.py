@@ -18,9 +18,9 @@ actions_episodes = actions.reshape(-1, steps_per_episode, actions.shape[1])  # (
 class RewardNet(torch.nn.Module):
     def __init__(self, input_dim=3, output_dim=1):
         super(RewardNet, self).__init__()
-        self.fc1 = torch.nn.Linear(input_dim, 64)
-        self.fc2 = torch.nn.Linear(64, 64)
-        self.fc3 = torch.nn.Linear(64, output_dim)
+        self.fc1 = torch.nn.Linear(input_dim, 128)
+        self.fc2 = torch.nn.Linear(128, 128)
+        self.fc3 = torch.nn.Linear(128, output_dim)
 
     def forward(self, x):
         x = torch.relu(self.fc1(x))
@@ -33,8 +33,8 @@ class MaxEntIRL(torch.nn.Module):
         super(MaxEntIRL, self).__init__()
         self.env = env
         self.reward_net = reward_net
-        self.optimizer = torch.optim.Adam(self.reward_net.parameters(), lr=0.001)
-        self.batch_size = 32
+        self.optimizer = torch.optim.Adam(self.reward_net.parameters(), lr=0.0001)
+        self.batch_size = 64
 
     def compute_reward(self, obs, actions):
         inputs = torch.cat((obs, actions), dim=-1)  # Concatenate observations and actions
@@ -53,7 +53,7 @@ class MaxEntIRL(torch.nn.Module):
         mean_reward_expert = self.compute_mean_reward(obs_expert, actions_expert)
         return -(mean_reward_expert - mean_reward_policy)
 
-    def generate_policy_trajectory(self, batch_size=32):
+    def generate_policy_trajectory(self, batch_size=64):
         states_list = []
         actions_list = []
 
@@ -87,12 +87,11 @@ class MaxEntIRL(torch.nn.Module):
         return states_tensor, actions_tensor
 
 
-    def train(self, obs_episodes, actions_episodes, epochs=1000, steps_per_episode=100):
+    def train(self, obs_episodes, actions_episodes, epochs=10000, steps_per_episode=100):
         obs_expert_all = torch.tensor(obs_episodes, dtype=torch.float32)      # (N_ep, T, obs_dim)
         actions_expert_all = torch.tensor(actions_episodes, dtype=torch.float32)  # (N_ep, T, act_dim)
 
         for epoch in range(epochs):
-            print(f"Epoch {epoch + 1}/{epochs}")
             # 1. Campiona batch esperto
             idx = np.random.choice(obs_expert_all.shape[0], self.batch_size, replace=False)
             obs_expert = obs_expert_all[idx].reshape(-1, obs_expert_all.shape[2])
@@ -110,13 +109,34 @@ class MaxEntIRL(torch.nn.Module):
             self.optimizer.step()
 
             # 4. Logging
-            if (epoch + 1) % 50 == 0:
+            if (epoch + 1) % 10 == 0:
                 r_exp = self.compute_mean_reward(obs_expert, actions_expert).item()
                 r_pol = self.compute_mean_reward(obs_policy, actions_policy).item()
                 print(f"[Epoch {epoch+1}] Loss: {loss.item():.4f} | R_exp: {r_exp:.4f} | R_pol: {r_pol:.4f}")
             
         torch.save(self.reward_net.state_dict(), "IL/DME_rot_reward_net.pth")
         print("Rete di reward salvata in 'reward_net.pth'")
+
+        print("\n--- Valutazione reward appresa su alcuni episodi esperti ---")
+        tolerance = 0.01
+        num_val_episodes = 1
+
+        for i in range(num_val_episodes):
+            obs_ep = obs_expert_all[i]          # (steps_per_episode, obs_dim)
+            act_ep = actions_expert_all[i]      # (steps_per_episode, act_dim)
+            inputs = torch.cat([obs_ep, act_ep], dim=-1)
+
+            with torch.no_grad():
+                rewards = self.reward_net(inputs).squeeze(-1)
+                total_reward = rewards.sum().item()
+
+            theta = obs_ep[:, 0]
+            theta_target = obs_ep[:, 1]
+            attached = torch.abs(theta - theta_target) < tolerance
+            attached_count = attached.sum().item()
+
+            print(f"[Episodio {i}] Reward totale: {total_reward:.2f} | Passi attaccati (<{tolerance}): {attached_count}/100")
+
 
 
 
