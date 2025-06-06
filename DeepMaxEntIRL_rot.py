@@ -26,7 +26,7 @@ class RewardNet(torch.nn.Module):
         x = torch.relu(self.fc1(x))
         x = torch.relu(self.fc2(x))
         x = self.fc3(x)
-        return x
+        return torch.tanh(x)
 
 class MaxEntIRL(torch.nn.Module):
     def __init__(self, reward_net, env):
@@ -204,4 +204,4 @@ if __name__ == "__main__":
     maxent_irl = MaxEntIRL(reward_net, env)
 
     # Addestra il modello
-    maxent_irl.train(obs_episodes, actions_episodes, epochs=4000, steps_per_episode=100)
+    maxent_irl.train(obs_episodes, actions_episodes, epochs=1000, steps_per_episode=100)
