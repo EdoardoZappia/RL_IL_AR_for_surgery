@@ -34,7 +34,7 @@ class MaxEntIRL(torch.nn.Module):
         super(MaxEntIRL, self).__init__()
         self.env = env
         self.reward_net = reward_net
-        self.optimizer = torch.optim.Adam(self.reward_net.parameters(), lr=0.0001)
+        self.optimizer = torch.optim.Adam(self.reward_net.parameters(), lr=0.001)
         self.batch_size = 64
         self.actor = policy_net
 
@@ -119,26 +119,6 @@ class MaxEntIRL(torch.nn.Module):
         torch.save(self.reward_net.state_dict(), "IL/DME_rot_reward_net.pth")
         print("Rete di reward salvata in 'reward_net.pth'")
 
-        print("\n--- Valutazione reward appresa su alcuni episodi esperti ---")
-        tolerance = 0.01
-        num_val_episodes = 5
-
-        for i in range(num_val_episodes):
-            obs_ep = obs_expert_all[i]          # (steps_per_episode, obs_dim)
-            act_ep = actions_expert_all[i]      # (steps_per_episode, act_dim)
-            inputs = torch.cat([obs_ep, act_ep], dim=-1)
-
-            with torch.no_grad():
-                rewards = self.reward_net(inputs).squeeze(-1)
-                total_reward = rewards.sum().item()
-
-            theta_next = obs_ep[1:, 0]             # θ(t+1)
-            theta_target = obs_ep[:-1, 1]          # θ_target(t)
-            attached = torch.abs(theta_next - theta_target) < tolerance
-            attached_count = attached.sum().item()
-
-            print(f"[Episodio {i}] Reward totale: {total_reward:.2f} | Passi attaccati (<{tolerance}): {attached_count}/100")
-
         print("\n--- Valutazione reward appresa ---")
         tolerance = 0.01
         steps_per_episode = obs_expert_all.shape[1]
@@ -146,7 +126,7 @@ class MaxEntIRL(torch.nn.Module):
 
         # 5 episodi esperti
         print("\n[Episodi esperti]")
-        for i in [1, 500, 1000, 1500, 2000]:
+        for i in [1, 200, 400, 600, 800, 1000]:
             obs_ep = obs_expert_all[i]
             act_ep = actions_expert_all[i]
             inputs = torch.cat([obs_ep, act_ep], dim=-1).to(device)
@@ -165,7 +145,7 @@ class MaxEntIRL(torch.nn.Module):
         # 5 episodi random
         print("\n[Episodi random]")
         env = self.env
-        for i in [1, 500, 1000, 1500, 2000]:
+        for i in [1, 200, 400, 600, 800, 1000]:
             ep_obs, ep_actions = [], []
             state, _ = env.reset()
             done = False
@@ -212,4 +192,4 @@ if __name__ == "__main__":
     maxent_irl = MaxEntIRL(reward_net, env, policy_net)
 
     # Addestra il modello
-    maxent_irl.train(obs_episodes, actions_episodes, epochs=1000, steps_per_episode=100)
+    maxent_irl.train(obs_episodes, actions_episodes, epochs=2000, steps_per_episode=100)
