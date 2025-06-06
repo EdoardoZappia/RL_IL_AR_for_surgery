@@ -119,7 +119,7 @@ class MaxEntIRL(torch.nn.Module):
 
         print("\n--- Valutazione reward appresa su alcuni episodi esperti ---")
         tolerance = 0.01
-        num_val_episodes = 1
+        num_val_episodes = 5
 
         for i in range(num_val_episodes):
             obs_ep = obs_expert_all[i]          # (steps_per_episode, obs_dim)
@@ -130,9 +130,9 @@ class MaxEntIRL(torch.nn.Module):
                 rewards = self.reward_net(inputs).squeeze(-1)
                 total_reward = rewards.sum().item()
 
-            theta = obs_ep[:, 0]
-            theta_target = obs_ep[:, 1]
-            attached = torch.abs(theta - theta_target) < tolerance
+            theta_next = obs_ep[1:, 0]             # θ(t+1)
+            theta_target = obs_ep[:-1, 1]          # θ_target(t)
+            attached = torch.abs(theta_next - theta_target) < tolerance
             attached_count = attached.sum().item()
 
             print(f"[Episodio {i}] Reward totale: {total_reward:.2f} | Passi attaccati (<{tolerance}): {attached_count}/100")
