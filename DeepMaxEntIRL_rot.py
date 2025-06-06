@@ -137,7 +137,60 @@ class MaxEntIRL(torch.nn.Module):
 
             print(f"[Episodio {i}] Reward totale: {total_reward:.2f} | Passi attaccati (<{tolerance}): {attached_count}/100")
 
+        print("\n--- Valutazione reward appresa ---")
+        tolerance = 0.01
+        steps_per_episode = obs_expert_all.shape[1]
+        device = next(self.reward_net.parameters()).device
 
+        # 5 episodi esperti
+        print("\n[Episodi esperti]")
+        for i in range(5):
+            obs_ep = obs_expert_all[i]
+            act_ep = actions_expert_all[i]
+            inputs = torch.cat([obs_ep, act_ep], dim=-1).to(device)
+
+            with torch.no_grad():
+                rewards = self.reward_net(inputs).squeeze(-1)
+                total_reward = rewards.sum().item()
+
+            theta_next = obs_ep[1:, 0]
+            theta_target = obs_ep[:-1, 1]
+            attached = torch.abs(theta_next - theta_target) < tolerance
+            attached_count = attached.sum().item()
+
+            print(f"[Esperto {i}] Reward totale: {total_reward:.2f} | Attaccato: {attached_count}/{steps_per_episode - 1}")
+
+        # 5 episodi random
+        print("\n[Episodi random]")
+        env = self.env
+        for i in range(5):
+            ep_obs, ep_actions = [], []
+            state, _ = env.reset()
+            done = False
+
+            while not done:
+                state_tensor = torch.tensor(state, dtype=torch.float32)
+                action = env.action_space.sample()
+                ep_obs.append(state_tensor.numpy())
+                ep_actions.append(action)
+                next_state, _, _, truncated, _ = env.step(action)
+                done = truncated
+                state = next_state
+
+            obs_ep = torch.tensor(np.array(ep_obs), dtype=torch.float32)
+            act_ep = torch.tensor(np.array(ep_actions), dtype=torch.float32)
+
+            inputs = torch.cat([obs_ep, act_ep], dim=-1).to(device)
+            with torch.no_grad():
+                rewards = self.reward_net(inputs).squeeze(-1)
+                total_reward = rewards.sum().item()
+
+            theta_next = obs_ep[1:, 0]
+            theta_target = obs_ep[:-1, 1]
+            attached = torch.abs(theta_next - theta_target) < tolerance
+            attached_count = attached.sum().item()
+
+            print(f"[Random {i}] Reward totale: {total_reward:.2f} | Attaccato: {attached_count}/{len(theta_target)}")
 
 
 if __name__ == "__main__":
@@ -151,4 +204,4 @@ if __name__ == "__main__":
     maxent_irl = MaxEntIRL(reward_net, env)
 
     # Addestra il modello
-    maxent_irl.train(obs_episodes, actions_episodes, epochs=2000, steps_per_episode=100)
+    maxent_irl.train(obs_episodes, actions_episodes, epochs=1000, steps_per_episode=100)
