@@ -125,6 +125,9 @@ for iter in range(1000):
             r_exps.append(r_exp)
             r_pols.append(r_pol)
 
+    print("ultima loss", loss)
+    print("ultimo rew esperto", r_exp)
+    print("ultimo rew policy", r_pol)
     print(f"Loss reward (iter {iter}): {np.mean(losses):.4f}")
     print(f"Reward medio esperto: {np.mean(r_exps):.4f}")
     print(f"Reward medio policy: {np.mean(r_pols):.4f}")
