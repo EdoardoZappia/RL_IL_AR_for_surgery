@@ -115,3 +115,7 @@ class TrackingEnv(gym.Env):
         self.step_counter = state["step_counter"]
         if state["target_center"] is not None:
             self.target_center = state["target_center"].copy()
+
+    def make_env():
+        return TrackingEnv()
+
