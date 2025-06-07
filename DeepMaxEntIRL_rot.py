@@ -146,7 +146,8 @@ class MaxEntIRL(torch.nn.Module):
                 print(f"[Epoch {epoch+1}] Loss: {loss.item():.4f} | R_exp: {r_exp:.4f} | R_pol: {r_pol:.4f}")
             
             if epoch % 100 == 0:
-                agent = train_ddpg(self.reward_net, num_episodes=200, checkpoint_path="IL/checkpoint_DME_DDPG.pth")
+                torch.save(self.reward_net.state_dict(), "IL/DME_rot_reward_net.pth")
+                agent = train_ddpg(num_episodes=200, checkpoint_path="IL/checkpoint_DME_DDPG.pth")
             
         torch.save(self.reward_net.state_dict(), "IL/DME_rot_reward_net.pth")
         print("Rete di reward salvata in 'reward_net.pth'")
