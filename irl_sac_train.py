@@ -119,3 +119,4 @@ for iter in range(1000):
 
 # Salva il reward appreso
 torch.save(reward_net.state_dict(), "IL/DME_SAC/reward_network.pt")
+print("Rete salvata")
