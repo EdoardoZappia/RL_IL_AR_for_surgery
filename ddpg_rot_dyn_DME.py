@@ -38,7 +38,7 @@ class RewardNet(torch.nn.Module):
         x = torch.relu(self.fc1(x))
         x = torch.relu(self.fc2(x))
         x = self.fc3(x)
-        return x
+        return torch.tanh(x)
 
 class PolicyNet(nn.Module):
     def __init__(self, state_dim, action_dim):
@@ -206,6 +206,9 @@ def train_ddpg(env=None, num_episodes=10001, checkpoint_path="IL/DME/Rotazioni-d
     else:
         reward_history, success_history = [], []
 
+    agent.reward_net.load_state_dict(torch.load("IL/DME_rot_reward_net.pth"))
+    agent.reward_net.eval()
+
     #reward_history, success_history = [], []
     counter = 0
     tolerance = 0.01
@@ -218,6 +221,8 @@ def train_ddpg(env=None, num_episodes=10001, checkpoint_path="IL/DME/Rotazioni-d
         real_state = torch.tensor(state, dtype=torch.float32)
         state = torch.tensor(state, dtype=torch.float32)
 
+        states = []
+
         #state = state.clone()
         #state[1:] += torch.normal(mean=0.0, std=0.001, size=(1,), device=state.device)
 
@@ -227,6 +232,7 @@ def train_ddpg(env=None, num_episodes=10001, checkpoint_path="IL/DME/Rotazioni-d
         total_attached_counter = 0
 
         while not done:
+            states.append(state.numpy())
             trajectory.append(state[0].detach().numpy())
             target_trajectory.append(state[1].detach().numpy())
             action = agent.actor(state).detach().numpy()
@@ -251,8 +257,6 @@ def train_ddpg(env=None, num_episodes=10001, checkpoint_path="IL/DME/Rotazioni-d
                 attached_counter = 0
 
             with torch.no_grad():
-                agent.reward_net.load_state_dict(torch.load("IL/DME_rot_reward_net.pth"))
-                agent.reward_net.eval()
                 input_tensor = torch.cat([state, action_tensor], dim=-1)
                 reward = agent.reward_net(input_tensor).item()
                 ep_reward.append(reward)
@@ -277,9 +281,11 @@ def train_ddpg(env=None, num_episodes=10001, checkpoint_path="IL/DME/Rotazioni-d
             success_history.append(0)
 
         reward_history.append(total_reward)
+        states = torch.tensor(np.array(states), dtype=torch.float32)
+        mean_state = states.mean(dim=0).numpy()
 
         if (episode+1) % 10 == 0:
-            print(f"Episode {episode}, Reward: {np.mean(ep_reward):.2f}, Attached_counter: {attached_counter}, Total attached counter: {total_attached_counter}, Successes: {counter}")
+            print(f"Episode {episode}, Reward: {mean_state:.2f}, Attached_counter: {attached_counter}, Total attached counter: {total_attached_counter}, Successes: {counter}")
         if (episode+1) % CHECKPOINT_INTERVAL == 0 and episode > 0:
             save_checkpoint(agent, episode)
             save_checkpoint_agent(agent, reward_history, success_history)

@@ -28,7 +28,7 @@ class RewardNet(torch.nn.Module):
         x = torch.relu(self.fc1(x))
         x = torch.relu(self.fc2(x))
         x = self.fc3(x)
-        return x
+        return torch.tanh(x)
 
 class MaxEntIRL(torch.nn.Module):
     def __init__(self, reward_net, env, agent):
@@ -40,7 +40,7 @@ class MaxEntIRL(torch.nn.Module):
         self.agent = agent
 
     def compute_reward(self, obs, actions):
-        inputs = torch.cat((obs, actions), dim=-1)  # Concatenate observations and actions
+        inputs = torch.cat((obs, actions), dim=-1)
         return self.reward_net(inputs)
 
     def compute_mean_reward(self, obs, actions):
@@ -167,6 +167,9 @@ class MaxEntIRL(torch.nn.Module):
 
             obs_ep = torch.tensor(np.array(ep_obs), dtype=torch.float32)
             act_ep = torch.tensor(np.array(ep_actions), dtype=torch.float32)
+
+            mean_state = obs_ep.mean(dim=0).numpy()
+            print("media stati: ", mean_state)
 
             inputs = torch.cat([obs_ep, act_ep], dim=-1).to(device)
             with torch.no_grad():
