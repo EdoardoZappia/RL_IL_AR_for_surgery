@@ -257,8 +257,8 @@ def train_ddpg(env=None, num_episodes=10001, checkpoint_path="IL/DME/Rotazioni-d
                 attached_counter = 0
 
             with torch.no_grad():
-                input_tensor = torch.cat([state, action_tensor], dim=-1)
-                reward = agent.reward_net(input_tensor).item()
+                input_tensor = torch.cat([state, action_tensor], dim=-1).unsqueeze(0)
+                reward = agent.reward_net(input_tensor).squeeze().item()
                 ep_reward.append(reward)
 
             if attached_counter > 20 or truncated or (total_attached_counter > 0 and torch.norm(real_next_state[0] - real_state[1]) > tolerance):
