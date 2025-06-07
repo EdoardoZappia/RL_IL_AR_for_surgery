@@ -89,34 +89,6 @@ class MaxEntIRL(torch.nn.Module):
 
         return states_tensor, actions_tensor
 
-    def save_checkpoint(agent, reward_history, success_history):
-        path = os.path.join(RUN_DIR, f"checkpoint_ep{episode}.pth")
-        torch.save({
-            'actor_state_dict': agent.actor.state_dict(),
-            'critic_state_dict': agent.critic.state_dict(),
-            'actor_target_state_dict': agent.actor_target.state_dict(),
-            'critic_target_state_dict': agent.critic_target.state_dict(),
-            'optimizer_actor_state_dict': agent.optimizer_actor.state_dict(),
-            'optimizer_critic_state_dict': agent.optimizer_critic.state_dict(),
-            'replay_buffer': agent.buffer,
-            'reward_history': reward_history,
-            'success_history': success_history,
-            'noise_std': agent.noise_std,
-        }, path)
-
-    def load_checkpoint(path, agent):
-        checkpoint = torch.load(path)
-        agent.actor.load_state_dict(checkpoint['actor_state_dict'])
-        agent.critic.load_state_dict(checkpoint['critic_state_dict'])
-        agent.actor_target.load_state_dict(checkpoint['actor_target_state_dict'])
-        agent.critic_target.load_state_dict(checkpoint['critic_target_state_dict'])
-        agent.optimizer_actor.load_state_dict(checkpoint['optimizer_actor_state_dict'])
-        agent.optimizer_critic.load_state_dict(checkpoint['optimizer_critic_state_dict'])
-        agent.buffer = checkpoint['replay_buffer']
-        agent.noise_std = checkpoint['noise_std']
-        return checkpoint['reward_history'], checkpoint['success_history']
-
-
 
     def train(self, obs_episodes, actions_episodes, epochs=2000, steps_per_episode=100):
         obs_expert_all = torch.tensor(obs_episodes, dtype=torch.float32)      # (N_ep, T, obs_dim)
@@ -147,7 +119,7 @@ class MaxEntIRL(torch.nn.Module):
             
             if (epoch+1) % 100 == 0:
                 torch.save(self.reward_net.state_dict(), "IL/DME_rot_reward_net.pth")
-                agent = train_ddpg(num_episodes=200, checkpoint_path="IL/checkpoint_DME_DDPG.pth")
+                agent = train_ddpg(num_episodes=200)
             
         torch.save(self.reward_net.state_dict(), "IL/DME_rot_reward_net.pth")
         print("Rete di reward salvata in 'reward_net.pth'")

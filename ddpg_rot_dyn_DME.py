@@ -23,8 +23,8 @@ TAU = 0.005
 EARLY_STOPPING_EPISODES = 50
 CHECKPOINT_INTERVAL = 200
 
-now = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-RUN_DIR = f"IL/DME/Rotazioni-dinamiche/No-noise/ddpg_mov_0.01_{now}"
+#now = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+RUN_DIR = f"IL/DME/Rotazioni-dinamiche/No-noise/ddpg_mov_0.01_"
 os.makedirs(RUN_DIR, exist_ok=True)
 
 class RewardNet(torch.nn.Module):
@@ -166,7 +166,34 @@ def save_trajectory_plot(trajectory, target_trajectory, episode, tag="trajectory
     plt.savefig(os.path.join(RUN_DIR, f"{tag}_ep{episode}.png"))
     plt.close()
 
-def train_ddpg(env=None, num_episodes=10001, checkpoint_path=None):
+def save_checkpoint_agent(agent, reward_history, success_history):
+    path = os.path.join(RUN_DIR, f"checkpoint_ep.pth")
+    torch.save({
+        'actor_state_dict': agent.actor.state_dict(),
+        'critic_state_dict': agent.critic.state_dict(),
+        'actor_target_state_dict': agent.actor_target.state_dict(),
+        'critic_target_state_dict': agent.critic_target.state_dict(),
+        'optimizer_actor_state_dict': agent.optimizer_actor.state_dict(),
+        'optimizer_critic_state_dict': agent.optimizer_critic.state_dict(),
+        'replay_buffer': agent.buffer,
+        'reward_history': reward_history,
+        'success_history': success_history,
+        'noise_std': agent.noise_std,
+    }, path)
+
+def load_checkpoint(path, agent):
+    checkpoint = torch.load(path)
+    agent.actor.load_state_dict(checkpoint['actor_state_dict'])
+    agent.critic.load_state_dict(checkpoint['critic_state_dict'])
+    agent.actor_target.load_state_dict(checkpoint['actor_target_state_dict'])
+    agent.critic_target.load_state_dict(checkpoint['critic_target_state_dict'])
+    agent.optimizer_actor.load_state_dict(checkpoint['optimizer_actor_state_dict'])
+    agent.optimizer_critic.load_state_dict(checkpoint['optimizer_critic_state_dict'])
+    agent.buffer = checkpoint['replay_buffer']
+    agent.noise_std = checkpoint['noise_std']
+    return checkpoint['reward_history'], checkpoint['success_history']
+
+def train_ddpg(env=None, num_episodes=10001, checkpoint_path="IL/DME/Rotazioni-dinamiche/No-noise/ddpg_mov_0.01_/checkpoint_ep.pth"):
     if env is None:
         env = TrackingEnv()
     state_dim = 2
@@ -250,10 +277,11 @@ def train_ddpg(env=None, num_episodes=10001, checkpoint_path=None):
 
         reward_history.append(total_reward)
 
-        if episode % 10 == 0:
+        if (episode+1) % 10 == 0:
             print(f"Episode {episode}, Reward: {np.mean(ep_reward):.2f}, Attached_counter: {attached_counter}, Total attached counter: {total_attached_counter}, Successes: {counter}")
-        if episode % CHECKPOINT_INTERVAL == 0 and episode > 0:
+        if (episode+1) % CHECKPOINT_INTERVAL == 0 and episode > 0:
             save_checkpoint(agent, episode)
+            save_checkpoint_agent(agent, reward_history, success_history)
         if episode % 50 == 0 and episode > 0:
             save_trajectory_plot(trajectory, target_trajectory, episode)
 
