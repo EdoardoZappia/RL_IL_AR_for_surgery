@@ -117,7 +117,7 @@ class MaxEntIRL(torch.nn.Module):
                 r_pol = self.compute_mean_reward(obs_policy, actions_policy).item()
                 print(f"[Epoch {epoch+1}] Loss: {loss.item():.4f} | R_exp: {r_exp:.4f} | R_pol: {r_pol:.4f}")
             
-            if (epoch+1) % 1 == 0:
+            if (epoch+1) % 100 == 0:
                 torch.save(self.reward_net.state_dict(), "IL/DME_rot_reward_net.pth")
                 agent = train_ddpg(num_episodes=200)
             
@@ -194,4 +194,4 @@ if __name__ == "__main__":
     maxent_irl = MaxEntIRL(reward_net, env, agent)
 
     # Addestra il modello
-    maxent_irl.train(obs_episodes, actions_episodes, epochs=1, steps_per_episode=100)
+    maxent_irl.train(obs_episodes, actions_episodes, epochs=2000, steps_per_episode=100)
