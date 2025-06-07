@@ -79,14 +79,14 @@ agent = SAC("MlpPolicy", wrapped_env, verbose=1)
 # Ciclo IRL
 for iter in range(10):
     print(f"=== Iterazione IRL {iter} ===")
-    agent.learn(total_timesteps=10000)
+    agent.learn(total_timesteps=1000)
 
     # Raccogli dati policy
     policy_obs, policy_act = [], []
-    obs = env.reset()
+    obs, _ = env.reset()
     for _ in range(1000):
-        act, _ = agent.predict(obs, deterministic=True)
-        new_obs, _, done, _, _ = env.step(act)
+        act, _ = agent.predict(obs.reshape(1, -1), deterministic=True)
+        new_obs, _, done, _, _ = env.step(act[0])
         policy_obs.append(obs)
         policy_act.append(act)
         obs = new_obs if not done else env.reset()
