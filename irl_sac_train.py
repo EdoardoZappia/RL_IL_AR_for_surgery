@@ -113,10 +113,14 @@ for iter in range(1000):
     # 2. Allenamento multiplo della reward
     for _ in range(50):
         for i in chosen_eps:
-            idx = i * 100
-            expert_obs = observations[idx:idx+100]
-            expert_act = actions[idx:idx+100]
-            loss, r_exp, r_pol= train_reward_net(reward_net, expert_obs, expert_act, policy_obs, policy_act, optimizer)
+            idx = i * episode_en
+            expert_obs = observations[idx:idx+episode_len]
+            expert_act = actions[idx:idx+episode_len]
+            # Sottocampiona anche la policy per matchare l'esperto
+            pol_idx = np.random.choice(len(policy_obs), size=episode_len, replace=False)
+            policy_obs_batch = policy_obs[pol_idx]
+            policy_act_batch = policy_act[pol_idx]
+            loss, r_exp, r_pol= train_reward_net(reward_net, expert_obs, expert_act, policy_obs_batch, policy_act_batch, optimizer)
             losses.append(loss)
             r_exps.append(r_exp)
             r_pols.append(r_pol)
