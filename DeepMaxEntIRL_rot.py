@@ -139,13 +139,14 @@ class MaxEntIRL(torch.nn.Module):
             with torch.no_grad():
                 rewards = self.reward_net(inputs).squeeze(-1)
                 total_reward = rewards.sum().item()
+                mean_reward = rewards.mean(dim=0).numpy()
 
             theta_next = obs_ep[1:, 0]
             theta_target = obs_ep[:-1, 1]
             attached = torch.abs(theta_next - theta_target) < tolerance
             attached_count = attached.sum().item()
 
-            print(f"[Esperto {i}] Reward totale: {total_reward:.2f} | Attaccato: {attached_count}/{steps_per_episode - 1}")
+            print(f"[Esperto {i}] Reward totale: {total_reward:.2f} | Reward medio: {mean_reward}| Attaccato: {attached_count}/{steps_per_episode - 1}")
 
         # 5 episodi random
         print("\n[Episodi random]")
@@ -175,13 +176,14 @@ class MaxEntIRL(torch.nn.Module):
             with torch.no_grad():
                 rewards = self.reward_net(inputs).squeeze(-1)
                 total_reward = rewards.sum().item()
+                mean_reward = rewards.mean(dim=0).numpy()
 
             theta_next = obs_ep[1:, 0]
             theta_target = obs_ep[:-1, 1]
             attached = torch.abs(theta_next - theta_target) < tolerance
             attached_count = attached.sum().item()
 
-            print(f"[Random {i}] Reward totale: {total_reward:.2f} | Attaccato: {attached_count}/{len(theta_target)}")
+            print(f"[Random {i}] Reward totale: {total_reward:.2f} | Reward medio: {mean_reward} | Attaccato: {attached_count}/{len(theta_target)}")
 
 
 if __name__ == "__main__":
