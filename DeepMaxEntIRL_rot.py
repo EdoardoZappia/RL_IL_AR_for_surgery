@@ -1,7 +1,7 @@
 import torch
 import numpy as np
 from env_rot import TrackingEnv
-from ddpg_rot_dyn_DME import DDPGAgent
+from ddpg_rot_dyn_DME import DDPGAgent, train_ddpg
 import ddpg_rot_dyn_DME
 
 # Carica dati
