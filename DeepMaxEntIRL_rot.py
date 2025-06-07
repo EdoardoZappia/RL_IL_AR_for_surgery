@@ -123,7 +123,6 @@ class MaxEntIRL(torch.nn.Module):
         actions_expert_all = torch.tensor(actions_episodes, dtype=torch.float32)  # (N_ep, T, act_dim)
 
         for epoch in range(epochs):
-            print(epoch)
             # 1. Campiona batch esperto
             idx = np.random.choice(obs_expert_all.shape[0], self.batch_size, replace=False)
             obs_expert = obs_expert_all[idx].reshape(-1, obs_expert_all.shape[2])
