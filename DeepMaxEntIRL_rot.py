@@ -197,4 +197,4 @@ if __name__ == "__main__":
     maxent_irl = MaxEntIRL(reward_net, env, agent)
 
     # Addestra il modello
-    maxent_irl.train(obs_episodes, actions_episodes, epochs=2000, steps_per_episode=100)
+    maxent_irl.train(obs_episodes, actions_episodes, epochs=10, steps_per_episode=100)
