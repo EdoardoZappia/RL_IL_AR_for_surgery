@@ -13,7 +13,7 @@ from env_rot import make_env
 os.makedirs("IL/DME_SAC", exist_ok=True)
 
 # Carica il dataset esperto
-data = np.load("dataset_rot.npz")
+data = np.load("trajectories/dataset_rot.npz")
 observations = data["observations"]
 actions = data["actions"]
 
@@ -99,7 +99,7 @@ for iter in range(1000):
         obs = new_obs
         if truncated:  # Episodio finito
             obs, _ = env.reset()
-            
+
     policy_obs = np.array(policy_obs).squeeze()
     policy_act = np.array(policy_act).squeeze()
 
@@ -115,7 +115,7 @@ for iter in range(1000):
     # 3. Aggiorna la policy ogni 5 iterazioni
     if iter % 5 == 0:
         print(">>> Aggiorno la policy con SAC")
-        agent.learn(total_timesteps=10000)
+        agent.learn(total_timesteps=1000)
 
 # Salva il reward appreso
 torch.save(reward_net.state_dict(), "IL/DME_SAC/reward_network.pt")
