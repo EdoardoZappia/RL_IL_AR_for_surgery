@@ -1,7 +1,8 @@
 import torch
 import numpy as np
 from env_rot import TrackingEnv
-from ddpg_rot_dyn import PolicyNet
+from ddpg_rot_dyn_DME import DDPGAgent
+import ddpg_rot_dyn_DME
 
 # Carica dati
 data = np.load("trajectories/dataset_rot.npz")
@@ -30,13 +31,13 @@ class RewardNet(torch.nn.Module):
         return x
 
 class MaxEntIRL(torch.nn.Module):
-    def __init__(self, reward_net, env, policy_net):
+    def __init__(self, reward_net, env, agent):
         super(MaxEntIRL, self).__init__()
         self.env = env
         self.reward_net = reward_net
         self.optimizer = torch.optim.Adam(self.reward_net.parameters(), lr=0.001)
         self.batch_size = 64
-        self.actor = policy_net
+        self.agent = agent
 
     def compute_reward(self, obs, actions):
         inputs = torch.cat((obs, actions), dim=-1)  # Concatenate observations and actions
@@ -69,7 +70,7 @@ class MaxEntIRL(torch.nn.Module):
                 state_tensor = torch.tensor(state, dtype=torch.float32).unsqueeze(0)
 
                 with torch.no_grad():
-                    action = self.actor(state_tensor).squeeze(0).numpy()
+                    action = self.agent.actor(state_tensor).squeeze(0).numpy()
 
                 # Salva stato e azione
                 ep_states.append(state_tensor.squeeze(0).numpy())
@@ -87,6 +88,34 @@ class MaxEntIRL(torch.nn.Module):
         actions_tensor = torch.tensor(np.array(actions_list), dtype=torch.float32)
 
         return states_tensor, actions_tensor
+
+    def save_checkpoint(agent, reward_history, success_history):
+        path = os.path.join(RUN_DIR, f"checkpoint_ep{episode}.pth")
+        torch.save({
+            'actor_state_dict': agent.actor.state_dict(),
+            'critic_state_dict': agent.critic.state_dict(),
+            'actor_target_state_dict': agent.actor_target.state_dict(),
+            'critic_target_state_dict': agent.critic_target.state_dict(),
+            'optimizer_actor_state_dict': agent.optimizer_actor.state_dict(),
+            'optimizer_critic_state_dict': agent.optimizer_critic.state_dict(),
+            'replay_buffer': agent.buffer,
+            'reward_history': reward_history,
+            'success_history': success_history,
+            'noise_std': agent.noise_std,
+        }, path)
+
+    def load_checkpoint(path, agent):
+        checkpoint = torch.load(path)
+        agent.actor.load_state_dict(checkpoint['actor_state_dict'])
+        agent.critic.load_state_dict(checkpoint['critic_state_dict'])
+        agent.actor_target.load_state_dict(checkpoint['actor_target_state_dict'])
+        agent.critic_target.load_state_dict(checkpoint['critic_target_state_dict'])
+        agent.optimizer_actor.load_state_dict(checkpoint['optimizer_actor_state_dict'])
+        agent.optimizer_critic.load_state_dict(checkpoint['optimizer_critic_state_dict'])
+        agent.buffer = checkpoint['replay_buffer']
+        agent.noise_std = checkpoint['noise_std']
+        return checkpoint['reward_history'], checkpoint['success_history']
+
 
 
     def train(self, obs_episodes, actions_episodes, epochs=2000, steps_per_episode=100):
@@ -115,6 +144,9 @@ class MaxEntIRL(torch.nn.Module):
                 r_exp = self.compute_mean_reward(obs_expert, actions_expert).item()
                 r_pol = self.compute_mean_reward(obs_policy, actions_policy).item()
                 print(f"[Epoch {epoch+1}] Loss: {loss.item():.4f} | R_exp: {r_exp:.4f} | R_pol: {r_pol:.4f}")
+            
+            if epoch % 100 == 0:
+                agent = train_ddpg(self.reward_net, num_episodes=200, checkpoint_path="IL/checkpoint_DME_DDPG.pth")
             
         torch.save(self.reward_net.state_dict(), "IL/DME_rot_reward_net.pth")
         print("Rete di reward salvata in 'reward_net.pth'")
@@ -151,9 +183,9 @@ class MaxEntIRL(torch.nn.Module):
             done = False
 
             while not done:
-                state_tensor = torch.tensor(state, dtype=torch.float32)
+                state_tensor = torch.tensor(state, dtype=torch.float32).unsqueeze(0)
                 with torch.no_grad():
-                    action = self.actor(state_tensor).squeeze(0).numpy()
+                    action = self.agent.actor(state_tensor).squeeze(0).numpy()
                 ep_obs.append(state_tensor.numpy())
                 ep_actions.append(action)
                 next_state, _, _, truncated, _ = env.step(action)
@@ -183,10 +215,7 @@ if __name__ == "__main__":
     # Inizializza rete di reward
     reward_net = RewardNet(input_dim=3, output_dim=1)
 
-    policy_net = PolicyNet(2, 1)
-    checkpoint = torch.load("Rotazioni-dinamiche/No-noise/ddpg_mov_0.01_20250509_163508/checkpoint_ep782.pth", map_location="cpu")
-    policy_net.load_state_dict(checkpoint['actor_state_dict'])
-    policy_net.eval()
+    agent = DDPGAgent(2, 1)
 
     # Inizializza MaxEnt IRL
     maxent_irl = MaxEntIRL(reward_net, env, policy_net)
