@@ -10,7 +10,6 @@ from env_rot import TrackingEnv
 import random
 from collections import deque
 import datetime
-from DeepMaxEntIRL_rot import RewardNet
 
 SEED = 42
 torch.manual_seed(SEED)
@@ -27,6 +26,19 @@ CHECKPOINT_INTERVAL = 200
 now = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
 RUN_DIR = f"IL/DME/Rotazioni-dinamiche/No-noise/ddpg_mov_0.01{now}"
 os.makedirs(RUN_DIR, exist_ok=True)
+
+class RewardNet(torch.nn.Module):
+    def __init__(self, input_dim=3, output_dim=1):
+        super(RewardNet, self).__init__()
+        self.fc1 = torch.nn.Linear(input_dim, 128)
+        self.fc2 = torch.nn.Linear(128, 128)
+        self.fc3 = torch.nn.Linear(128, output_dim)
+
+    def forward(self, x):
+        x = torch.relu(self.fc1(x))
+        x = torch.relu(self.fc2(x))
+        x = self.fc3(x)
+        return x
 
 class PolicyNet(nn.Module):
     def __init__(self, state_dim, action_dim):
@@ -78,7 +90,8 @@ class DDPGAgent(nn.Module):
         self.critic_target = QNet(state_dim, action_dim)
         self.optimizer_actor = optim.Adam(self.actor.parameters(), lr=LR_ACTOR)
         self.optimizer_critic = optim.Adam(self.critic.parameters(), lr=LR_CRITIC)
-        self.buffer = ReplayBuffer(50000) 
+        self.buffer = ReplayBuffer(50000)
+        self.reward_net = RewardNet(input_dim=3, output_dim=1)
         #self.buffer = ReplayBuffer(20000)
         self.batch_size = 128
         self.noise_std = 0.5
@@ -153,7 +166,7 @@ def save_trajectory_plot(trajectory, target_trajectory, episode, tag="trajectory
     plt.savefig(os.path.join(RUN_DIR, f"{tag}_ep{episode}.png"))
     plt.close()
 
-def train_ddpg(reward_net, env=None, num_episodes=10001, checkpoint_path=None):
+def train_ddpg(env=None, num_episodes=10001, checkpoint_path=None):
     if env is None:
         env = TrackingEnv()
     state_dim = 2
@@ -209,6 +222,8 @@ def train_ddpg(reward_net, env=None, num_episodes=10001, checkpoint_path=None):
                 attached_counter = 0
 
             with torch.no_grad():
+                agent.reward_net.load_state_dict(torch.load("IL/DME_rot_reward_net.pth"))
+                agent.reward_net.eval()
                 input_tensor = torch.cat([state, action_tensor], dim=-1)
                 reward = reward_net(input_tensor).item()
 
