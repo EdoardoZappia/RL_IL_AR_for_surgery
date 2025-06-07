@@ -285,7 +285,7 @@ def train_ddpg(env=None, num_episodes=10001, checkpoint_path="IL/DME/Rotazioni-d
         mean_state = states.mean(dim=0).numpy()
 
         if (episode+1) % 10 == 0:
-            print(f"Episode {episode}, Reward: {mean_state:.2f}, Attached_counter: {attached_counter}, Total attached counter: {total_attached_counter}, Successes: {counter}")
+            print(f"Episode {episode}, Reward: {mean_state}, Attached_counter: {attached_counter}, Total attached counter: {total_attached_counter}, Successes: {counter}")
         if (episode+1) % CHECKPOINT_INTERVAL == 0 and episode > 0:
             save_checkpoint(agent, episode)
             save_checkpoint_agent(agent, reward_history, success_history)
