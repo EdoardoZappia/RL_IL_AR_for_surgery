@@ -24,7 +24,7 @@ EARLY_STOPPING_EPISODES = 50
 CHECKPOINT_INTERVAL = 200
 
 now = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-RUN_DIR = f"IL/DME/Rotazioni-dinamiche/No-noise/ddpg_mov_0.01{now}"
+RUN_DIR = f"IL/DME/Rotazioni-dinamiche/No-noise/ddpg_mov_0.01_{now}"
 os.makedirs(RUN_DIR, exist_ok=True)
 
 class RewardNet(torch.nn.Module):
