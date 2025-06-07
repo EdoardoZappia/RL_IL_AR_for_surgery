@@ -112,14 +112,14 @@ class MaxEntIRL(torch.nn.Module):
             self.optimizer.step()
 
             # 4. Logging
-            if (epoch + 1) % 10 == 0:
+            if (epoch + 1) % 1 == 0:
                 r_exp = self.compute_mean_reward(obs_expert, actions_expert).item()
                 r_pol = self.compute_mean_reward(obs_policy, actions_policy).item()
                 print(f"[Epoch {epoch+1}] Loss: {loss.item():.4f} | R_exp: {r_exp:.4f} | R_pol: {r_pol:.4f}")
             
-            if (epoch+1) % 100 == 0:
+            if (epoch+1) % 1 == 0:
                 torch.save(self.reward_net.state_dict(), "IL/DME_rot_reward_net.pth")
-                agent = train_ddpg(num_episodes=200)
+                agent = train_ddpg(num_episodes=10)
             
         torch.save(self.reward_net.state_dict(), "IL/DME_rot_reward_net.pth")
         print("Rete di reward salvata in 'reward_net.pth'")
