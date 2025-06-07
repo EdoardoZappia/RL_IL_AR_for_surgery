@@ -3,7 +3,7 @@ import torch.nn as nn
 import torch.optim as optim
 import numpy as np
 import os
-import gym
+import gymnasium as gym
 from stable_baselines3 import SAC
 from stable_baselines3.common.vec_env import DummyVecEnv
 
