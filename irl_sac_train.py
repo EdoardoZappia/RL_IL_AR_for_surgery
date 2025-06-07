@@ -113,7 +113,7 @@ for iter in range(1000):
     # 2. Allenamento multiplo della reward
     for _ in range(50):
         for i in chosen_eps:
-            idx = i * episode_en
+            idx = i * episode_len
             expert_obs = observations[idx:idx+episode_len]
             expert_act = actions[idx:idx+episode_len]
             # Sottocampiona anche la policy per matchare l'esperto
