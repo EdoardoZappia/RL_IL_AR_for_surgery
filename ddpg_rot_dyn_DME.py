@@ -201,6 +201,7 @@ def train_ddpg(env=None, num_episodes=10001, checkpoint_path="IL/DME/Rotazioni-d
     agent = DDPGAgent(state_dim, action_dim)
 
     if checkpoint_path is not None and os.path.exists(checkpoint_path):
+        print("Caricato")
         reward_history, success_history = load_checkpoint(checkpoint_path, agent)
     else:
         reward_history, success_history = [], []
