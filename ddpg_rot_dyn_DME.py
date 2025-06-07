@@ -183,6 +183,7 @@ def train_ddpg(env=None, num_episodes=10001, checkpoint_path=None):
     tolerance = 0.01
 
     for episode in range(num_episodes):
+        ep_reward = []
         state, _ = env.reset()
         done = False
         total_reward = 0
@@ -226,6 +227,7 @@ def train_ddpg(env=None, num_episodes=10001, checkpoint_path=None):
                 agent.reward_net.eval()
                 input_tensor = torch.cat([state, action_tensor], dim=-1)
                 reward = agent.reward_net(input_tensor).item()
+                ep_reward.append(reward)
 
             if attached_counter > 20 or truncated or (total_attached_counter > 0 and torch.norm(real_next_state[0] - real_state[1]) > tolerance):
                 done = True
@@ -249,7 +251,7 @@ def train_ddpg(env=None, num_episodes=10001, checkpoint_path=None):
         reward_history.append(total_reward)
 
         if episode % 10 == 0:
-            print(f"Episode {episode}, Reward: {total_reward:.2f}, Attached_counter: {attached_counter}, Total attached counter: {total_attached_counter}, Successes: {counter}")
+            print(f"Episode {episode}, Reward: {np.mean(ep_rewards):.2f}, Attached_counter: {attached_counter}, Total attached counter: {total_attached_counter}, Successes: {counter}")
         if episode % CHECKPOINT_INTERVAL == 0 and episode > 0:
             save_checkpoint(agent, episode)
         if episode % 50 == 0 and episode > 0:
