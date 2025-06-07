@@ -218,7 +218,7 @@ if __name__ == "__main__":
     agent = DDPGAgent(2, 1)
 
     # Inizializza MaxEnt IRL
-    maxent_irl = MaxEntIRL(reward_net, env, policy_net)
+    maxent_irl = MaxEntIRL(reward_net, env, agent)
 
     # Addestra il modello
     maxent_irl.train(obs_episodes, actions_episodes, epochs=2000, steps_per_episode=100)
