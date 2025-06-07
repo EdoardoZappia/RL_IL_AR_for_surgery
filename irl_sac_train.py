@@ -51,8 +51,15 @@ def train_reward_net(reward_net, expert_obs, expert_act, policy_obs, policy_act,
     reward_net.train()
     expert_s = torch.tensor(expert_obs, dtype=torch.float32)
     expert_a = torch.tensor(expert_act, dtype=torch.float32)
+
+    if expert_a.ndim == 1:
+        expert_a = expert_a.unsqueeze(1)
+    
     policy_s = torch.tensor(policy_obs, dtype=torch.float32)
     policy_a = torch.tensor(policy_act, dtype=torch.float32)
+    
+    if policy_a.ndim == 1:
+        policy_a = policy_a.unsqueeze(1)
 
     r_expert = reward_net(expert_s, expert_a)
     r_policy = reward_net(policy_s, policy_a)
