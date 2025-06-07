@@ -182,7 +182,7 @@ def save_checkpoint_agent(agent, reward_history, success_history):
     }, path)
 
 def load_checkpoint(path, agent):
-    checkpoint = torch.load(path)
+    checkpoint = torch.load(path, weights_only=False)
     agent.actor.load_state_dict(checkpoint['actor_state_dict'])
     agent.critic.load_state_dict(checkpoint['critic_state_dict'])
     agent.actor_target.load_state_dict(checkpoint['actor_target_state_dict'])
