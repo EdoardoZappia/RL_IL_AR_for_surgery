@@ -2,19 +2,20 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 import numpy as np
-import gymnasium as gym
+import os
+import gym
 from stable_baselines3 import SAC
 from stable_baselines3.common.vec_env import DummyVecEnv
 
 from env_rot import make_env
 
-# Carica il dataset
-data = np.load("trajectories/dataset_rot.npz")
+# Crea directory di salvataggio se non esiste
+os.makedirs("IL/DME_SAC", exist_ok=True)
+
+# Carica il dataset esperto
+data = np.load("dataset_rot.npz")
 observations = data["observations"]
 actions = data["actions"]
-
-episode_length = 100
-n_episodes = len(observations) // episode_length
 
 # Reward Network
 class RewardNetwork(nn.Module):
@@ -29,6 +30,8 @@ class RewardNetwork(nn.Module):
         )
 
     def forward(self, state, action):
+        if action.ndim == 1:
+            action = action.unsqueeze(1)
         x = torch.cat([state, action], dim=-1)
         return self.model(x)
 
@@ -51,13 +54,11 @@ def train_reward_net(reward_net, expert_obs, expert_act, policy_obs, policy_act,
     reward_net.train()
     expert_s = torch.tensor(expert_obs, dtype=torch.float32)
     expert_a = torch.tensor(expert_act, dtype=torch.float32)
+    policy_s = torch.tensor(policy_obs, dtype=torch.float32)
+    policy_a = torch.tensor(policy_act, dtype=torch.float32)
 
     if expert_a.ndim == 1:
         expert_a = expert_a.unsqueeze(1)
-    
-    policy_s = torch.tensor(policy_obs, dtype=torch.float32)
-    policy_a = torch.tensor(policy_act, dtype=torch.float32)
-    
     if policy_a.ndim == 1:
         policy_a = policy_a.unsqueeze(1)
 
@@ -79,38 +80,42 @@ action_dim = env.action_space.shape[0]
 reward_net = RewardNetwork(state_dim, action_dim)
 optimizer = optim.Adam(reward_net.parameters(), lr=1e-3)
 
-# Inizializza SAC con reward fittizio
 wrapped_env = DummyVecEnv([lambda: IRLEnvWrapper(make_env(), reward_net)])
 agent = SAC("MlpPolicy", wrapped_env, verbose=1)
 
 # Ciclo IRL
 for iter in range(1000):
     print(f"=== Iterazione IRL {iter} ===")
-    agent.learn(total_timesteps=10000)
 
-    # Raccogli dati policy
+    # 1. Raccogli dati della policy corrente
     policy_obs, policy_act = [], []
     obs, _ = env.reset()
     for _ in range(1000):
         act, _ = agent.predict(obs.reshape(1, -1), deterministic=True)
         new_obs, _, done, _, _ = env.step(act[0])
         policy_obs.append(obs)
-        policy_act.append(act)
-        obs = new_obs if not done else env.reset()
-
+        policy_act.append(act[0])
+        
+        obs = new_obs
+        if truncated:  # Episodio finito
+            obs, _ = env.reset()
+            
     policy_obs = np.array(policy_obs).squeeze()
     policy_act = np.array(policy_act).squeeze()
 
-    # Prendi un batch casuale dagli esperti
-    idx = np.random.choice(len(observations), size=policy_obs.shape[0], replace=False)
-    expert_obs = observations[idx]
-    expert_act = actions[idx]
+    # 2. Allenamento multiplo della reward
+    for _ in range(10):
+        idx = np.random.choice(len(observations), size=policy_obs.shape[0], replace=False)
+        expert_obs = observations[idx]
+        expert_act = actions[idx]
+        loss = train_reward_net(reward_net, expert_obs, expert_act, policy_obs, policy_act, optimizer)
 
-    # Aggiorna reward
-    loss = train_reward_net(reward_net, expert_obs, expert_act, policy_obs, policy_act, optimizer)
-    print("Loss reward:", loss)
+    print(f"Loss reward (iter {iter}): {loss}")
 
-# Salva reward
-import os
-os.makedirs("IL/DME_SAC", exist_ok=True)
+    # 3. Aggiorna la policy ogni 5 iterazioni
+    if iter % 5 == 0:
+        print(">>> Aggiorno la policy con SAC")
+        agent.learn(total_timesteps=10000)
+
+# Salva il reward appreso
 torch.save(reward_net.state_dict(), "IL/DME_SAC/reward_network.pt")
