@@ -251,7 +251,7 @@ def train_ddpg(env=None, num_episodes=10001, checkpoint_path=None):
         reward_history.append(total_reward)
 
         if episode % 10 == 0:
-            print(f"Episode {episode}, Reward: {np.mean(ep_rewards):.2f}, Attached_counter: {attached_counter}, Total attached counter: {total_attached_counter}, Successes: {counter}")
+            print(f"Episode {episode}, Reward: {np.mean(ep_reward):.2f}, Attached_counter: {attached_counter}, Total attached counter: {total_attached_counter}, Successes: {counter}")
         if episode % CHECKPOINT_INTERVAL == 0 and episode > 0:
             save_checkpoint(agent, episode)
         if episode % 50 == 0 and episode > 0:
