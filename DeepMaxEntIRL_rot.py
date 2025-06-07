@@ -165,7 +165,7 @@ class MaxEntIRL(torch.nn.Module):
                 done = truncated
                 state = next_state
 
-            obs_ep = torch.tensor(np.array(ep_obs), dtype=torch.float32)
+            obs_ep = torch.tensor(np.array(ep_obs), dtype=torch.float32).squeeze(1)
             act_ep = torch.tensor(np.array(ep_actions), dtype=torch.float32)
 
             mean_state = obs_ep.mean(dim=0).numpy()
