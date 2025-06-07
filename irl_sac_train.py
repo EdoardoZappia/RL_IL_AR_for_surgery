@@ -71,7 +71,7 @@ def train_reward_net(reward_net, expert_obs, expert_act, policy_obs, policy_act,
     optimizer.zero_grad()
     loss.backward()
     optimizer.step()
-    return loss.item()
+    return loss.item(), r_expert.mean().item(), r_policy.mean().item()
 
 # Inizializzazione
 env = make_env()
@@ -103,19 +103,32 @@ for iter in range(1000):
     policy_obs = np.array(policy_obs).squeeze()
     policy_act = np.array(policy_act).squeeze()
 
-    # 2. Allenamento multiplo della reward
-    for _ in range(10):
-        idx = np.random.choice(len(observations), size=policy_obs.shape[0], replace=False)
-        expert_obs = observations[idx]
-        expert_act = actions[idx]
-        loss = train_reward_net(reward_net, expert_obs, expert_act, policy_obs, policy_act, optimizer)
+    losses, r_exps, r_pols = [], [], []
+    episode_len = 100
+    n_policy_steps = len(policy_obs)
+    n_episodes = n_policy_steps // episode_len
+    n_expert_episodes = len(observations) // episode_len
+    chosen_eps = np.random.choice(n_expert_episodes, size=n_episodes, replace=False)
 
-    print(f"Loss reward (iter {iter}): {loss}")
+    # 2. Allenamento multiplo della reward
+    for _ in range(50):
+        for i in chosen_eps:
+            idx = i * 100
+            expert_obs = observations[idx:idx+100]
+            expert_act = actions[idx:idx+100]
+            loss, r_exp, r_pol= train_reward_net(reward_net, expert_obs, expert_act, policy_obs, policy_act, optimizer)
+            losses.append(loss)
+            r_exps.append(r_exp)
+            r_pols.append(r_pol)
+
+    print(f"Loss reward (iter {iter}): {np.mean(losses):.4f}")
+    print(f"Reward medio esperto: {np.mean(r_exps):.4f}")
+    print(f"Reward medio policy: {np.mean(r_pols):.4f}")
 
     # 3. Aggiorna la policy ogni 5 iterazioni
     if iter % 5 == 0:
         print(">>> Aggiorno la policy con SAC")
-        agent.learn(total_timesteps=1000)
+        agent.learn(total_timesteps=2000)
 
 # Salva il reward appreso
 torch.save(reward_net.state_dict(), "IL/DME_SAC/reward_network.pt")
