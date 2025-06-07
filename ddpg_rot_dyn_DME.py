@@ -269,8 +269,8 @@ def train_ddpg(env=None, num_episodes=10001, checkpoint_path=None):
 
 if __name__ == "__main__":
     
-    reward_net = RewardNet(input_dim=3, output_dim=1)
-    reward_net.load_state_dict(torch.load("IL/DME_rot_reward_net.pth"))
-    reward_net.eval()
+    #reward_net = RewardNet(input_dim=3, output_dim=1)
+    #reward_net.load_state_dict(torch.load("IL/DME_rot_reward_net.pth"))
+    #reward_net.eval()
 
     trained_agent = train_ddpg(reward_net)
