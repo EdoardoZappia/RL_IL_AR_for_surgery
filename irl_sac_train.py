@@ -151,7 +151,7 @@ from env_rot import make_env
 os.makedirs("IL/DME_SAC", exist_ok=True)
 
 # Carica il dataset esperto
-data = np.load("dataset_rot.npz")
+data = np.load("trajectories/dataset_rot.npz")
 observations = data["observations"]
 actions = data["actions"]
 
