@@ -111,7 +111,7 @@ for iter in range(1000):
     chosen_eps = np.random.choice(n_expert_episodes, size=n_episodes, replace=False)
 
     # 2. Allenamento multiplo della reward
-    for _ in range(50):
+    for _ in range(10):
         for i in chosen_eps:
             idx = i * episode_len
             expert_obs = observations[idx:idx+episode_len]
@@ -138,5 +138,5 @@ for iter in range(1000):
         agent.learn(total_timesteps=2000)
 
 # Salva il reward appreso
-torch.save(reward_net.state_dict(), "IL/DME_SAC/reward_network.pt")
+torch.save(reward_net.state_dict(), "IL/DME_SAC/reward_network_rot_0.5_0.01.pt")
 print("Rete salvata")

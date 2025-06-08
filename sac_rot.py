@@ -41,25 +41,39 @@ class IRLEnvWrapper(gym.Wrapper):
             reward = self.reward_net(s, a).item()
         return obs, reward, terminated, truncated, info
 
-# Inizializza ambiente e reward network
-env = make_env()
-state_dim = env.observation_space.shape[0]
-action_dim = env.action_space.shape[0]
+def train_sac_with_learned_reward():
 
-reward_net = RewardNetwork(state_dim, action_dim)
-reward_net.load_state_dict(torch.load("IL/DME_SAC/reward_network.pt"))
-reward_net.eval()
+    # Inizializza ambiente e reward network
+    env = make_env()
+    state_dim = env.observation_space.shape[0]
+    action_dim = env.action_space.shape[0]
 
-# Crea ambiente con reward appresa
-wrapped_env = DummyVecEnv([lambda: IRLEnvWrapper(make_env(), reward_net)])
+    reward_net = RewardNetwork(state_dim, action_dim)
+    reward_net.load_state_dict(torch.load("IL/DME_SAC/reward_network.pt"))
+    reward_net.eval()
 
-# SAC con reward appresa
-model = SAC("MlpPolicy", wrapped_env, verbose=1)
+    # Crea ambiente con reward appresa
+    wrapped_env = DummyVecEnv([lambda: IRLEnvWrapper(make_env(), reward_net)])
 
-# Allenamento
-model.learn(total_timesteps=100_000)
+    # SAC con reward appresa
+    model = SAC("MlpPolicy", wrapped_env, verbose=1)
 
-# Salvataggio della policy
-os.makedirs("IL/SAC_POLICY", exist_ok=True)
-model.save("IL/SAC_POLICY/sac_with_learned_reward")
-print("Policy addestrata e salvata.")
+    # Allenamento
+    model.learn(total_timesteps=200_000)
+
+    # Crea la directory di salvataggio
+    os.makedirs("IL/SAC_POLICY", exist_ok=True)
+
+    # Salva l'intero modello (opzionale, può causare problemi con wrapper)
+    model.save("IL/SAC_POLICY/sac_with_learned_reward_rot_0.5_0.01")
+
+    # Salva solo la policy (più robusto)
+    model.policy.save("IL/SAC_POLICY/policy_only_rot_0.5_0.01")
+
+    # (Opzionale) Salva i parametri PyTorch della policy per uso personalizzato
+    torch.save(model.policy.state_dict(), "IL/SAC_POLICY/policy_state_dict_rot_0.5_0.01.pth")
+
+    print("Policy addestrata e salvata.")
+
+if __name__ == "__main__":
+    train_sac_with_learned_reward()
