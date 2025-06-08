@@ -104,26 +104,38 @@ for iter in range(1000):
     policy_act = np.array(policy_act).squeeze()
 
     losses, r_exps, r_pols = [], [], []
-    episode_len = 100
-    n_policy_steps = len(policy_obs)
-    n_episodes = n_policy_steps // episode_len
-    n_expert_episodes = len(observations) // episode_len
-    chosen_eps = np.random.choice(n_expert_episodes, size=n_episodes, replace=False)
+    # episode_len = 100
+    # n_policy_steps = len(policy_obs)
+    # n_episodes = n_policy_steps // episode_len
+    # n_expert_episodes = len(observations) // episode_len
+    # chosen_eps = np.random.choice(n_expert_episodes, size=n_episodes, replace=False)
+
+    # # 2. Allenamento multiplo della reward
+    # for _ in range(50):
+    #     for i in chosen_eps:
+    #         idx = i * episode_len
+    #         expert_obs = observations[idx:idx+episode_len]
+    #         expert_act = actions[idx:idx+episode_len]
+    #         # Sottocampiona anche la policy per matchare l'esperto
+    #         pol_idx = np.random.choice(len(policy_obs), size=episode_len, replace=False)
+    #         policy_obs_batch = policy_obs[pol_idx]
+    #         policy_act_batch = policy_act[pol_idx]
+    #         loss, r_exp, r_pol= train_reward_net(reward_net, expert_obs, expert_act, policy_obs_batch, policy_act_batch, optimizer)
+    #         losses.append(loss)
+    #         r_exps.append(r_exp)
+    #         r_pols.append(r_pol)
 
     # 2. Allenamento multiplo della reward
-    for _ in range(50):
-        for i in chosen_eps:
-            idx = i * episode_len
-            expert_obs = observations[idx:idx+episode_len]
-            expert_act = actions[idx:idx+episode_len]
-            # Sottocampiona anche la policy per matchare l'esperto
-            pol_idx = np.random.choice(len(policy_obs), size=episode_len, replace=False)
-            policy_obs_batch = policy_obs[pol_idx]
-            policy_act_batch = policy_act[pol_idx]
-            loss, r_exp, r_pol= train_reward_net(reward_net, expert_obs, expert_act, policy_obs_batch, policy_act_batch, optimizer)
-            losses.append(loss)
-            r_exps.append(r_exp)
-            r_pols.append(r_pol)
+    for _ in range(10):
+        idx = np.random.choice(len(observations), size=policy_obs.shape[0], replace=False)
+        expert_obs = observations[idx]
+        expert_act = actions[idx]
+        loss, r_exp, r_pol = train_reward_net(reward_net, expert_obs, expert_act, policy_obs, policy_act, optimizer)
+        losses.append(loss)
+        r_exps.append(r_exp)
+        r_pols.append(r_pol)
+
+    print(f"Loss reward (iter {iter}): {loss}")
 
     #print("ultima loss", loss)
     #print("ultimo rew esperto", r_exp)
