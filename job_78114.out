@@ -1,6 +1,0 @@
-Inizio training IRL
-Using device: cuda
-Using cuda device
-=== Iterazione IRL 0 ===
-Loss reward (iter 0): 6.65683126449585
->>> Aggiorno la policy con SAC
