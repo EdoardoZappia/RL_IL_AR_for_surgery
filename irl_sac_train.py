@@ -247,33 +247,18 @@ for iter in range(1000):
     policy_act = np.array(policy_act).squeeze()
 
     # # 2. Allenamento multiplo della reward
-    # for _ in range(10):
-    #     idx = np.random.choice(len(observations), size=policy_obs.shape[0], replace=False)
-    #     expert_obs = observations[idx]
-    #     expert_act = actions[idx]
-    #     loss = train_reward_net(reward_net, expert_obs, expert_act, policy_obs, policy_act, optimizer)
-
-
-    # 2. Allenamento multiplo della reward
     for _ in range(10):
-        chosen_eps = np.random.choice(len(observations) // 100, size=10, replace=False)
-        episode_len = 100  # Lunghezza di ogni episodio
-        for i in chosen_eps:
-            idx = i * episode_len
-            expert_obs = observations[idx:idx+episode_len]
-            expert_act = actions[idx:idx+episode_len]
-            # Sottocampiona anche la policy per matchare l'esperto
-            pol_idx = np.random.choice(len(policy_obs), size=episode_len, replace=False)
-            policy_obs_batch = policy_obs[pol_idx]
-            policy_act_batch = policy_act[pol_idx]
-            loss= train_reward_net(reward_net, expert_obs, expert_act, policy_obs_batch, policy_act_batch, optimizer)
-
+        idx = np.random.choice(len(observations), size=policy_obs.shape[0], replace=False)
+        expert_obs = observations[idx]
+        expert_act = actions[idx]
+        loss = train_reward_net(reward_net, expert_obs, expert_act, policy_obs, policy_act, optimizer)
+    
     print(f"Loss reward (iter {iter}): {loss}")
 
     # 3. Aggiorna la policy ogni 5 iterazioni
     if iter % 5 == 0:
         print(">>> Aggiorno la policy con SAC")
-        agent.learn(total_timesteps=2000)
+        agent.learn(total_timesteps=5000)
 
 # Salva il reward appreso
 torch.save(reward_net.state_dict(), "IL/DME_SAC/reward_network_rot_0.5_0.01.pt")
