@@ -68,10 +68,10 @@ def train_sac_with_learned_reward():
     model.save("IL/SAC_POLICY/sac_with_learned_reward_rot_0.5_0.01")
 
     # Salva solo la policy (più robusto)
-    model.policy.save("IL/SAC_POLICY/policy_only_rot_0.5_0.01")
+    #model.policy.save("IL/SAC_POLICY/policy_only_rot_0.5_0.01")
 
     # (Opzionale) Salva i parametri PyTorch della policy per uso personalizzato
-    torch.save(model.policy.state_dict(), "IL/SAC_POLICY/policy_state_dict_rot_0.5_0.01.pth")
+    #torch.save(model.policy.state_dict(), "IL/SAC_POLICY/policy_state_dict_rot_0.5_0.01.pth")
 
     print("Policy addestrata e salvata.")
 
