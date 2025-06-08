@@ -242,12 +242,12 @@ for iter in range(1000):
         obs = new_obs
         if truncated:  # Episodio finito
             obs, _ = env.reset()
-            
+
     policy_obs = np.array(policy_obs).squeeze()
     policy_act = np.array(policy_act).squeeze()
 
     # 2. Allenamento multiplo della reward
-    for _ in range(10):
+    for _ in range(50):
         idx = np.random.choice(len(observations), size=policy_obs.shape[0], replace=False)
         expert_obs = observations[idx]
         expert_act = actions[idx]
@@ -258,7 +258,7 @@ for iter in range(1000):
     # 3. Aggiorna la policy ogni 5 iterazioni
     if iter % 5 == 0:
         print(">>> Aggiorno la policy con SAC")
-        agent.learn(total_timesteps=1000)
+        agent.learn(total_timesteps=2000)
 
 # Salva il reward appreso
 torch.save(reward_net.state_dict(), "IL/DME_SAC/reward_network_rot_0.5_0.01.pt")
