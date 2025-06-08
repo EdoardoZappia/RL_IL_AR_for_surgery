@@ -267,7 +267,6 @@ for iter in range(1000):
             policy_obs_batch = policy_obs[pol_idx]
             policy_act_batch = policy_act[pol_idx]
             loss= train_reward_net(reward_net, expert_obs, expert_act, policy_obs_batch, policy_act_batch, optimizer)
-            losses.append(loss)
 
     print(f"Loss reward (iter {iter}): {loss}")
 
