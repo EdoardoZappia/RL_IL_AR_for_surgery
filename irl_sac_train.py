@@ -45,13 +45,22 @@ class IRLEnvWrapper(gym.Wrapper):
         super().__init__(env)
         self.reward_net = reward_net
 
+    # def step(self, action):
+    #     obs, _, terminated, truncated, info = self.env.step(action)
+    #     with torch.no_grad():
+    #         state_tensor = torch.tensor(obs, dtype=torch.float32).unsqueeze(0)
+    #         action_tensor = torch.tensor(action, dtype=torch.float32).unsqueeze(0)
+    #         reward = self.reward_net(state_tensor, action_tensor).item()
+    #     return obs, reward, terminated, truncated, info
+
     def step(self, action):
         obs, _, terminated, truncated, info = self.env.step(action)
         with torch.no_grad():
-            state_tensor = torch.tensor(obs, dtype=torch.float32).unsqueeze(0)
-            action_tensor = torch.tensor(action, dtype=torch.float32).unsqueeze(0)
+            state_tensor = torch.tensor(obs, dtype=torch.float32, device=self.reward_net.model[0].weight.device).unsqueeze(0)
+            action_tensor = torch.tensor(action, dtype=torch.float32, device=self.reward_net.model[0].weight.device).unsqueeze(0)
             reward = self.reward_net(state_tensor, action_tensor).item()
         return obs, reward, terminated, truncated, info
+
 
 # Funzione di training per la reward net
 def train_reward_net(reward_net, expert_obs, expert_act, policy_obs, policy_act, optimizer, lambda_reg=1e-3):
