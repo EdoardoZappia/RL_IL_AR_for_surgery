@@ -91,17 +91,25 @@ for iter in range(1000):
     policy_obs, policy_act = [], []
     obs, _ = env.reset()
     for _ in range(1000):
-        act, _ = agent.predict(obs.reshape(1, -1), deterministic=True)
-        new_obs, _, done, truncated, _ = env.step(act[0])
-        policy_obs.append(obs)
-        policy_act.append(act[0])
+    #     act, _ = agent.predict(obs.reshape(1, -1), deterministic=True)
+    #     new_obs, _, done, truncated, _ = env.step(act[0])
+    #     policy_obs.append(obs)
+    #     policy_act.append(act[0])
         
-        obs = new_obs
-        if truncated:  # Episodio finito
-            obs, _ = env.reset()
+    #     obs = new_obs
+    #     if truncated:  # Episodio finito
+    #         obs, _ = env.reset()
 
-    policy_obs = np.array(policy_obs).squeeze()
-    policy_act = np.array(policy_act).squeeze()
+    # policy_obs = np.array(policy_obs).squeeze()
+    # policy_act = np.array(policy_act).squeeze()
+
+        act, _ = agent.predict(obs.reshape(1, -1), deterministic=True)
+            new_obs, _, done, _, _ = env.step(act[0])
+            policy_obs.append(obs)
+            policy_act.append(act[0])
+            obs = new_obs if not done else env.reset()[0]
+        policy_obs = np.array(policy_obs).squeeze()
+        policy_act = np.array(policy_act).squeeze()
 
     losses, r_exps, r_pols = [], [], []
 
