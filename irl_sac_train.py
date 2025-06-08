@@ -246,12 +246,28 @@ for iter in range(1000):
     policy_obs = np.array(policy_obs).squeeze()
     policy_act = np.array(policy_act).squeeze()
 
+    # # 2. Allenamento multiplo della reward
+    # for _ in range(10):
+    #     idx = np.random.choice(len(observations), size=policy_obs.shape[0], replace=False)
+    #     expert_obs = observations[idx]
+    #     expert_act = actions[idx]
+    #     loss = train_reward_net(reward_net, expert_obs, expert_act, policy_obs, policy_act, optimizer)
+
+
     # 2. Allenamento multiplo della reward
     for _ in range(10):
-        idx = np.random.choice(len(observations), size=policy_obs.shape[0], replace=False)
-        expert_obs = observations[idx]
-        expert_act = actions[idx]
-        loss = train_reward_net(reward_net, expert_obs, expert_act, policy_obs, policy_act, optimizer)
+        chosen_eps = np.random.choice(len(observations) // 100, size=10, replace=False)
+        episode_len = 100  # Lunghezza di ogni episodio
+        for i in chosen_eps:
+            idx = i * episode_len
+            expert_obs = observations[idx:idx+episode_len]
+            expert_act = actions[idx:idx+episode_len]
+            # Sottocampiona anche la policy per matchare l'esperto
+            pol_idx = np.random.choice(len(policy_obs), size=episode_len, replace=False)
+            policy_obs_batch = policy_obs[pol_idx]
+            policy_act_batch = policy_act[pol_idx]
+            loss= train_reward_net(reward_net, expert_obs, expert_act, policy_obs_batch, policy_act_batch, optimizer)
+            losses.append(loss)
 
     print(f"Loss reward (iter {iter}): {loss}")
 
