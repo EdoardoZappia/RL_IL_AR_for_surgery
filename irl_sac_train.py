@@ -247,7 +247,7 @@ for iter in range(1000):
     policy_act = np.array(policy_act).squeeze()
 
     # 2. Allenamento multiplo della reward
-    for _ in range(50):
+    for _ in range(10):
         idx = np.random.choice(len(observations), size=policy_obs.shape[0], replace=False)
         expert_obs = observations[idx]
         expert_act = actions[idx]
