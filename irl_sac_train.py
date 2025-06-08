@@ -222,7 +222,7 @@ wrapped_env = DummyVecEnv([lambda: IRLEnvWrapper(make_env(), reward_net)])
 agent = SAC("MlpPolicy", wrapped_env, verbose=1)
 
 # Ciclo IRL
-for iter in range(1000):
+for iter in range(2000):
     print(f"=== Iterazione IRL {iter} ===")
 
     # 1. Raccogli dati della policy corrente
@@ -258,7 +258,7 @@ for iter in range(1000):
     # 3. Aggiorna la policy ogni 5 iterazioni
     if iter % 5 == 0:
         print(">>> Aggiorno la policy con SAC")
-        agent.learn(total_timesteps=5000)
+        agent.learn(total_timesteps=2000)
 
 # Salva il reward appreso
 torch.save(reward_net.state_dict(), "IL/DME_SAC/reward_network_rot_0.5_0.01.pt")
