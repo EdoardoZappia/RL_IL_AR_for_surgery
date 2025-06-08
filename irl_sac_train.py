@@ -111,7 +111,7 @@ for iter in range(1000):
     chosen_eps = np.random.choice(n_expert_episodes, size=n_episodes, replace=False)
 
     # 2. Allenamento multiplo della reward
-    for _ in range(10):
+    for _ in range(50):
         for i in chosen_eps:
             idx = i * episode_len
             expert_obs = observations[idx:idx+episode_len]
@@ -125,12 +125,12 @@ for iter in range(1000):
             r_exps.append(r_exp)
             r_pols.append(r_pol)
 
-    print("ultima loss", loss)
-    print("ultimo rew esperto", r_exp)
-    print("ultimo rew policy", r_pol)
-    print(f"Loss reward (iter {iter}): {np.mean(losses):.4f}")
-    print(f"Reward medio esperto: {np.mean(r_exps):.4f}")
-    print(f"Reward medio policy: {np.mean(r_pols):.4f}")
+    #print("ultima loss", loss)
+    #print("ultimo rew esperto", r_exp)
+    #print("ultimo rew policy", r_pol)
+    print(f"Loss reward (iter {iter}): {np.mean(losses):.2f}")
+    print(f"Reward medio esperto: {np.mean(r_exps):.2f}")
+    print(f"Reward medio policy: {np.mean(r_pols):.2f}")
 
     # 3. Aggiorna la policy ogni 5 iterazioni
     if iter % 5 == 0:
