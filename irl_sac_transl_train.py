@@ -46,7 +46,7 @@ class IRLEnvWrapper(gym.Wrapper):
         self.reward_net = reward_net
 
     def step(self, action):
-        obs, _, terminated, truncated, info = self.env.step(action)
+        obs, _, terminated, truncated, info, _ = self.env.step(action)
         with torch.no_grad():
             state_tensor = torch.tensor(obs, dtype=torch.float32, device=self.reward_net.model[0].weight.device).unsqueeze(0)
             action_tensor = torch.tensor(action, dtype=torch.float32, device=self.reward_net.model[0].weight.device).unsqueeze(0)
