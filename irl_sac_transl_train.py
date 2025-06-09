@@ -7,9 +7,7 @@ import gymnasium as gym
 from stable_baselines3 import SAC
 from stable_baselines3.common.vec_env import DummyVecEnv
 
-from env_rot import make_env
-
-# reward_network_rot_0.5_0.01.pt fatto con 1500 iterazioni di IRL e 2000 timesteps di training SAC
+from environment import make_env
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f"Using device: {device}")
@@ -19,7 +17,7 @@ os.makedirs("IL/DME_SAC", exist_ok=True)
 os.makedirs("IL/SAC_POLICY", exist_ok=True)
 
 # Carica il dataset esperto
-data = np.load("trajectories/dataset_rot.npz")
+data = np.load("trajectories/dataset_transl.npz")
 observations = data["observations"]
 actions = data["actions"]
 
@@ -28,11 +26,11 @@ class RewardNetwork(nn.Module):
     def __init__(self, state_dim, action_dim):
         super().__init__()
         self.model = nn.Sequential(
-            nn.Linear(state_dim + action_dim, 128),
+            nn.Linear(state_dim + action_dim, 256),
             nn.ReLU(),
-            nn.Linear(128, 64),
+            nn.Linear(256, 128),
             nn.ReLU(),
-            nn.Linear(64, 1)
+            nn.Linear(128, 1)
         ).to(device)
 
     def forward(self, state, action):
@@ -47,21 +45,13 @@ class IRLEnvWrapper(gym.Wrapper):
         super().__init__(env)
         self.reward_net = reward_net
 
-    # def step(self, action):
-    #     obs, _, terminated, truncated, info = self.env.step(action)
-    #     with torch.no_grad():
-    #         state_tensor = torch.tensor(obs, dtype=torch.float32).unsqueeze(0)
-    #         action_tensor = torch.tensor(action, dtype=torch.float32).unsqueeze(0)
-    #         reward = self.reward_net(state_tensor, action_tensor).item()
-    #     return obs, reward, terminated, truncated, info
-
     def step(self, action):
         obs, _, terminated, truncated, info = self.env.step(action)
         with torch.no_grad():
             state_tensor = torch.tensor(obs, dtype=torch.float32, device=self.reward_net.model[0].weight.device).unsqueeze(0)
             action_tensor = torch.tensor(action, dtype=torch.float32, device=self.reward_net.model[0].weight.device).unsqueeze(0)
             reward = self.reward_net(state_tensor, action_tensor).item()
-        return obs, reward, terminated, truncated, info
+        return obs, reward, terminated, truncated, info, _
 
 
 # Funzione di training per la reward net
@@ -99,7 +89,7 @@ wrapped_env = DummyVecEnv([lambda: IRLEnvWrapper(make_env(), reward_net)])
 agent = SAC("MlpPolicy", wrapped_env, verbose=1, device=device)
 
 # Ciclo IRL
-for iter in range(2000):
+for iter in range(1500):
     print(f"=== Iterazione IRL {iter} ===")
 
     # 1. Raccogli dati della policy corrente
@@ -112,7 +102,7 @@ for iter in range(2000):
         # policy_act.append(act[0])
         # obs = new_obs if not done else env.reset()[0]
         act, _ = agent.predict(obs.reshape(1, -1), deterministic=True)
-        new_obs, _, done, truncated, _ = env.step(act[0])
+        new_obs, _, done, truncated, _, _ = env.step(act[0])
         policy_obs.append(obs)
         policy_act.append(act[0])
         
@@ -135,10 +125,10 @@ for iter in range(2000):
     # 3. Aggiorna la policy ogni 5 iterazioni
     if iter % 5 == 0:
         print(">>> Aggiorno la policy con SAC")
-        agent.learn(total_timesteps=1000)
+        agent.learn(total_timesteps=2000)
 
 # Salva il reward appreso
-torch.save(reward_net.state_dict(), "IL/DME_SAC/reward_network_rot_0.5_0.01_2000iter.pt")
+torch.save(reward_net.state_dict(), "IL/DME_SAC/reward_network_transl_0.2_0.05.pt")
 
-agent.save("IL/SAC_POLICY/sac_with_learned_reward_rot_0.5_0.01_IRL_1000timesteps")
+agent.save("IL/SAC_POLICY/sac_with_learned_reward_transl_0.2_0.05_IRL_")
 print("Modello SAC salvato.")
