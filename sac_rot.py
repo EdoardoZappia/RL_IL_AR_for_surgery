@@ -58,7 +58,7 @@ def train_sac_with_learned_reward():
 
     # SAC con reward appresa
     model = SAC("MlpPolicy", wrapped_env, verbose=1, device=device)
-    model.set_parameters("IL/SAC_POLICY/sac_with_learned_reward_rot_0.5_0.01_IRL")
+    #model.set_parameters("IL/SAC_POLICY/sac_with_learned_reward_rot_0.5_0.01_IRL")
 
     # Allenamento
     model.learn(total_timesteps=300_000)
@@ -67,7 +67,7 @@ def train_sac_with_learned_reward():
     os.makedirs("IL/SAC_POLICY", exist_ok=True)
 
     # Salva l'intero modello
-    model.save("IL/SAC_POLICY/sac_with_learned_reward_rot_0.5_0.01_init_")
+    model.save("IL/SAC_POLICY/sac_with_learned_reward_rot_0.5_0.01")
 
     print("Policy addestrata e salvata.")
 
