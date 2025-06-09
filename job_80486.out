@@ -1,0 +1,86 @@
+Inizio training IRL
+Using cuda device
+----------------------------------
+| time/              |           |
+|    episodes        | 4         |
+|    fps             | 98        |
+|    time_elapsed    | 4         |
+|    total_timesteps | 400       |
+| train/             |           |
+|    actor_loss      | -2.44e+03 |
+|    critic_loss     | 12.8      |
+|    ent_coef        | 1.21      |
+|    ent_coef_loss   | -0.0911   |
+|    learning_rate   | 0.0003    |
+|    n_updates       | 299       |
+----------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 8        |
+|    fps             | 95       |
+|    time_elapsed    | 8        |
+|    total_timesteps | 800      |
+| train/             |          |
+|    actor_loss      | -2.4e+03 |
+|    critic_loss     | 11.6     |
+|    ent_coef        | 1.31     |
+|    ent_coef_loss   | -0.0353  |
+|    learning_rate   | 0.0003   |
+|    n_updates       | 699      |
+---------------------------------
+----------------------------------
+| time/              |           |
+|    episodes        | 12        |
+|    fps             | 95        |
+|    time_elapsed    | 12        |
+|    total_timesteps | 1200      |
+| train/             |           |
+|    actor_loss      | -2.36e+03 |
+|    critic_loss     | 10.5      |
+|    ent_coef        | 1.36      |
+|    ent_coef_loss   | 0.0156    |
+|    learning_rate   | 0.0003    |
+|    n_updates       | 1099      |
+----------------------------------
+----------------------------------
+| time/              |           |
+|    episodes        | 16        |
+|    fps             | 96        |
+|    time_elapsed    | 16        |
+|    total_timesteps | 1600      |
+| train/             |           |
+|    actor_loss      | -2.32e+03 |
+|    critic_loss     | 11        |
+|    ent_coef        | 1.36      |
+|    ent_coef_loss   | 0.0376    |
+|    learning_rate   | 0.0003    |
+|    n_updates       | 1499      |
+----------------------------------
+----------------------------------
+| time/              |           |
+|    episodes        | 20        |
+|    fps             | 98        |
+|    time_elapsed    | 20        |
+|    total_timesteps | 2000      |
+| train/             |           |
+|    actor_loss      | -2.26e+03 |
+|    critic_loss     | 8.91      |
+|    ent_coef        | 1.31      |
+|    ent_coef_loss   | 0.0616    |
+|    learning_rate   | 0.0003    |
+|    n_updates       | 1899      |
+----------------------------------
+----------------------------------
+| time/              |           |
+|    episodes        | 24        |
+|    fps             | 100       |
+|    time_elapsed    | 23        |
+|    total_timesteps | 2400      |
+| train/             |           |
+|    actor_loss      | -2.23e+03 |
+|    critic_loss     | 9.46      |
+|    ent_coef        | 1.21      |
+|    ent_coef_loss   | 0.0482    |
+|    learning_rate   | 0.0003    |
+|    n_updates       | 2299      |
+----------------------------------
