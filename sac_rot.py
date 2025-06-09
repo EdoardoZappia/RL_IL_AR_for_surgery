@@ -61,7 +61,7 @@ def train_sac_with_learned_reward():
     model = SAC("MlpPolicy", wrapped_env, verbose=1, device=device)
 
     # Allenamento
-    model.learn(total_timesteps=200_000)
+    model.learn(total_timesteps=600_000)
 
     # Crea la directory di salvataggio
     os.makedirs("IL/SAC_POLICY", exist_ok=True)
