@@ -126,7 +126,7 @@ for iter in range(1500):
     # 3. Aggiorna la policy ogni 5 iterazioni
     if iter % 5 == 0:
         print(">>> Aggiorno la policy con SAC")
-        agent.learn(total_timesteps=2000)
+        agent.learn(total_timesteps=1500)
 
 # Salva il reward appreso
 torch.save(reward_net.state_dict(), "IL/DME_SAC/reward_network_transl_0.2_0.05.pt")
