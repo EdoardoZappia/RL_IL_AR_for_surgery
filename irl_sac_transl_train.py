@@ -57,7 +57,7 @@ class IRLEnvWrapper(gym.Wrapper):
             state_tensor = torch.tensor(obs, dtype=torch.float32, device=self.reward_net.model[0].weight.device).unsqueeze(0)
             action_tensor = torch.tensor(action, dtype=torch.float32, device=self.reward_net.model[0].weight.device).unsqueeze(0)
             reward = self.reward_net(state_tensor, action_tensor).item()
-        return obs, reward, terminated, truncated, info, _
+        return obs, reward, terminated, truncated, info
 
 
 # Funzione di training per la reward net
