@@ -1,0 +1,16 @@
+Traceback (most recent call last):
+  File "/orfeo/cephfs/home/dssc/ezappia/RL_IL_AR_for_surgery/irl_sac_transl_train.py", line 128, in <module>
+    agent.learn(total_timesteps=2000)
+  File "/u/dssc/ezappia/miniconda3/envs/tracking_env/lib/python3.10/site-packages/stable_baselines3/sac/sac.py", line 308, in learn
+    return super().learn(
+  File "/u/dssc/ezappia/miniconda3/envs/tracking_env/lib/python3.10/site-packages/stable_baselines3/common/off_policy_algorithm.py", line 328, in learn
+    rollout = self.collect_rollouts(
+  File "/u/dssc/ezappia/miniconda3/envs/tracking_env/lib/python3.10/site-packages/stable_baselines3/common/off_policy_algorithm.py", line 560, in collect_rollouts
+    new_obs, rewards, dones, infos = env.step(actions)
+  File "/u/dssc/ezappia/miniconda3/envs/tracking_env/lib/python3.10/site-packages/stable_baselines3/common/vec_env/base_vec_env.py", line 222, in step
+    return self.step_wait()
+  File "/u/dssc/ezappia/miniconda3/envs/tracking_env/lib/python3.10/site-packages/stable_baselines3/common/vec_env/dummy_vec_env.py", line 59, in step_wait
+    obs, self.buf_rews[env_idx], terminated, truncated, self.buf_infos[env_idx] = self.envs[env_idx].step(  # type: ignore[assignment]
+  File "/orfeo/cephfs/home/dssc/ezappia/RL_IL_AR_for_surgery/irl_sac_transl_train.py", line 49, in step
+    obs, _, terminated, truncated, info = self.env.step(action)
+ValueError: too many values to unpack (expected 5)

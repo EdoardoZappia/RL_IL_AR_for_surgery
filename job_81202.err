@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "/orfeo/cephfs/home/dssc/ezappia/RL_IL_AR_for_surgery/irl_sac_transl_train.py", line 106, in <module>
+    new_obs, _, done, truncated, _ = env.step(act[0])
+ValueError: too many values to unpack (expected 5)
