@@ -62,7 +62,7 @@ def train_sac_with_learned_reward():
     model.set_parameters("IL/SAC_POLICY/sac_with_learned_reward_rot_0.5_0.01_IRL")
 
     # Allenamento
-    model.learn(total_timesteps=100_000)
+    model.learn(total_timesteps=300_000)
 
     # Crea la directory di salvataggio
     os.makedirs("IL/SAC_POLICY", exist_ok=True)
