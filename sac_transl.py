@@ -6,7 +6,7 @@ from stable_baselines3 import SAC
 from stable_baselines3.common.vec_env import DummyVecEnv
 import os
 
-from env_rot import make_env  # Assicurati che make_env sia definito
+from environment import make_env  # Assicurati che make_env sia definito
 
 # Usa GPU se disponibile
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -16,11 +16,12 @@ class RewardNetwork(nn.Module):
     def __init__(self, state_dim, action_dim):
         super().__init__()
         self.model = nn.Sequential(
-            nn.Linear(state_dim + action_dim, 128),
+            nn.Linear(state_dim + action_dim, 256),
             nn.ReLU(),
-            nn.Linear(128, 64),
+            nn.Linear(256, 128),
             nn.ReLU(),
-            nn.Linear(64, 1)
+            nn.Linear(128, 1),
+            nn.Tanh()
         )
 
     def forward(self, state, action):
@@ -61,7 +62,7 @@ def train_sac_with_learned_reward():
     model.set_parameters("IL/SAC_POLICY/sac_with_learned_reward_rot_0.5_0.01_IRL")
 
     # Allenamento
-    model.learn(total_timesteps=100_000)
+    model.learn(total_timesteps=300_000)
 
     # Crea la directory di salvataggio
     os.makedirs("IL/SAC_POLICY", exist_ok=True)

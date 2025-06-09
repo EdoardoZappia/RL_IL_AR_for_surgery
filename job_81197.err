@@ -1,4 +1,0 @@
-Traceback (most recent call last):
-  File "/orfeo/cephfs/home/dssc/ezappia/RL_IL_AR_for_surgery/irl_sac_transl_train.py", line 10, in <module>
-    from environment import make_env
-ImportError: cannot import name 'make_env' from 'environment' (/orfeo/cephfs/home/dssc/ezappia/RL_IL_AR_for_surgery/environment.py)
