@@ -46,7 +46,13 @@ class IRLEnvWrapper(gym.Wrapper):
         self.reward_net = reward_net
 
     def step(self, action):
-        obs, _, terminated, truncated, info, _ = self.env.step(action)
+        #obs, _, terminated, truncated, info, _ = self.env.step(action)
+        step_result = self.env.step(action)
+    
+        if len(step_result) == 6:
+            obs, _, terminated, truncated, info, _ = step_result  # Scarta il sesto valore
+        else:
+            obs, _, terminated, truncated, info = step_result
         with torch.no_grad():
             state_tensor = torch.tensor(obs, dtype=torch.float32, device=self.reward_net.model[0].weight.device).unsqueeze(0)
             action_tensor = torch.tensor(action, dtype=torch.float32, device=self.reward_net.model[0].weight.device).unsqueeze(0)
@@ -96,13 +102,8 @@ for iter in range(1500):
     policy_obs, policy_act = [], []
     obs, _ = env.reset()
     for _ in range(1000):
-        # act, _ = agent.predict(obs.reshape(1, -1), deterministic=True)
-        # new_obs, _, done, _, _ = env.step(act[0])
-        # policy_obs.append(obs)
-        # policy_act.append(act[0])
-        # obs = new_obs if not done else env.reset()[0]
         act, _ = agent.predict(obs.reshape(1, -1), deterministic=True)
-        new_obs, _, done, truncated, _, _ = env.step(act[0])
+        new_obs, _, done, truncated, _ = env.step(act[0])
         policy_obs.append(obs)
         policy_act.append(act[0])
         
