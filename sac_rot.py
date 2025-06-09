@@ -8,6 +8,9 @@ import os
 
 from env_rot import make_env  # Assicurati che make_env sia definito
 
+# Usa GPU se disponibile
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
 # Carica la rete di reward appresa
 class RewardNetwork(nn.Module):
     def __init__(self, state_dim, action_dim):
@@ -36,27 +39,26 @@ class IRLEnvWrapper(gym.Wrapper):
     def step(self, action):
         obs, _, terminated, truncated, info = self.env.step(action)
         with torch.no_grad():
-            s = torch.tensor(obs, dtype=torch.float32).unsqueeze(0)
-            a = torch.tensor(action, dtype=torch.float32).unsqueeze(0)
+            s = torch.tensor(obs, dtype=torch.float32, device=device).unsqueeze(0)
+            a = torch.tensor(action, dtype=torch.float32, device=device).unsqueeze(0)
             reward = self.reward_net(s, a).item()
         return obs, reward, terminated, truncated, info
 
 def train_sac_with_learned_reward():
-
     # Inizializza ambiente e reward network
     env = make_env()
     state_dim = env.observation_space.shape[0]
     action_dim = env.action_space.shape[0]
 
-    reward_net = RewardNetwork(state_dim, action_dim)
-    reward_net.load_state_dict(torch.load("IL/DME_SAC/reward_network.pt"))
+    reward_net = RewardNetwork(state_dim, action_dim).to(device)
+    reward_net.load_state_dict(torch.load("IL/DME_SAC/reward_network_rot_0.5_0.01.pt", map_location=device))
     reward_net.eval()
 
     # Crea ambiente con reward appresa
     wrapped_env = DummyVecEnv([lambda: IRLEnvWrapper(make_env(), reward_net)])
 
     # SAC con reward appresa
-    model = SAC("MlpPolicy", wrapped_env, verbose=1)
+    model = SAC("MlpPolicy", wrapped_env, verbose=1, device=device)
 
     # Allenamento
     model.learn(total_timesteps=200_000)
@@ -64,14 +66,8 @@ def train_sac_with_learned_reward():
     # Crea la directory di salvataggio
     os.makedirs("IL/SAC_POLICY", exist_ok=True)
 
-    # Salva l'intero modello (opzionale, può causare problemi con wrapper)
+    # Salva l'intero modello
     model.save("IL/SAC_POLICY/sac_with_learned_reward_rot_0.5_0.01")
-
-    # Salva solo la policy (più robusto)
-    #model.policy.save("IL/SAC_POLICY/policy_only_rot_0.5_0.01")
-
-    # (Opzionale) Salva i parametri PyTorch della policy per uso personalizzato
-    #torch.save(model.policy.state_dict(), "IL/SAC_POLICY/policy_state_dict_rot_0.5_0.01.pth")
 
     print("Policy addestrata e salvata.")
 
