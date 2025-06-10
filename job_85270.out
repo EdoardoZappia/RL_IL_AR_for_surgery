@@ -1,0 +1,2274 @@
+Inizio training IRL
+Using device: cuda
+Using cuda device
+=== Iterazione IRL 0 ===
+Loss reward (iter 0): 6.305417060852051
+>>> Aggiorno la policy con TD3
+---------------------------------
+| time/              |          |
+|    episodes        | 4        |
+|    fps             | 258      |
+|    time_elapsed    | 1        |
+|    total_timesteps | 400      |
+| train/             |          |
+|    actor_loss      | 0.343    |
+|    critic_loss     | 0.000297 |
+|    learning_rate   | 0.001    |
+|    n_updates       | 299      |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 8        |
+|    fps             | 229      |
+|    time_elapsed    | 3        |
+|    total_timesteps | 800      |
+| train/             |          |
+|    actor_loss      | 0.483    |
+|    critic_loss     | 0.000141 |
+|    learning_rate   | 0.001    |
+|    n_updates       | 699      |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 12       |
+|    fps             | 221      |
+|    time_elapsed    | 5        |
+|    total_timesteps | 1200     |
+| train/             |          |
+|    actor_loss      | 0.619    |
+|    critic_loss     | 0.000153 |
+|    learning_rate   | 0.001    |
+|    n_updates       | 1099     |
+---------------------------------
+=== Iterazione IRL 1 ===
+Loss reward (iter 1): 6.35150146484375
+=== Iterazione IRL 2 ===
+Loss reward (iter 2): 6.204919338226318
+=== Iterazione IRL 3 ===
+Loss reward (iter 3): 6.037203788757324
+=== Iterazione IRL 4 ===
+Loss reward (iter 4): 5.86187219619751
+=== Iterazione IRL 5 ===
+Loss reward (iter 5): 5.706120491027832
+>>> Aggiorno la policy con TD3
+---------------------------------
+| time/              |          |
+|    episodes        | 4        |
+|    fps             | 265      |
+|    time_elapsed    | 1        |
+|    total_timesteps | 400      |
+| train/             |          |
+|    actor_loss      | 0.864    |
+|    critic_loss     | 0.101    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 1699     |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 8        |
+|    fps             | 232      |
+|    time_elapsed    | 3        |
+|    total_timesteps | 800      |
+| train/             |          |
+|    actor_loss      | 0.674    |
+|    critic_loss     | 0.0588   |
+|    learning_rate   | 0.001    |
+|    n_updates       | 2099     |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 12       |
+|    fps             | 223      |
+|    time_elapsed    | 5        |
+|    total_timesteps | 1200     |
+| train/             |          |
+|    actor_loss      | 0.533    |
+|    critic_loss     | 0.0716   |
+|    learning_rate   | 0.001    |
+|    n_updates       | 2499     |
+---------------------------------
+=== Iterazione IRL 6 ===
+Loss reward (iter 6): 6.383143901824951
+=== Iterazione IRL 7 ===
+Loss reward (iter 7): 6.616333961486816
+=== Iterazione IRL 8 ===
+Loss reward (iter 8): 6.3911919593811035
+=== Iterazione IRL 9 ===
+Loss reward (iter 9): 6.249837875366211
+=== Iterazione IRL 10 ===
+Loss reward (iter 10): 6.180622100830078
+>>> Aggiorno la policy con TD3
+---------------------------------
+| time/              |          |
+|    episodes        | 4        |
+|    fps             | 265      |
+|    time_elapsed    | 1        |
+|    total_timesteps | 400      |
+| train/             |          |
+|    actor_loss      | 0.176    |
+|    critic_loss     | 0.0831   |
+|    learning_rate   | 0.001    |
+|    n_updates       | 3099     |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 8        |
+|    fps             | 232      |
+|    time_elapsed    | 3        |
+|    total_timesteps | 800      |
+| train/             |          |
+|    actor_loss      | 0.0799   |
+|    critic_loss     | 0.104    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 3499     |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 12       |
+|    fps             | 223      |
+|    time_elapsed    | 5        |
+|    total_timesteps | 1200     |
+| train/             |          |
+|    actor_loss      | -0.0392  |
+|    critic_loss     | 0.0988   |
+|    learning_rate   | 0.001    |
+|    n_updates       | 3899     |
+---------------------------------
+=== Iterazione IRL 11 ===
+Loss reward (iter 11): 6.224420547485352
+=== Iterazione IRL 12 ===
+Loss reward (iter 12): 6.027998924255371
+=== Iterazione IRL 13 ===
+Loss reward (iter 13): 5.984310150146484
+=== Iterazione IRL 14 ===
+Loss reward (iter 14): 5.734052658081055
+=== Iterazione IRL 15 ===
+Loss reward (iter 15): 5.9309468269348145
+>>> Aggiorno la policy con TD3
+---------------------------------
+| time/              |          |
+|    episodes        | 4        |
+|    fps             | 265      |
+|    time_elapsed    | 1        |
+|    total_timesteps | 400      |
+| train/             |          |
+|    actor_loss      | 0.153    |
+|    critic_loss     | 0.166    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 4499     |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 8        |
+|    fps             | 232      |
+|    time_elapsed    | 3        |
+|    total_timesteps | 800      |
+| train/             |          |
+|    actor_loss      | 0.317    |
+|    critic_loss     | 0.228    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 4899     |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 12       |
+|    fps             | 223      |
+|    time_elapsed    | 5        |
+|    total_timesteps | 1200     |
+| train/             |          |
+|    actor_loss      | 0.436    |
+|    critic_loss     | 0.307    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 5299     |
+---------------------------------
+=== Iterazione IRL 16 ===
+Loss reward (iter 16): 5.912938117980957
+=== Iterazione IRL 17 ===
+Loss reward (iter 17): 5.461217403411865
+=== Iterazione IRL 18 ===
+Loss reward (iter 18): 5.975682258605957
+=== Iterazione IRL 19 ===
+Loss reward (iter 19): 5.374515056610107
+=== Iterazione IRL 20 ===
+Loss reward (iter 20): 5.711017608642578
+>>> Aggiorno la policy con TD3
+---------------------------------
+| time/              |          |
+|    episodes        | 4        |
+|    fps             | 265      |
+|    time_elapsed    | 1        |
+|    total_timesteps | 400      |
+| train/             |          |
+|    actor_loss      | 0.781    |
+|    critic_loss     | 0.271    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 5899     |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 8        |
+|    fps             | 232      |
+|    time_elapsed    | 3        |
+|    total_timesteps | 800      |
+| train/             |          |
+|    actor_loss      | 1.25     |
+|    critic_loss     | 0.403    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 6299     |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 12       |
+|    fps             | 223      |
+|    time_elapsed    | 5        |
+|    total_timesteps | 1200     |
+| train/             |          |
+|    actor_loss      | 1.44     |
+|    critic_loss     | 0.446    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 6699     |
+---------------------------------
+=== Iterazione IRL 21 ===
+Loss reward (iter 21): 6.369208335876465
+=== Iterazione IRL 22 ===
+Loss reward (iter 22): 6.324378490447998
+=== Iterazione IRL 23 ===
+Loss reward (iter 23): 6.364721298217773
+=== Iterazione IRL 24 ===
+Loss reward (iter 24): 6.3808770179748535
+=== Iterazione IRL 25 ===
+Loss reward (iter 25): 6.362895965576172
+>>> Aggiorno la policy con TD3
+---------------------------------
+| time/              |          |
+|    episodes        | 4        |
+|    fps             | 265      |
+|    time_elapsed    | 1        |
+|    total_timesteps | 400      |
+| train/             |          |
+|    actor_loss      | 1.77     |
+|    critic_loss     | 0.498    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 7299     |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 8        |
+|    fps             | 232      |
+|    time_elapsed    | 3        |
+|    total_timesteps | 800      |
+| train/             |          |
+|    actor_loss      | 1.92     |
+|    critic_loss     | 0.585    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 7699     |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 12       |
+|    fps             | 223      |
+|    time_elapsed    | 5        |
+|    total_timesteps | 1200     |
+| train/             |          |
+|    actor_loss      | 2.01     |
+|    critic_loss     | 0.705    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 8099     |
+---------------------------------
+=== Iterazione IRL 26 ===
+Loss reward (iter 26): 6.371592044830322
+=== Iterazione IRL 27 ===
+Loss reward (iter 27): 6.400420665740967
+=== Iterazione IRL 28 ===
+Loss reward (iter 28): 6.420925617218018
+=== Iterazione IRL 29 ===
+Loss reward (iter 29): 6.3593878746032715
+=== Iterazione IRL 30 ===
+Loss reward (iter 30): 6.384583473205566
+>>> Aggiorno la policy con TD3
+---------------------------------
+| time/              |          |
+|    episodes        | 4        |
+|    fps             | 265      |
+|    time_elapsed    | 1        |
+|    total_timesteps | 400      |
+| train/             |          |
+|    actor_loss      | 2.01     |
+|    critic_loss     | 0.593    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 8699     |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 8        |
+|    fps             | 232      |
+|    time_elapsed    | 3        |
+|    total_timesteps | 800      |
+| train/             |          |
+|    actor_loss      | 2.37     |
+|    critic_loss     | 0.559    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 9099     |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 12       |
+|    fps             | 223      |
+|    time_elapsed    | 5        |
+|    total_timesteps | 1200     |
+| train/             |          |
+|    actor_loss      | 2.83     |
+|    critic_loss     | 0.548    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 9499     |
+---------------------------------
+=== Iterazione IRL 31 ===
+Loss reward (iter 31): 6.447682857513428
+=== Iterazione IRL 32 ===
+Loss reward (iter 32): 6.429653644561768
+=== Iterazione IRL 33 ===
+Loss reward (iter 33): 6.410083770751953
+=== Iterazione IRL 34 ===
+Loss reward (iter 34): 6.373950004577637
+=== Iterazione IRL 35 ===
+Loss reward (iter 35): 6.452561378479004
+>>> Aggiorno la policy con TD3
+---------------------------------
+| time/              |          |
+|    episodes        | 4        |
+|    fps             | 264      |
+|    time_elapsed    | 1        |
+|    total_timesteps | 400      |
+| train/             |          |
+|    actor_loss      | 2.89     |
+|    critic_loss     | 0.414    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 10099    |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 8        |
+|    fps             | 232      |
+|    time_elapsed    | 3        |
+|    total_timesteps | 800      |
+| train/             |          |
+|    actor_loss      | 3.03     |
+|    critic_loss     | 0.384    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 10499    |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 12       |
+|    fps             | 223      |
+|    time_elapsed    | 5        |
+|    total_timesteps | 1200     |
+| train/             |          |
+|    actor_loss      | 2.89     |
+|    critic_loss     | 0.341    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 10899    |
+---------------------------------
+=== Iterazione IRL 36 ===
+Loss reward (iter 36): 6.442824840545654
+=== Iterazione IRL 37 ===
+Loss reward (iter 37): 6.3655500411987305
+=== Iterazione IRL 38 ===
+Loss reward (iter 38): 6.371298789978027
+=== Iterazione IRL 39 ===
+Loss reward (iter 39): 6.382713794708252
+=== Iterazione IRL 40 ===
+Loss reward (iter 40): 6.348837375640869
+>>> Aggiorno la policy con TD3
+---------------------------------
+| time/              |          |
+|    episodes        | 4        |
+|    fps             | 264      |
+|    time_elapsed    | 1        |
+|    total_timesteps | 400      |
+| train/             |          |
+|    actor_loss      | 3.57     |
+|    critic_loss     | 0.292    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 11499    |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 8        |
+|    fps             | 232      |
+|    time_elapsed    | 3        |
+|    total_timesteps | 800      |
+| train/             |          |
+|    actor_loss      | 3.39     |
+|    critic_loss     | 0.242    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 11899    |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 12       |
+|    fps             | 223      |
+|    time_elapsed    | 5        |
+|    total_timesteps | 1200     |
+| train/             |          |
+|    actor_loss      | 3.61     |
+|    critic_loss     | 0.258    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 12299    |
+---------------------------------
+=== Iterazione IRL 41 ===
+Loss reward (iter 41): 6.366754055023193
+=== Iterazione IRL 42 ===
+Loss reward (iter 42): 6.354010105133057
+=== Iterazione IRL 43 ===
+Loss reward (iter 43): 6.386287212371826
+=== Iterazione IRL 44 ===
+Loss reward (iter 44): 6.310879707336426
+=== Iterazione IRL 45 ===
+Loss reward (iter 45): 6.3686933517456055
+>>> Aggiorno la policy con TD3
+---------------------------------
+| time/              |          |
+|    episodes        | 4        |
+|    fps             | 265      |
+|    time_elapsed    | 1        |
+|    total_timesteps | 400      |
+| train/             |          |
+|    actor_loss      | 3.64     |
+|    critic_loss     | 0.355    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 12899    |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 8        |
+|    fps             | 232      |
+|    time_elapsed    | 3        |
+|    total_timesteps | 800      |
+| train/             |          |
+|    actor_loss      | 3.97     |
+|    critic_loss     | 0.207    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 13299    |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 12       |
+|    fps             | 223      |
+|    time_elapsed    | 5        |
+|    total_timesteps | 1200     |
+| train/             |          |
+|    actor_loss      | 4.68     |
+|    critic_loss     | 0.257    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 13699    |
+---------------------------------
+=== Iterazione IRL 46 ===
+Loss reward (iter 46): 6.352435111999512
+=== Iterazione IRL 47 ===
+Loss reward (iter 47): 6.29912805557251
+=== Iterazione IRL 48 ===
+Loss reward (iter 48): 6.321985721588135
+=== Iterazione IRL 49 ===
+Loss reward (iter 49): 6.363058567047119
+=== Iterazione IRL 50 ===
+Loss reward (iter 50): 6.323716163635254
+>>> Aggiorno la policy con TD3
+---------------------------------
+| time/              |          |
+|    episodes        | 4        |
+|    fps             | 265      |
+|    time_elapsed    | 1        |
+|    total_timesteps | 400      |
+| train/             |          |
+|    actor_loss      | 4.62     |
+|    critic_loss     | 0.319    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 14299    |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 8        |
+|    fps             | 233      |
+|    time_elapsed    | 3        |
+|    total_timesteps | 800      |
+| train/             |          |
+|    actor_loss      | 4.27     |
+|    critic_loss     | 0.323    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 14699    |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 12       |
+|    fps             | 223      |
+|    time_elapsed    | 5        |
+|    total_timesteps | 1200     |
+| train/             |          |
+|    actor_loss      | 4.28     |
+|    critic_loss     | 0.369    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 15099    |
+---------------------------------
+=== Iterazione IRL 51 ===
+Loss reward (iter 51): 6.35067081451416
+=== Iterazione IRL 52 ===
+Loss reward (iter 52): 6.331437587738037
+=== Iterazione IRL 53 ===
+Loss reward (iter 53): 6.323641300201416
+=== Iterazione IRL 54 ===
+Loss reward (iter 54): 6.290879249572754
+=== Iterazione IRL 55 ===
+Loss reward (iter 55): 6.30108642578125
+>>> Aggiorno la policy con TD3
+---------------------------------
+| time/              |          |
+|    episodes        | 4        |
+|    fps             | 265      |
+|    time_elapsed    | 1        |
+|    total_timesteps | 400      |
+| train/             |          |
+|    actor_loss      | 4.79     |
+|    critic_loss     | 0.264    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 15699    |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 8        |
+|    fps             | 233      |
+|    time_elapsed    | 3        |
+|    total_timesteps | 800      |
+| train/             |          |
+|    actor_loss      | 4.91     |
+|    critic_loss     | 0.295    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 16099    |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 12       |
+|    fps             | 223      |
+|    time_elapsed    | 5        |
+|    total_timesteps | 1200     |
+| train/             |          |
+|    actor_loss      | 4.56     |
+|    critic_loss     | 0.262    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 16499    |
+---------------------------------
+=== Iterazione IRL 56 ===
+Loss reward (iter 56): 6.340939998626709
+=== Iterazione IRL 57 ===
+Loss reward (iter 57): 6.280675888061523
+=== Iterazione IRL 58 ===
+Loss reward (iter 58): 6.313007354736328
+=== Iterazione IRL 59 ===
+Loss reward (iter 59): 6.306479454040527
+=== Iterazione IRL 60 ===
+Loss reward (iter 60): 6.322641372680664
+>>> Aggiorno la policy con TD3
+---------------------------------
+| time/              |          |
+|    episodes        | 4        |
+|    fps             | 265      |
+|    time_elapsed    | 1        |
+|    total_timesteps | 400      |
+| train/             |          |
+|    actor_loss      | 5.18     |
+|    critic_loss     | 0.288    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 17099    |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 8        |
+|    fps             | 233      |
+|    time_elapsed    | 3        |
+|    total_timesteps | 800      |
+| train/             |          |
+|    actor_loss      | 5.41     |
+|    critic_loss     | 0.248    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 17499    |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 12       |
+|    fps             | 224      |
+|    time_elapsed    | 5        |
+|    total_timesteps | 1200     |
+| train/             |          |
+|    actor_loss      | 4.97     |
+|    critic_loss     | 0.237    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 17899    |
+---------------------------------
+=== Iterazione IRL 61 ===
+Loss reward (iter 61): 6.287389755249023
+=== Iterazione IRL 62 ===
+Loss reward (iter 62): 6.299347400665283
+=== Iterazione IRL 63 ===
+Loss reward (iter 63): 6.318166732788086
+=== Iterazione IRL 64 ===
+Loss reward (iter 64): 6.236865997314453
+=== Iterazione IRL 65 ===
+Loss reward (iter 65): 6.309384822845459
+>>> Aggiorno la policy con TD3
+---------------------------------
+| time/              |          |
+|    episodes        | 4        |
+|    fps             | 264      |
+|    time_elapsed    | 1        |
+|    total_timesteps | 400      |
+| train/             |          |
+|    actor_loss      | 5.08     |
+|    critic_loss     | 0.243    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 18499    |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 8        |
+|    fps             | 232      |
+|    time_elapsed    | 3        |
+|    total_timesteps | 800      |
+| train/             |          |
+|    actor_loss      | 5.67     |
+|    critic_loss     | 0.227    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 18899    |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 12       |
+|    fps             | 223      |
+|    time_elapsed    | 5        |
+|    total_timesteps | 1200     |
+| train/             |          |
+|    actor_loss      | 6.27     |
+|    critic_loss     | 0.269    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 19299    |
+---------------------------------
+=== Iterazione IRL 66 ===
+Loss reward (iter 66): 6.263303279876709
+=== Iterazione IRL 67 ===
+Loss reward (iter 67): 6.21223783493042
+=== Iterazione IRL 68 ===
+Loss reward (iter 68): 6.226980686187744
+=== Iterazione IRL 69 ===
+Loss reward (iter 69): 6.213123798370361
+=== Iterazione IRL 70 ===
+Loss reward (iter 70): 6.275277137756348
+>>> Aggiorno la policy con TD3
+---------------------------------
+| time/              |          |
+|    episodes        | 4        |
+|    fps             | 265      |
+|    time_elapsed    | 1        |
+|    total_timesteps | 400      |
+| train/             |          |
+|    actor_loss      | 5.95     |
+|    critic_loss     | 0.313    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 19899    |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 8        |
+|    fps             | 232      |
+|    time_elapsed    | 3        |
+|    total_timesteps | 800      |
+| train/             |          |
+|    actor_loss      | 5.56     |
+|    critic_loss     | 0.217    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 20299    |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 12       |
+|    fps             | 223      |
+|    time_elapsed    | 5        |
+|    total_timesteps | 1200     |
+| train/             |          |
+|    actor_loss      | 6.48     |
+|    critic_loss     | 0.223    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 20699    |
+---------------------------------
+=== Iterazione IRL 71 ===
+Loss reward (iter 71): 6.235186576843262
+=== Iterazione IRL 72 ===
+Loss reward (iter 72): 6.310052871704102
+=== Iterazione IRL 73 ===
+Loss reward (iter 73): 6.264395713806152
+=== Iterazione IRL 74 ===
+Loss reward (iter 74): 6.265140533447266
+=== Iterazione IRL 75 ===
+Loss reward (iter 75): 6.245067119598389
+>>> Aggiorno la policy con TD3
+---------------------------------
+| time/              |          |
+|    episodes        | 4        |
+|    fps             | 265      |
+|    time_elapsed    | 1        |
+|    total_timesteps | 400      |
+| train/             |          |
+|    actor_loss      | 6.76     |
+|    critic_loss     | 0.222    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 21299    |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 8        |
+|    fps             | 233      |
+|    time_elapsed    | 3        |
+|    total_timesteps | 800      |
+| train/             |          |
+|    actor_loss      | 6.28     |
+|    critic_loss     | 0.223    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 21699    |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 12       |
+|    fps             | 223      |
+|    time_elapsed    | 5        |
+|    total_timesteps | 1200     |
+| train/             |          |
+|    actor_loss      | 6.78     |
+|    critic_loss     | 0.26     |
+|    learning_rate   | 0.001    |
+|    n_updates       | 22099    |
+---------------------------------
+=== Iterazione IRL 76 ===
+Loss reward (iter 76): 6.2801008224487305
+=== Iterazione IRL 77 ===
+Loss reward (iter 77): 6.208405017852783
+=== Iterazione IRL 78 ===
+Loss reward (iter 78): 6.241735935211182
+=== Iterazione IRL 79 ===
+Loss reward (iter 79): 6.2519307136535645
+=== Iterazione IRL 80 ===
+Loss reward (iter 80): 6.221317291259766
+>>> Aggiorno la policy con TD3
+---------------------------------
+| time/              |          |
+|    episodes        | 4        |
+|    fps             | 264      |
+|    time_elapsed    | 1        |
+|    total_timesteps | 400      |
+| train/             |          |
+|    actor_loss      | 6.98     |
+|    critic_loss     | 0.2      |
+|    learning_rate   | 0.001    |
+|    n_updates       | 22699    |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 8        |
+|    fps             | 232      |
+|    time_elapsed    | 3        |
+|    total_timesteps | 800      |
+| train/             |          |
+|    actor_loss      | 7.34     |
+|    critic_loss     | 0.228    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 23099    |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 12       |
+|    fps             | 223      |
+|    time_elapsed    | 5        |
+|    total_timesteps | 1200     |
+| train/             |          |
+|    actor_loss      | 7.63     |
+|    critic_loss     | 0.153    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 23499    |
+---------------------------------
+=== Iterazione IRL 81 ===
+Loss reward (iter 81): 6.267024040222168
+=== Iterazione IRL 82 ===
+Loss reward (iter 82): 6.250209808349609
+=== Iterazione IRL 83 ===
+Loss reward (iter 83): 6.205560207366943
+=== Iterazione IRL 84 ===
+Loss reward (iter 84): 6.2329254150390625
+=== Iterazione IRL 85 ===
+Loss reward (iter 85): 6.19568395614624
+>>> Aggiorno la policy con TD3
+---------------------------------
+| time/              |          |
+|    episodes        | 4        |
+|    fps             | 265      |
+|    time_elapsed    | 1        |
+|    total_timesteps | 400      |
+| train/             |          |
+|    actor_loss      | 7.66     |
+|    critic_loss     | 0.182    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 24099    |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 8        |
+|    fps             | 233      |
+|    time_elapsed    | 3        |
+|    total_timesteps | 800      |
+| train/             |          |
+|    actor_loss      | 7.79     |
+|    critic_loss     | 0.24     |
+|    learning_rate   | 0.001    |
+|    n_updates       | 24499    |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 12       |
+|    fps             | 224      |
+|    time_elapsed    | 5        |
+|    total_timesteps | 1200     |
+| train/             |          |
+|    actor_loss      | 7.84     |
+|    critic_loss     | 0.226    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 24899    |
+---------------------------------
+=== Iterazione IRL 86 ===
+Loss reward (iter 86): 6.183262348175049
+=== Iterazione IRL 87 ===
+Loss reward (iter 87): 6.19969367980957
+=== Iterazione IRL 88 ===
+Loss reward (iter 88): 6.162683963775635
+=== Iterazione IRL 89 ===
+Loss reward (iter 89): 6.231224060058594
+=== Iterazione IRL 90 ===
+Loss reward (iter 90): 6.181318759918213
+>>> Aggiorno la policy con TD3
+---------------------------------
+| time/              |          |
+|    episodes        | 4        |
+|    fps             | 265      |
+|    time_elapsed    | 1        |
+|    total_timesteps | 400      |
+| train/             |          |
+|    actor_loss      | 7.13     |
+|    critic_loss     | 0.221    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 25499    |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 8        |
+|    fps             | 233      |
+|    time_elapsed    | 3        |
+|    total_timesteps | 800      |
+| train/             |          |
+|    actor_loss      | 8.17     |
+|    critic_loss     | 0.21     |
+|    learning_rate   | 0.001    |
+|    n_updates       | 25899    |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 12       |
+|    fps             | 224      |
+|    time_elapsed    | 5        |
+|    total_timesteps | 1200     |
+| train/             |          |
+|    actor_loss      | 7.88     |
+|    critic_loss     | 0.165    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 26299    |
+---------------------------------
+=== Iterazione IRL 91 ===
+Loss reward (iter 91): 6.195662021636963
+=== Iterazione IRL 92 ===
+Loss reward (iter 92): 6.192126274108887
+=== Iterazione IRL 93 ===
+Loss reward (iter 93): 6.23207950592041
+=== Iterazione IRL 94 ===
+Loss reward (iter 94): 6.201061248779297
+=== Iterazione IRL 95 ===
+Loss reward (iter 95): 6.148379802703857
+>>> Aggiorno la policy con TD3
+---------------------------------
+| time/              |          |
+|    episodes        | 4        |
+|    fps             | 265      |
+|    time_elapsed    | 1        |
+|    total_timesteps | 400      |
+| train/             |          |
+|    actor_loss      | 8.17     |
+|    critic_loss     | 0.24     |
+|    learning_rate   | 0.001    |
+|    n_updates       | 26899    |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 8        |
+|    fps             | 233      |
+|    time_elapsed    | 3        |
+|    total_timesteps | 800      |
+| train/             |          |
+|    actor_loss      | 8.06     |
+|    critic_loss     | 0.186    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 27299    |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 12       |
+|    fps             | 224      |
+|    time_elapsed    | 5        |
+|    total_timesteps | 1200     |
+| train/             |          |
+|    actor_loss      | 8.66     |
+|    critic_loss     | 0.277    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 27699    |
+---------------------------------
+=== Iterazione IRL 96 ===
+Loss reward (iter 96): 6.293366432189941
+=== Iterazione IRL 97 ===
+Loss reward (iter 97): 6.306286334991455
+=== Iterazione IRL 98 ===
+Loss reward (iter 98): 6.273750305175781
+=== Iterazione IRL 99 ===
+Loss reward (iter 99): 6.2343339920043945
+=== Iterazione IRL 100 ===
+Loss reward (iter 100): 6.250791072845459
+>>> Aggiorno la policy con TD3
+---------------------------------
+| time/              |          |
+|    episodes        | 4        |
+|    fps             | 266      |
+|    time_elapsed    | 1        |
+|    total_timesteps | 400      |
+| train/             |          |
+|    actor_loss      | 8.32     |
+|    critic_loss     | 0.252    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 28299    |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 8        |
+|    fps             | 233      |
+|    time_elapsed    | 3        |
+|    total_timesteps | 800      |
+| train/             |          |
+|    actor_loss      | 8.38     |
+|    critic_loss     | 0.268    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 28699    |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 12       |
+|    fps             | 224      |
+|    time_elapsed    | 5        |
+|    total_timesteps | 1200     |
+| train/             |          |
+|    actor_loss      | 7.74     |
+|    critic_loss     | 0.333    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 29099    |
+---------------------------------
+=== Iterazione IRL 101 ===
+Loss reward (iter 101): 6.37329626083374
+=== Iterazione IRL 102 ===
+Loss reward (iter 102): 6.2835307121276855
+=== Iterazione IRL 103 ===
+Loss reward (iter 103): 6.121906280517578
+=== Iterazione IRL 104 ===
+Loss reward (iter 104): 6.182925224304199
+=== Iterazione IRL 105 ===
+Loss reward (iter 105): 6.388293743133545
+>>> Aggiorno la policy con TD3
+---------------------------------
+| time/              |          |
+|    episodes        | 4        |
+|    fps             | 266      |
+|    time_elapsed    | 1        |
+|    total_timesteps | 400      |
+| train/             |          |
+|    actor_loss      | 8.98     |
+|    critic_loss     | 0.218    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 29699    |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 8        |
+|    fps             | 233      |
+|    time_elapsed    | 3        |
+|    total_timesteps | 800      |
+| train/             |          |
+|    actor_loss      | 8.78     |
+|    critic_loss     | 0.294    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 30099    |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 12       |
+|    fps             | 224      |
+|    time_elapsed    | 5        |
+|    total_timesteps | 1200     |
+| train/             |          |
+|    actor_loss      | 7.87     |
+|    critic_loss     | 0.281    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 30499    |
+---------------------------------
+=== Iterazione IRL 106 ===
+Loss reward (iter 106): 6.325890064239502
+=== Iterazione IRL 107 ===
+Loss reward (iter 107): 6.373974323272705
+=== Iterazione IRL 108 ===
+Loss reward (iter 108): 6.334905624389648
+=== Iterazione IRL 109 ===
+Loss reward (iter 109): 6.23786735534668
+=== Iterazione IRL 110 ===
+Loss reward (iter 110): 6.295854091644287
+>>> Aggiorno la policy con TD3
+---------------------------------
+| time/              |          |
+|    episodes        | 4        |
+|    fps             | 264      |
+|    time_elapsed    | 1        |
+|    total_timesteps | 400      |
+| train/             |          |
+|    actor_loss      | 8.6      |
+|    critic_loss     | 0.202    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 31099    |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 8        |
+|    fps             | 232      |
+|    time_elapsed    | 3        |
+|    total_timesteps | 800      |
+| train/             |          |
+|    actor_loss      | 7.03     |
+|    critic_loss     | 0.35     |
+|    learning_rate   | 0.001    |
+|    n_updates       | 31499    |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 12       |
+|    fps             | 223      |
+|    time_elapsed    | 5        |
+|    total_timesteps | 1200     |
+| train/             |          |
+|    actor_loss      | 7.54     |
+|    critic_loss     | 0.292    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 31899    |
+---------------------------------
+=== Iterazione IRL 111 ===
+Loss reward (iter 111): 6.2899932861328125
+=== Iterazione IRL 112 ===
+Loss reward (iter 112): 6.197768211364746
+=== Iterazione IRL 113 ===
+Loss reward (iter 113): 6.331921100616455
+=== Iterazione IRL 114 ===
+Loss reward (iter 114): 6.243198871612549
+=== Iterazione IRL 115 ===
+Loss reward (iter 115): 6.247794151306152
+>>> Aggiorno la policy con TD3
+---------------------------------
+| time/              |          |
+|    episodes        | 4        |
+|    fps             | 265      |
+|    time_elapsed    | 1        |
+|    total_timesteps | 400      |
+| train/             |          |
+|    actor_loss      | 6.99     |
+|    critic_loss     | 0.33     |
+|    learning_rate   | 0.001    |
+|    n_updates       | 32499    |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 8        |
+|    fps             | 232      |
+|    time_elapsed    | 3        |
+|    total_timesteps | 800      |
+| train/             |          |
+|    actor_loss      | 6.89     |
+|    critic_loss     | 0.443    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 32899    |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 12       |
+|    fps             | 223      |
+|    time_elapsed    | 5        |
+|    total_timesteps | 1200     |
+| train/             |          |
+|    actor_loss      | 6.25     |
+|    critic_loss     | 0.361    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 33299    |
+---------------------------------
+=== Iterazione IRL 116 ===
+Loss reward (iter 116): 6.394071102142334
+=== Iterazione IRL 117 ===
+Loss reward (iter 117): 6.528995037078857
+=== Iterazione IRL 118 ===
+Loss reward (iter 118): 6.408008575439453
+=== Iterazione IRL 119 ===
+Loss reward (iter 119): 6.372494220733643
+=== Iterazione IRL 120 ===
+Loss reward (iter 120): 6.372716426849365
+>>> Aggiorno la policy con TD3
+---------------------------------
+| time/              |          |
+|    episodes        | 4        |
+|    fps             | 264      |
+|    time_elapsed    | 1        |
+|    total_timesteps | 400      |
+| train/             |          |
+|    actor_loss      | 5.85     |
+|    critic_loss     | 0.45     |
+|    learning_rate   | 0.001    |
+|    n_updates       | 33899    |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 8        |
+|    fps             | 232      |
+|    time_elapsed    | 3        |
+|    total_timesteps | 800      |
+| train/             |          |
+|    actor_loss      | 5.79     |
+|    critic_loss     | 0.299    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 34299    |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 12       |
+|    fps             | 223      |
+|    time_elapsed    | 5        |
+|    total_timesteps | 1200     |
+| train/             |          |
+|    actor_loss      | 5.19     |
+|    critic_loss     | 0.375    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 34699    |
+---------------------------------
+=== Iterazione IRL 121 ===
+Loss reward (iter 121): 6.497307300567627
+=== Iterazione IRL 122 ===
+Loss reward (iter 122): 6.5206780433654785
+=== Iterazione IRL 123 ===
+Loss reward (iter 123): 6.355756759643555
+=== Iterazione IRL 124 ===
+Loss reward (iter 124): 6.353877544403076
+=== Iterazione IRL 125 ===
+Loss reward (iter 125): 6.244999885559082
+>>> Aggiorno la policy con TD3
+---------------------------------
+| time/              |          |
+|    episodes        | 4        |
+|    fps             | 265      |
+|    time_elapsed    | 1        |
+|    total_timesteps | 400      |
+| train/             |          |
+|    actor_loss      | 7.49     |
+|    critic_loss     | 0.404    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 35299    |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 8        |
+|    fps             | 232      |
+|    time_elapsed    | 3        |
+|    total_timesteps | 800      |
+| train/             |          |
+|    actor_loss      | 5.36     |
+|    critic_loss     | 0.402    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 35699    |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 12       |
+|    fps             | 223      |
+|    time_elapsed    | 5        |
+|    total_timesteps | 1200     |
+| train/             |          |
+|    actor_loss      | 4.69     |
+|    critic_loss     | 0.418    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 36099    |
+---------------------------------
+=== Iterazione IRL 126 ===
+Loss reward (iter 126): 6.272162437438965
+=== Iterazione IRL 127 ===
+Loss reward (iter 127): 6.182377815246582
+=== Iterazione IRL 128 ===
+Loss reward (iter 128): 6.1554365158081055
+=== Iterazione IRL 129 ===
+Loss reward (iter 129): 6.12778377532959
+=== Iterazione IRL 130 ===
+Loss reward (iter 130): 6.138185024261475
+>>> Aggiorno la policy con TD3
+---------------------------------
+| time/              |          |
+|    episodes        | 4        |
+|    fps             | 265      |
+|    time_elapsed    | 1        |
+|    total_timesteps | 400      |
+| train/             |          |
+|    actor_loss      | 3.41     |
+|    critic_loss     | 0.475    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 36699    |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 8        |
+|    fps             | 232      |
+|    time_elapsed    | 3        |
+|    total_timesteps | 800      |
+| train/             |          |
+|    actor_loss      | 5.58     |
+|    critic_loss     | 0.361    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 37099    |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 12       |
+|    fps             | 224      |
+|    time_elapsed    | 5        |
+|    total_timesteps | 1200     |
+| train/             |          |
+|    actor_loss      | 4.61     |
+|    critic_loss     | 0.482    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 37499    |
+---------------------------------
+=== Iterazione IRL 131 ===
+Loss reward (iter 131): 6.16566801071167
+=== Iterazione IRL 132 ===
+Loss reward (iter 132): 6.01200008392334
+=== Iterazione IRL 133 ===
+Loss reward (iter 133): 6.184935569763184
+=== Iterazione IRL 134 ===
+Loss reward (iter 134): 5.9610209465026855
+=== Iterazione IRL 135 ===
+Loss reward (iter 135): 5.938615798950195
+>>> Aggiorno la policy con TD3
+---------------------------------
+| time/              |          |
+|    episodes        | 4        |
+|    fps             | 268      |
+|    time_elapsed    | 1        |
+|    total_timesteps | 400      |
+| train/             |          |
+|    actor_loss      | 5.01     |
+|    critic_loss     | 0.36     |
+|    learning_rate   | 0.001    |
+|    n_updates       | 38099    |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 8        |
+|    fps             | 235      |
+|    time_elapsed    | 3        |
+|    total_timesteps | 800      |
+| train/             |          |
+|    actor_loss      | 4        |
+|    critic_loss     | 0.452    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 38499    |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 12       |
+|    fps             | 226      |
+|    time_elapsed    | 5        |
+|    total_timesteps | 1200     |
+| train/             |          |
+|    actor_loss      | 4.34     |
+|    critic_loss     | 0.457    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 38899    |
+---------------------------------
+=== Iterazione IRL 136 ===
+Loss reward (iter 136): 6.156286716461182
+=== Iterazione IRL 137 ===
+Loss reward (iter 137): 6.195468902587891
+=== Iterazione IRL 138 ===
+Loss reward (iter 138): 6.216131687164307
+=== Iterazione IRL 139 ===
+Loss reward (iter 139): 6.210160255432129
+=== Iterazione IRL 140 ===
+Loss reward (iter 140): 6.128462791442871
+>>> Aggiorno la policy con TD3
+---------------------------------
+| time/              |          |
+|    episodes        | 4        |
+|    fps             | 269      |
+|    time_elapsed    | 1        |
+|    total_timesteps | 400      |
+| train/             |          |
+|    actor_loss      | 3.62     |
+|    critic_loss     | 0.376    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 39499    |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 8        |
+|    fps             | 236      |
+|    time_elapsed    | 3        |
+|    total_timesteps | 800      |
+| train/             |          |
+|    actor_loss      | 5.25     |
+|    critic_loss     | 0.418    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 39899    |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 12       |
+|    fps             | 226      |
+|    time_elapsed    | 5        |
+|    total_timesteps | 1200     |
+| train/             |          |
+|    actor_loss      | 4.16     |
+|    critic_loss     | 0.395    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 40299    |
+---------------------------------
+=== Iterazione IRL 141 ===
+Loss reward (iter 141): 5.8036603927612305
+=== Iterazione IRL 142 ===
+Loss reward (iter 142): 6.104389667510986
+=== Iterazione IRL 143 ===
+Loss reward (iter 143): 6.053974151611328
+=== Iterazione IRL 144 ===
+Loss reward (iter 144): 5.846088886260986
+=== Iterazione IRL 145 ===
+Loss reward (iter 145): 6.126805782318115
+>>> Aggiorno la policy con TD3
+---------------------------------
+| time/              |          |
+|    episodes        | 4        |
+|    fps             | 269      |
+|    time_elapsed    | 1        |
+|    total_timesteps | 400      |
+| train/             |          |
+|    actor_loss      | 4.46     |
+|    critic_loss     | 0.518    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 40899    |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 8        |
+|    fps             | 236      |
+|    time_elapsed    | 3        |
+|    total_timesteps | 800      |
+| train/             |          |
+|    actor_loss      | 5        |
+|    critic_loss     | 0.368    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 41299    |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 12       |
+|    fps             | 227      |
+|    time_elapsed    | 5        |
+|    total_timesteps | 1200     |
+| train/             |          |
+|    actor_loss      | 4.51     |
+|    critic_loss     | 0.507    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 41699    |
+---------------------------------
+=== Iterazione IRL 146 ===
+Loss reward (iter 146): 5.521446704864502
+=== Iterazione IRL 147 ===
+Loss reward (iter 147): 6.00606632232666
+=== Iterazione IRL 148 ===
+Loss reward (iter 148): 6.006940841674805
+=== Iterazione IRL 149 ===
+Loss reward (iter 149): 5.941504955291748
+=== Iterazione IRL 150 ===
+Loss reward (iter 150): 5.727112770080566
+>>> Aggiorno la policy con TD3
+---------------------------------
+| time/              |          |
+|    episodes        | 4        |
+|    fps             | 268      |
+|    time_elapsed    | 1        |
+|    total_timesteps | 400      |
+| train/             |          |
+|    actor_loss      | 5.69     |
+|    critic_loss     | 0.483    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 42299    |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 8        |
+|    fps             | 236      |
+|    time_elapsed    | 3        |
+|    total_timesteps | 800      |
+| train/             |          |
+|    actor_loss      | 5.23     |
+|    critic_loss     | 0.355    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 42699    |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 12       |
+|    fps             | 226      |
+|    time_elapsed    | 5        |
+|    total_timesteps | 1200     |
+| train/             |          |
+|    actor_loss      | 5.65     |
+|    critic_loss     | 0.568    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 43099    |
+---------------------------------
+=== Iterazione IRL 151 ===
+Loss reward (iter 151): 5.779155254364014
+=== Iterazione IRL 152 ===
+Loss reward (iter 152): 5.87974214553833
+=== Iterazione IRL 153 ===
+Loss reward (iter 153): 5.997076988220215
+=== Iterazione IRL 154 ===
+Loss reward (iter 154): 6.047848224639893
+=== Iterazione IRL 155 ===
+Loss reward (iter 155): 5.463733673095703
+>>> Aggiorno la policy con TD3
+---------------------------------
+| time/              |          |
+|    episodes        | 4        |
+|    fps             | 269      |
+|    time_elapsed    | 1        |
+|    total_timesteps | 400      |
+| train/             |          |
+|    actor_loss      | 5.23     |
+|    critic_loss     | 0.569    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 43699    |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 8        |
+|    fps             | 236      |
+|    time_elapsed    | 3        |
+|    total_timesteps | 800      |
+| train/             |          |
+|    actor_loss      | 5.51     |
+|    critic_loss     | 0.47     |
+|    learning_rate   | 0.001    |
+|    n_updates       | 44099    |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 12       |
+|    fps             | 227      |
+|    time_elapsed    | 5        |
+|    total_timesteps | 1200     |
+| train/             |          |
+|    actor_loss      | 5.11     |
+|    critic_loss     | 0.519    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 44499    |
+---------------------------------
+=== Iterazione IRL 156 ===
+Loss reward (iter 156): 6.2037882804870605
+=== Iterazione IRL 157 ===
+Loss reward (iter 157): 6.279191017150879
+=== Iterazione IRL 158 ===
+Loss reward (iter 158): 6.315846920013428
+=== Iterazione IRL 159 ===
+Loss reward (iter 159): 6.256247520446777
+=== Iterazione IRL 160 ===
+Loss reward (iter 160): 6.432743549346924
+>>> Aggiorno la policy con TD3
+---------------------------------
+| time/              |          |
+|    episodes        | 4        |
+|    fps             | 268      |
+|    time_elapsed    | 1        |
+|    total_timesteps | 400      |
+| train/             |          |
+|    actor_loss      | 6.11     |
+|    critic_loss     | 0.504    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 45099    |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 8        |
+|    fps             | 235      |
+|    time_elapsed    | 3        |
+|    total_timesteps | 800      |
+| train/             |          |
+|    actor_loss      | 6.78     |
+|    critic_loss     | 0.593    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 45499    |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 12       |
+|    fps             | 226      |
+|    time_elapsed    | 5        |
+|    total_timesteps | 1200     |
+| train/             |          |
+|    actor_loss      | 5.58     |
+|    critic_loss     | 0.466    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 45899    |
+---------------------------------
+=== Iterazione IRL 161 ===
+Loss reward (iter 161): 6.148118495941162
+=== Iterazione IRL 162 ===
+Loss reward (iter 162): 6.277859210968018
+=== Iterazione IRL 163 ===
+Loss reward (iter 163): 6.263043403625488
+=== Iterazione IRL 164 ===
+Loss reward (iter 164): 6.3934855461120605
+=== Iterazione IRL 165 ===
+Loss reward (iter 165): 6.209383487701416
+>>> Aggiorno la policy con TD3
+---------------------------------
+| time/              |          |
+|    episodes        | 4        |
+|    fps             | 268      |
+|    time_elapsed    | 1        |
+|    total_timesteps | 400      |
+| train/             |          |
+|    actor_loss      | 6.57     |
+|    critic_loss     | 0.708    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 46499    |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 8        |
+|    fps             | 236      |
+|    time_elapsed    | 3        |
+|    total_timesteps | 800      |
+| train/             |          |
+|    actor_loss      | 8.01     |
+|    critic_loss     | 0.582    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 46899    |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 12       |
+|    fps             | 226      |
+|    time_elapsed    | 5        |
+|    total_timesteps | 1200     |
+| train/             |          |
+|    actor_loss      | 6.46     |
+|    critic_loss     | 0.686    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 47299    |
+---------------------------------
+=== Iterazione IRL 166 ===
+Loss reward (iter 166): 6.358213901519775
+=== Iterazione IRL 167 ===
+Loss reward (iter 167): 6.563377380371094
+=== Iterazione IRL 168 ===
+Loss reward (iter 168): 6.394942760467529
+=== Iterazione IRL 169 ===
+Loss reward (iter 169): 6.438748836517334
+=== Iterazione IRL 170 ===
+Loss reward (iter 170): 6.140320777893066
+>>> Aggiorno la policy con TD3
+---------------------------------
+| time/              |          |
+|    episodes        | 4        |
+|    fps             | 269      |
+|    time_elapsed    | 1        |
+|    total_timesteps | 400      |
+| train/             |          |
+|    actor_loss      | 6.93     |
+|    critic_loss     | 0.476    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 47899    |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 8        |
+|    fps             | 236      |
+|    time_elapsed    | 3        |
+|    total_timesteps | 800      |
+| train/             |          |
+|    actor_loss      | 6.79     |
+|    critic_loss     | 0.4      |
+|    learning_rate   | 0.001    |
+|    n_updates       | 48299    |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 12       |
+|    fps             | 227      |
+|    time_elapsed    | 5        |
+|    total_timesteps | 1200     |
+| train/             |          |
+|    actor_loss      | 7        |
+|    critic_loss     | 0.436    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 48699    |
+---------------------------------
+=== Iterazione IRL 171 ===
+Loss reward (iter 171): 6.432610034942627
+=== Iterazione IRL 172 ===
+Loss reward (iter 172): 6.302542686462402
+=== Iterazione IRL 173 ===
+Loss reward (iter 173): 6.357516288757324
+=== Iterazione IRL 174 ===
+Loss reward (iter 174): 6.380431175231934
+=== Iterazione IRL 175 ===
+Loss reward (iter 175): 6.44936466217041
+>>> Aggiorno la policy con TD3
+---------------------------------
+| time/              |          |
+|    episodes        | 4        |
+|    fps             | 269      |
+|    time_elapsed    | 1        |
+|    total_timesteps | 400      |
+| train/             |          |
+|    actor_loss      | 6.32     |
+|    critic_loss     | 0.712    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 49299    |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 8        |
+|    fps             | 236      |
+|    time_elapsed    | 3        |
+|    total_timesteps | 800      |
+| train/             |          |
+|    actor_loss      | 7.12     |
+|    critic_loss     | 0.439    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 49699    |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 12       |
+|    fps             | 227      |
+|    time_elapsed    | 5        |
+|    total_timesteps | 1200     |
+| train/             |          |
+|    actor_loss      | 7.87     |
+|    critic_loss     | 0.554    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 50099    |
+---------------------------------
+=== Iterazione IRL 176 ===
+Loss reward (iter 176): 6.312233924865723
+=== Iterazione IRL 177 ===
+Loss reward (iter 177): 6.277873992919922
+=== Iterazione IRL 178 ===
+Loss reward (iter 178): 6.071896553039551
+=== Iterazione IRL 179 ===
+Loss reward (iter 179): 6.369859218597412
+=== Iterazione IRL 180 ===
+Loss reward (iter 180): 6.115041255950928
+>>> Aggiorno la policy con TD3
+---------------------------------
+| time/              |          |
+|    episodes        | 4        |
+|    fps             | 269      |
+|    time_elapsed    | 1        |
+|    total_timesteps | 400      |
+| train/             |          |
+|    actor_loss      | 7.81     |
+|    critic_loss     | 0.481    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 50699    |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 8        |
+|    fps             | 236      |
+|    time_elapsed    | 3        |
+|    total_timesteps | 800      |
+| train/             |          |
+|    actor_loss      | 8.27     |
+|    critic_loss     | 0.651    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 51099    |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 12       |
+|    fps             | 227      |
+|    time_elapsed    | 5        |
+|    total_timesteps | 1200     |
+| train/             |          |
+|    actor_loss      | 9.39     |
+|    critic_loss     | 0.689    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 51499    |
+---------------------------------
+=== Iterazione IRL 181 ===
+Loss reward (iter 181): 6.134544849395752
+=== Iterazione IRL 182 ===
+Loss reward (iter 182): 6.148322582244873
+=== Iterazione IRL 183 ===
+Loss reward (iter 183): 5.9512739181518555
+=== Iterazione IRL 184 ===
+Loss reward (iter 184): 6.185770511627197
+=== Iterazione IRL 185 ===
+Loss reward (iter 185): 6.093981742858887
+>>> Aggiorno la policy con TD3
+---------------------------------
+| time/              |          |
+|    episodes        | 4        |
+|    fps             | 269      |
+|    time_elapsed    | 1        |
+|    total_timesteps | 400      |
+| train/             |          |
+|    actor_loss      | 9.81     |
+|    critic_loss     | 0.588    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 52099    |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 8        |
+|    fps             | 236      |
+|    time_elapsed    | 3        |
+|    total_timesteps | 800      |
+| train/             |          |
+|    actor_loss      | 8.99     |
+|    critic_loss     | 0.596    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 52499    |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 12       |
+|    fps             | 226      |
+|    time_elapsed    | 5        |
+|    total_timesteps | 1200     |
+| train/             |          |
+|    actor_loss      | 11.2     |
+|    critic_loss     | 0.675    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 52899    |
+---------------------------------
+=== Iterazione IRL 186 ===
+Loss reward (iter 186): 6.214531898498535
+=== Iterazione IRL 187 ===
+Loss reward (iter 187): 6.411764621734619
+=== Iterazione IRL 188 ===
+Loss reward (iter 188): 6.340272903442383
+=== Iterazione IRL 189 ===
+Loss reward (iter 189): 6.2784953117370605
+=== Iterazione IRL 190 ===
+Loss reward (iter 190): 6.16152286529541
+>>> Aggiorno la policy con TD3
+---------------------------------
+| time/              |          |
+|    episodes        | 4        |
+|    fps             | 263      |
+|    time_elapsed    | 1        |
+|    total_timesteps | 400      |
+| train/             |          |
+|    actor_loss      | 8.07     |
+|    critic_loss     | 0.485    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 53499    |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 8        |
+|    fps             | 231      |
+|    time_elapsed    | 3        |
+|    total_timesteps | 800      |
+| train/             |          |
+|    actor_loss      | 11.2     |
+|    critic_loss     | 0.613    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 53899    |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 12       |
+|    fps             | 222      |
+|    time_elapsed    | 5        |
+|    total_timesteps | 1200     |
+| train/             |          |
+|    actor_loss      | 10.9     |
+|    critic_loss     | 0.666    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 54299    |
+---------------------------------
+=== Iterazione IRL 191 ===
+Loss reward (iter 191): 6.077314376831055
+=== Iterazione IRL 192 ===
+Loss reward (iter 192): 6.317400932312012
+=== Iterazione IRL 193 ===
+Loss reward (iter 193): 6.377302646636963
+=== Iterazione IRL 194 ===
+Loss reward (iter 194): 5.969295501708984
+=== Iterazione IRL 195 ===
+Loss reward (iter 195): 6.134537220001221
+>>> Aggiorno la policy con TD3
+---------------------------------
+| time/              |          |
+|    episodes        | 4        |
+|    fps             | 263      |
+|    time_elapsed    | 1        |
+|    total_timesteps | 400      |
+| train/             |          |
+|    actor_loss      | 9.62     |
+|    critic_loss     | 0.686    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 54899    |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 8        |
+|    fps             | 231      |
+|    time_elapsed    | 3        |
+|    total_timesteps | 800      |
+| train/             |          |
+|    actor_loss      | 12.8     |
+|    critic_loss     | 0.517    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 55299    |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 12       |
+|    fps             | 222      |
+|    time_elapsed    | 5        |
+|    total_timesteps | 1200     |
+| train/             |          |
+|    actor_loss      | 10.3     |
+|    critic_loss     | 0.536    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 55699    |
+---------------------------------
+=== Iterazione IRL 196 ===
+Loss reward (iter 196): 5.974660873413086
+=== Iterazione IRL 197 ===
+Loss reward (iter 197): 5.995789527893066
+=== Iterazione IRL 198 ===
+Loss reward (iter 198): 6.077662944793701
+=== Iterazione IRL 199 ===
+Loss reward (iter 199): 5.814329147338867
+=== Iterazione IRL 200 ===
+Loss reward (iter 200): 6.378610134124756
+>>> Aggiorno la policy con TD3
+---------------------------------
+| time/              |          |
+|    episodes        | 4        |
+|    fps             | 263      |
+|    time_elapsed    | 1        |
+|    total_timesteps | 400      |
+| train/             |          |
+|    actor_loss      | 11.8     |
+|    critic_loss     | 0.743    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 56299    |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 8        |
+|    fps             | 231      |
+|    time_elapsed    | 3        |
+|    total_timesteps | 800      |
+| train/             |          |
+|    actor_loss      | 11.5     |
+|    critic_loss     | 0.625    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 56699    |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 12       |
+|    fps             | 222      |
+|    time_elapsed    | 5        |
+|    total_timesteps | 1200     |
+| train/             |          |
+|    actor_loss      | 11.4     |
+|    critic_loss     | 0.714    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 57099    |
+---------------------------------
+=== Iterazione IRL 201 ===
+Loss reward (iter 201): 6.096890926361084
+=== Iterazione IRL 202 ===
+Loss reward (iter 202): 5.9335808753967285
+=== Iterazione IRL 203 ===
+Loss reward (iter 203): 6.242771148681641
+=== Iterazione IRL 204 ===
+Loss reward (iter 204): 6.192411422729492
+=== Iterazione IRL 205 ===
+Loss reward (iter 205): 6.1245222091674805
+>>> Aggiorno la policy con TD3
+---------------------------------
+| time/              |          |
+|    episodes        | 4        |
+|    fps             | 263      |
+|    time_elapsed    | 1        |
+|    total_timesteps | 400      |
+| train/             |          |
+|    actor_loss      | 11.7     |
+|    critic_loss     | 0.597    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 57699    |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 8        |
+|    fps             | 231      |
+|    time_elapsed    | 3        |
+|    total_timesteps | 800      |
+| train/             |          |
+|    actor_loss      | 12.3     |
+|    critic_loss     | 0.638    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 58099    |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 12       |
+|    fps             | 222      |
+|    time_elapsed    | 5        |
+|    total_timesteps | 1200     |
+| train/             |          |
+|    actor_loss      | 12       |
+|    critic_loss     | 0.574    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 58499    |
+---------------------------------
+=== Iterazione IRL 206 ===
+Loss reward (iter 206): 6.1720099449157715
+=== Iterazione IRL 207 ===
+Loss reward (iter 207): 6.3120036125183105
+=== Iterazione IRL 208 ===
+Loss reward (iter 208): 6.063050746917725
+=== Iterazione IRL 209 ===
+Loss reward (iter 209): 6.33575439453125
+=== Iterazione IRL 210 ===
+Loss reward (iter 210): 6.2252583503723145
+>>> Aggiorno la policy con TD3
+---------------------------------
+| time/              |          |
+|    episodes        | 4        |
+|    fps             | 264      |
+|    time_elapsed    | 1        |
+|    total_timesteps | 400      |
+| train/             |          |
+|    actor_loss      | 12       |
+|    critic_loss     | 0.659    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 59099    |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 8        |
+|    fps             | 231      |
+|    time_elapsed    | 3        |
+|    total_timesteps | 800      |
+| train/             |          |
+|    actor_loss      | 11.3     |
+|    critic_loss     | 0.566    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 59499    |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 12       |
+|    fps             | 222      |
+|    time_elapsed    | 5        |
+|    total_timesteps | 1200     |
+| train/             |          |
+|    actor_loss      | 12.6     |
+|    critic_loss     | 0.53     |
+|    learning_rate   | 0.001    |
+|    n_updates       | 59899    |
+---------------------------------
+=== Iterazione IRL 211 ===
+Loss reward (iter 211): 6.066115856170654
+=== Iterazione IRL 212 ===
+Loss reward (iter 212): 6.113130569458008
+=== Iterazione IRL 213 ===
+Loss reward (iter 213): 6.075892925262451
+=== Iterazione IRL 214 ===
+Loss reward (iter 214): 6.288848400115967
+=== Iterazione IRL 215 ===
+Loss reward (iter 215): 6.061232566833496
+>>> Aggiorno la policy con TD3
+---------------------------------
+| time/              |          |
+|    episodes        | 4        |
+|    fps             | 263      |
+|    time_elapsed    | 1        |
+|    total_timesteps | 400      |
+| train/             |          |
+|    actor_loss      | 11.3     |
+|    critic_loss     | 0.618    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 60499    |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 8        |
+|    fps             | 231      |
+|    time_elapsed    | 3        |
+|    total_timesteps | 800      |
+| train/             |          |
+|    actor_loss      | 12.9     |
+|    critic_loss     | 0.552    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 60899    |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 12       |
+|    fps             | 222      |
+|    time_elapsed    | 5        |
+|    total_timesteps | 1200     |
+| train/             |          |
+|    actor_loss      | 14.7     |
+|    critic_loss     | 0.677    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 61299    |
+---------------------------------
+=== Iterazione IRL 216 ===
+Loss reward (iter 216): 6.0245161056518555
+=== Iterazione IRL 217 ===
+Loss reward (iter 217): 6.091733932495117
+=== Iterazione IRL 218 ===
+Loss reward (iter 218): 6.195501804351807
+=== Iterazione IRL 219 ===
+Loss reward (iter 219): 6.231276988983154
+=== Iterazione IRL 220 ===
+Loss reward (iter 220): 6.159375190734863
+>>> Aggiorno la policy con TD3
+---------------------------------
+| time/              |          |
+|    episodes        | 4        |
+|    fps             | 264      |
+|    time_elapsed    | 1        |
+|    total_timesteps | 400      |
+| train/             |          |
+|    actor_loss      | 12.5     |
+|    critic_loss     | 0.687    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 61899    |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 8        |
+|    fps             | 233      |
+|    time_elapsed    | 3        |
+|    total_timesteps | 800      |
+| train/             |          |
+|    actor_loss      | 14.7     |
+|    critic_loss     | 0.567    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 62299    |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 12       |
+|    fps             | 225      |
+|    time_elapsed    | 5        |
+|    total_timesteps | 1200     |
+| train/             |          |
+|    actor_loss      | 12.8     |
+|    critic_loss     | 0.677    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 62699    |
+---------------------------------
+=== Iterazione IRL 221 ===
+Loss reward (iter 221): 6.186028003692627
+=== Iterazione IRL 222 ===
+Loss reward (iter 222): 6.252756118774414
+=== Iterazione IRL 223 ===
+Loss reward (iter 223): 6.193997383117676
+=== Iterazione IRL 224 ===
+Loss reward (iter 224): 6.135644912719727
+=== Iterazione IRL 225 ===
+Loss reward (iter 225): 6.101367473602295
+>>> Aggiorno la policy con TD3
+---------------------------------
+| time/              |          |
+|    episodes        | 4        |
+|    fps             | 269      |
+|    time_elapsed    | 1        |
+|    total_timesteps | 400      |
+| train/             |          |
+|    actor_loss      | 13.8     |
+|    critic_loss     | 0.661    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 63299    |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 8        |
+|    fps             | 236      |
+|    time_elapsed    | 3        |
+|    total_timesteps | 800      |
+| train/             |          |
+|    actor_loss      | 12.6     |
+|    critic_loss     | 0.601    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 63699    |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 12       |
+|    fps             | 227      |
+|    time_elapsed    | 5        |
+|    total_timesteps | 1200     |
+| train/             |          |
+|    actor_loss      | 13.8     |
+|    critic_loss     | 0.622    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 64099    |
+---------------------------------
+=== Iterazione IRL 226 ===
+Loss reward (iter 226): 6.2338175773620605
+=== Iterazione IRL 227 ===
+Loss reward (iter 227): 6.123895168304443
+=== Iterazione IRL 228 ===
+Loss reward (iter 228): 6.150698661804199
+=== Iterazione IRL 229 ===
+Loss reward (iter 229): 6.166472911834717
+=== Iterazione IRL 230 ===
+Loss reward (iter 230): 6.16920804977417
+>>> Aggiorno la policy con TD3
+---------------------------------
+| time/              |          |
+|    episodes        | 4        |
+|    fps             | 268      |
+|    time_elapsed    | 1        |
+|    total_timesteps | 400      |
+| train/             |          |
+|    actor_loss      | 15.4     |
+|    critic_loss     | 0.658    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 64699    |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 8        |
+|    fps             | 236      |
+|    time_elapsed    | 3        |
+|    total_timesteps | 800      |
+| train/             |          |
+|    actor_loss      | 12.7     |
+|    critic_loss     | 0.835    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 65099    |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 12       |
+|    fps             | 227      |
+|    time_elapsed    | 5        |
+|    total_timesteps | 1200     |
+| train/             |          |
+|    actor_loss      | 14.6     |
+|    critic_loss     | 0.648    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 65499    |
+---------------------------------
+=== Iterazione IRL 231 ===
+Loss reward (iter 231): 6.2794952392578125
+=== Iterazione IRL 232 ===
+Loss reward (iter 232): 6.09645414352417
+=== Iterazione IRL 233 ===
+Loss reward (iter 233): 6.052770614624023
+=== Iterazione IRL 234 ===
+Loss reward (iter 234): 6.097628116607666
+=== Iterazione IRL 235 ===
+Loss reward (iter 235): 5.899714946746826
+>>> Aggiorno la policy con TD3
+---------------------------------
+| time/              |          |
+|    episodes        | 4        |
+|    fps             | 269      |
+|    time_elapsed    | 1        |
+|    total_timesteps | 400      |
+| train/             |          |
+|    actor_loss      | 14.5     |
+|    critic_loss     | 0.736    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 66099    |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 8        |
+|    fps             | 236      |
+|    time_elapsed    | 3        |
+|    total_timesteps | 800      |
+| train/             |          |
+|    actor_loss      | 14.3     |
+|    critic_loss     | 0.784    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 66499    |
+---------------------------------
+---------------------------------
+| time/              |          |
+|    episodes        | 12       |
+|    fps             | 226      |
+|    time_elapsed    | 5        |
+|    total_timesteps | 1200     |
+| train/             |          |
+|    actor_loss      | 15.1     |
+|    critic_loss     | 0.737    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 66899    |
+---------------------------------
+=== Iterazione IRL 236 ===
+Loss reward (iter 236): 6.192498207092285
+=== Iterazione IRL 237 ===
+Loss reward (iter 237): 6.112791061401367
+=== Iterazione IRL 238 ===
+Loss reward (iter 238): 5.841987609863281
+=== Iterazione IRL 239 ===
+Loss reward (iter 239): 6.061342239379883
+=== Iterazione IRL 240 ===
+Loss reward (iter 240): 5.9622344970703125
+>>> Aggiorno la policy con TD3
+---------------------------------
+| time/              |          |
+|    episodes        | 4        |
+|    fps             | 269      |
+|    time_elapsed    | 1        |
+|    total_timesteps | 400      |
+| train/             |          |
+|    actor_loss      | 15.5     |
+|    critic_loss     | 0.833    |
+|    learning_rate   | 0.001    |
+|    n_updates       | 67499    |
+---------------------------------
