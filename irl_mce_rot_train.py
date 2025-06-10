@@ -42,9 +42,13 @@ for i in range(n_episodes):
 
     trajectories.append(Trajectory(obs=obs_traj, acts=acts_traj, infos=None, terminal=True))
 
+
+rng = np.random.default_rng(seed=0)
+
 # Crea l'ambiente
 venv = make_vec_env(
     lambda: TrackingEnv(),
+    rng=rng,
     n_envs=1,
     post_wrappers=[lambda env, _: RolloutInfoWrapper(env)],
 )
