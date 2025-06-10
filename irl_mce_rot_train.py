@@ -1,7 +1,6 @@
 import numpy as np
 import torch
 import gymnasium as gym
-from stable_baselines3 import PPO
 from stable_baselines3.common.vec_env import DummyVecEnv
 
 from imitation.data.types import Trajectory
@@ -44,7 +43,7 @@ for i in range(n_episodes):
 
 print(f"Caricate {len(trajectories)} traiettorie esperte.")
 
-# Crea l'ambiente vettoriale compatibile con imitation
+# Crea l'ambiente vettoriale
 def make_env():
     env = TrackingEnv()
     env = RolloutInfoWrapper(env)
@@ -52,8 +51,16 @@ def make_env():
 
 venv = DummyVecEnv([make_env])
 
-# Inizializza e allena MCE IRL
-irl = MCEIRL(trajectories, venv, deterministic_policy=True)
+# Inizializza MCE IRL
+irl = MCEIRL(
+    demonstrations=trajectories,
+    venv=venv,
+)
+
+# Sposta reward_net su GPU se disponibile
+irl.reward_net.to(DEVICE)
+
+# Allenamento
 irl.train()
 
 # Salva il modello della reward
