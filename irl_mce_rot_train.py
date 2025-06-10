@@ -49,8 +49,7 @@ rng = np.random.default_rng(seed=0)
 rng = np.random.default_rng(seed=0)
 
 venv = make_vec_env(
-    env_name=None,
-    make_env=lambda: TrackingEnv(),
+    lambda: TrackingEnv(),   # direttamente come primo argomento
     rng=rng,
     n_envs=1,
     post_wrappers=[lambda env, _: RolloutInfoWrapper(env)],
