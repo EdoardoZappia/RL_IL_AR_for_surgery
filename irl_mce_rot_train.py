@@ -53,7 +53,7 @@ def make_env():
 venv = DummyVecEnv([make_env])
 
 # Inizializza e allena MCE IRL
-irl = MCEIRL(demos=trajectories, venv=venv, deterministic_policy=False)
+irl = MCEIRL(trajectories, venv, deterministic_policy=True)
 irl.train()
 
 # Salva il modello della reward
