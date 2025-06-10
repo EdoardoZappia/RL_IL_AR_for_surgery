@@ -72,8 +72,8 @@ def train_reward_net(reward_net, expert_obs, expert_act, policy_obs, policy_act,
     r_expert = reward_net(expert_s, expert_a)
     r_policy = reward_net(policy_s, policy_a)
 
-    r_policy = (r_policy - r_policy.mean()) / (r_policy.std() + 1e-6)
-    r_expert = (r_expert - r_expert.mean()) / (r_expert.std() + 1e-6)
+    #r_policy = (r_policy - r_policy.mean()) / (r_policy.std() + 1e-6)
+    #r_expert = (r_expert - r_expert.mean()) / (r_expert.std() + 1e-6)
     loss = -r_expert.mean() + torch.logsumexp(r_policy, dim=0).mean()
 
     #loss = -r_expert.mean() + torch.logsumexp(r_policy, dim=0).mean()
