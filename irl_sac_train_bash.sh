@@ -10,4 +10,4 @@
 #SBATCH --error=job_%j.err
 
 echo "Inizio training IRL"
-python sac_rot.py
+python irl_sac_transl_train.py
