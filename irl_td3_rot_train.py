@@ -120,9 +120,9 @@ for iter in range(1000):
     print(f"Loss reward (iter {iter}): {loss}")
 
     # 3. Aggiorna la policy ogni 5 iterazioni
-    if iter % 5 == 0:
+    if iter % 2 == 0:
         print(">>> Aggiorno la policy con TD3")
-        agent.learn(total_timesteps=1500)
+        agent.learn(total_timesteps=1000)
 
 # Salva il reward appreso
 torch.save(reward_net.state_dict(), "IL/DME_TD3/reward_network_rot_0.5_0.01.pt")
