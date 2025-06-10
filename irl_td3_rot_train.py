@@ -57,7 +57,7 @@ class IRLEnvWrapper(gym.Wrapper):
 
 
 # Funzione di training per la reward net
-def train_reward_net(reward_net, expert_obs, expert_act, policy_obs, policy_act, optimizer, lambda_reg=1e-2):
+def train_reward_net(reward_net, expert_obs, expert_act, policy_obs, policy_act, optimizer, lambda_reg=1e-3):
     reward_net.train()
     expert_s = torch.tensor(expert_obs, dtype=torch.float32, device=device)
     expert_a = torch.tensor(expert_act, dtype=torch.float32, device=device)
@@ -72,8 +72,8 @@ def train_reward_net(reward_net, expert_obs, expert_act, policy_obs, policy_act,
     r_expert = reward_net(expert_s, expert_a)
     r_policy = reward_net(policy_s, policy_a)
 
-    #r_policy = (r_policy - r_policy.mean()) / (r_policy.std() + 1e-6)
-    #r_expert = (r_expert - r_expert.mean()) / (r_expert.std() + 1e-6)
+    r_policy = (r_policy - r_policy.mean()) / (r_policy.std() + 1e-6)
+    r_expert = (r_expert - r_expert.mean()) / (r_expert.std() + 1e-6)
     loss = -r_expert.mean() + torch.logsumexp(r_policy, dim=0).mean()
 
     #loss = -r_expert.mean() + torch.logsumexp(r_policy, dim=0).mean()
