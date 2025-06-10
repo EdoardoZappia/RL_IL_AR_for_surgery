@@ -46,12 +46,16 @@ for i in range(n_episodes):
 rng = np.random.default_rng(seed=0)
 
 # Crea l'ambiente
+rng = np.random.default_rng(seed=0)
+
 venv = make_vec_env(
-    lambda: TrackingEnv(),
+    env_name=None,
+    make_env=lambda: TrackingEnv(),
     rng=rng,
     n_envs=1,
     post_wrappers=[lambda env, _: RolloutInfoWrapper(env)],
 )
+
 
 # Inizializza e allena MCE IRL
 irl = MCEIRL(demos=trajectories, venv=venv, deterministic_policy=False)
