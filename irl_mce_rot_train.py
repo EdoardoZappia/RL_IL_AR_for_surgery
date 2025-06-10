@@ -77,13 +77,15 @@ def make_env():
     return env
 
 venv = DummyVecEnv([make_env])
-env = venv.envs[0]
+# Patch: assegna state_dim direttamente a DummyVecEnv
+venv.state_dim = venv.envs[0].unwrapped.observation_space.shape[0]
+venv.action_dim = venv.envs[0].unwrapped.action_space.shape[0]
 
 # ==========================
 
 # ======== RETE DI REWARD ========
-state_dim = env.observation_space.shape[0]
-action_dim = env.action_space.shape[0]
+state_dim = venv.state_dim
+action_dim = venv.action_dim
 
 reward_net = RewardNetwork(state_dim, action_dim).to(DEVICE)
 # ================================
