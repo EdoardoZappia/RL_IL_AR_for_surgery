@@ -54,7 +54,7 @@ venv = DummyVecEnv([make_env])
 # Inizializza MCE IRL
 irl = MCEIRL(
     demonstrations=trajectories,
-    venv,
+    env=venv,
 )
 
 # Sposta reward_net su GPU se disponibile
