@@ -97,7 +97,7 @@ for iter in range(1000):
     # 1. Raccogli dati della policy corrente
     policy_obs, policy_act = [], []
     obs, _ = env.reset()
-    for _ in range(1000):
+    for _ in range(500):
         act, _ = agent.predict(obs.reshape(1, -1), deterministic=True)
         new_obs, _, done, truncated, _ = env.step(act[0])
         policy_obs.append(obs)
@@ -111,18 +111,18 @@ for iter in range(1000):
     policy_act = np.array(policy_act).squeeze()
 
     # # 2. Allenamento multiplo della reward
-    for _ in range(5):
-        idx = np.random.choice(len(observations), size=policy_obs.shape[0], replace=False)
-        expert_obs = observations[idx]
-        expert_act = actions[idx]
-        loss = train_reward_net(reward_net, expert_obs, expert_act, policy_obs, policy_act, optimizer)
-    
+    #for _ in range(5):
+    idx = np.random.choice(len(observations), size=policy_obs.shape[0], replace=False)
+    expert_obs = observations[idx]
+    expert_act = actions[idx]
+    loss = train_reward_net(reward_net, expert_obs, expert_act, policy_obs, policy_act, optimizer)
+
     print(f"Loss reward (iter {iter}): {loss}")
 
     # 3. Aggiorna la policy ogni 5 iterazioni
-    #if iter % 5 == 0:
-    print(">>> Aggiorno la policy con TD3")
-    agent.learn(total_timesteps=1500)
+    if iter % 5 == 0:
+        print(">>> Aggiorno la policy con TD3")
+        agent.learn(total_timesteps=1500)
 
 # Salva il reward appreso
 torch.save(reward_net.state_dict(), "IL/DME_TD3/reward_network_rot_0.5_0.01.pt")
