@@ -77,7 +77,7 @@ def make_env():
     return env
 
 venv = DummyVecEnv([make_env])
-#env = venv.envs[0]
+env = venv.envs[0]
 
 # ==========================
 
