@@ -37,6 +37,11 @@ class RewardNetwork(nn.Module):
         return self.model(x)
 # =========================
 
+class StateDimWrapper(gym.Wrapper):
+    def __init__(self, env):
+        super().__init__(env)
+        self.state_dim = env.observation_space.shape[0]
+
 # ======== DATASET ========
 expert_data = np.load(DATA_PATH)
 observations = expert_data["observations"]
@@ -61,20 +66,19 @@ for i in range(n_episodes):
 
     trajectories.append(Trajectory(obs=obs_traj, acts=acts_traj, infos=None, terminal=True))
 
-print(f"✅ Caricate {len(trajectories)} traiettorie esperte.")
+print(f"Caricate {len(trajectories)} traiettorie esperte.")
 # =========================
 
 # ======== AMBIENTE ========
 def make_env():
     env = TrackingEnv()
+    env = StateDimWrapper(env)
     env = RolloutInfoWrapper(env)
     return env
 
 venv = DummyVecEnv([make_env])
-env = venv.envs[0]
-# Patch per compatibilità con MCEIRL
-if not hasattr(env, "state_dim"):
-    env.state_dim = env.observation_space.shape[0]
+#env = venv.envs[0]
+
 # ==========================
 
 # ======== RETE DI REWARD ========

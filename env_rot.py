@@ -28,8 +28,6 @@ class TrackingEnv(gym.Env):
         obs_high = np.array([3.14, 3.14], dtype=np.float32)
         self.observation_space = spaces.Box(low=obs_low, high=obs_high, dtype=np.float32)
 
-        self.state_dim = self.observation_space.shape[0]
-
         # Render
         self.render_mode = render_mode
         self.renderer = None
