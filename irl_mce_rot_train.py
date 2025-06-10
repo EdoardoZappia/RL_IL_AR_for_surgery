@@ -17,7 +17,7 @@ REWARD_SAVE_PATH = "IL/MCE/reward_model.pt"
 # ========================
 
 # Carica il dataset esperto
-expert_data = np.load("trajectories/dataset_rot.npz")
+expert_data = np.load("trajectories/dataset_rot_101_obs_100_actions.npz")
 observations = expert_data["observations"]
 actions = expert_data["actions"]
 

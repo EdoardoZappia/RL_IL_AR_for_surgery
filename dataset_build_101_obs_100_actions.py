@@ -93,6 +93,12 @@ def test_dual_agents(agent_transl, agent_rot, env=None, num_episodes=2001, toler
             done = truncated
             state = next_state
 
+        # Append final observation
+        state_pos = torch.cat([state[:2], state[3:5]], dim=0)
+        state_rot = torch.cat([state[2:3], state[5:6]], dim=0)
+        episode_obs_xy.append(state_pos.detach().numpy())
+        episode_obs_rot.append(state_rot.detach().numpy())
+
         if total_attached_counter > 90:
             all_obs_xy.extend(episode_obs_xy)
             all_obs_rot.extend(episode_obs_rot)
@@ -107,10 +113,10 @@ def test_dual_agents(agent_transl, agent_rot, env=None, num_episodes=2001, toler
 
     if all_obs_xy and all_obs_rot:
         os.makedirs("trajectories", exist_ok=True)
-        np.savez("trajectories/dataset_transl_std_0.005_0.001.npz",
+        np.savez("trajectories/dataset_transl_101_obs_100_actions.npz",
                  observations=np.array(all_obs_xy),
                  actions=np.array(all_actions_xy))
-        np.savez("trajectories/dataset_rot_std_0.005_0,001.npz",
+        np.savez("trajectories/dataset_rot_101_obs_100_actions.npz",
                     observations=np.array(all_obs_rot),
                     actions=np.array(all_actions_rot))
         print(f"\nDataset salvato con {len(all_obs_xy)} passi totali da {saved_counter} episodi validi")
@@ -120,7 +126,7 @@ def test_dual_agents(agent_transl, agent_rot, env=None, num_episodes=2001, toler
 
 # --- MAIN ---
 if __name__ == "__main__":
-    ckpt_transl = "Traslazioni-dinamiche/Noisy/ddpg_run_dyn_mov_0.05_noisy_target_0.00520250504_150841/checkpoint_ep3639.pth"
-    ckpt_rot = "Rotazioni-dinamiche/Noisy/ddpg_mov_0.01_std_0.001_20250509_173413/checkpoint_ep769.pth"
+    ckpt_transl = "Traslazioni-dinamiche/No-noise/ddpg_run_dyn20250503_160754/checkpoint_ep2930.pth"
+    ckpt_rot = "Rotazioni-dinamiche/No-noise/ddpg_mov_0.01_20250509_163508/checkpoint_ep782.pth"
     agent_transl, agent_rot = load_agents(ckpt_transl, ckpt_rot)
     test_dual_agents(agent_transl, agent_rot)
