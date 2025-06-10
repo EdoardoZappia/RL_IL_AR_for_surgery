@@ -12,7 +12,6 @@ from env_rot import TrackingEnv
 
 # ======== CONFIG ========
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
-EPISODE_LEN = 100
 REWARD_SAVE_PATH = "IL/MCE/reward_model.pt"
 # ========================
 
@@ -22,13 +21,25 @@ observations = expert_data["observations"]
 actions = expert_data["actions"]
 
 # Ricostruisci le traiettorie: un episodio ogni 100 step
-n_episodes = len(observations) // EPISODE_LEN
+EPISODE_LEN = 100  # azioni per episodio
+N_OBS_PER_EPISODE = EPISODE_LEN + 1
+
+n_episodes = len(actions) // EPISODE_LEN
 trajectories = []
+
 for i in range(n_episodes):
-    start = i * EPISODE_LEN
-    end = (i + 1) * EPISODE_LEN
-    obs_traj = observations[start:end]
-    acts_traj = actions[start:end]
+    obs_start = i * N_OBS_PER_EPISODE
+    obs_end = obs_start + N_OBS_PER_EPISODE
+    act_start = i * EPISODE_LEN
+    act_end = act_start + EPISODE_LEN
+
+    obs_traj = observations[obs_start:obs_end]   # 101
+    acts_traj = actions[act_start:act_end]       # 100
+
+    if len(obs_traj) != len(acts_traj) + 1:
+        print(f"Skipping malformed trajectory {i}: {len(obs_traj)} obs, {len(acts_traj)} acts")
+        continue
+
     trajectories.append(Trajectory(obs=obs_traj, acts=acts_traj, infos=None, terminal=True))
 
 # Crea l'ambiente
