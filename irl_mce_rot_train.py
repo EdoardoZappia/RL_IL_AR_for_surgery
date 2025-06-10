@@ -2,39 +2,39 @@ import numpy as np
 import torch
 import gymnasium as gym
 from stable_baselines3 import PPO
+from stable_baselines3.common.vec_env import DummyVecEnv
+
 from imitation.data.types import Trajectory
 from imitation.data.wrappers import RolloutInfoWrapper
-from imitation.util.util import make_vec_env
 from imitation.algorithms.mce_irl import MCEIRL
-from imitation.data import rollout
 
 from env_rot import TrackingEnv
 
 # ======== CONFIG ========
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
+EPISODE_LEN = 100
 REWARD_SAVE_PATH = "IL/MCE/reward_model.pt"
+DATA_PATH = "trajectories/dataset_rot_101_obs_100_actions.npz"
 # ========================
 
 # Carica il dataset esperto
-expert_data = np.load("trajectories/dataset_rot_101_obs_100_actions.npz")
+expert_data = np.load(DATA_PATH)
 observations = expert_data["observations"]
 actions = expert_data["actions"]
 
-# Ricostruisci le traiettorie: un episodio ogni 100 step
-EPISODE_LEN = 100  # azioni per episodio
-N_OBS_PER_EPISODE = EPISODE_LEN + 1
-
+# Ricostruisci le traiettorie (101 osservazioni, 100 azioni per episodio)
+N_OBS_PER_EP = EPISODE_LEN + 1
 n_episodes = len(actions) // EPISODE_LEN
 trajectories = []
 
 for i in range(n_episodes):
-    obs_start = i * N_OBS_PER_EPISODE
-    obs_end = obs_start + N_OBS_PER_EPISODE
+    obs_start = i * N_OBS_PER_EP
+    obs_end = obs_start + N_OBS_PER_EP
     act_start = i * EPISODE_LEN
     act_end = act_start + EPISODE_LEN
 
-    obs_traj = observations[obs_start:obs_end]   # 101
-    acts_traj = actions[act_start:act_end]       # 100
+    obs_traj = observations[obs_start:obs_end]
+    acts_traj = actions[act_start:act_end]
 
     if len(obs_traj) != len(acts_traj) + 1:
         print(f"Skipping malformed trajectory {i}: {len(obs_traj)} obs, {len(acts_traj)} acts")
@@ -42,19 +42,15 @@ for i in range(n_episodes):
 
     trajectories.append(Trajectory(obs=obs_traj, acts=acts_traj, infos=None, terminal=True))
 
+print(f"Caricate {len(trajectories)} traiettorie esperte.")
 
-rng = np.random.default_rng(seed=0)
+# Crea l'ambiente vettoriale compatibile con imitation
+def make_env():
+    env = TrackingEnv()
+    env = RolloutInfoWrapper(env)
+    return env
 
-# Crea l'ambiente
-rng = np.random.default_rng(seed=0)
-
-venv = make_vec_env(
-    lambda: TrackingEnv(),   # direttamente come primo argomento
-    rng=rng,
-    n_envs=1,
-    post_wrappers=[lambda env, _: RolloutInfoWrapper(env)],
-)
-
+venv = DummyVecEnv([make_env])
 
 # Inizializza e allena MCE IRL
 irl = MCEIRL(demos=trajectories, venv=venv, deterministic_policy=False)
