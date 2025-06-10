@@ -6,6 +6,7 @@ from stable_baselines3.common.vec_env import DummyVecEnv
 from imitation.data.types import Trajectory
 from imitation.data.wrappers import RolloutInfoWrapper
 from imitation.algorithms.mce_irl import MCEIRL
+from imitation.rewards.reward_nets import BasicRewardNet
 
 from env_rot import TrackingEnv
 
@@ -51,14 +52,21 @@ def make_env():
 
 venv = DummyVecEnv([make_env])
 
+# Crea reward_net
+observation_space = venv.observation_space
+action_space = venv.action_space
+reward_net = BasicRewardNet(observation_space, action_space).to(DEVICE)
+
+# Generatore casuale richiesto da MCEIRL
+rng = np.random.default_rng(seed=0)
+
 # Inizializza MCE IRL
 irl = MCEIRL(
     demonstrations=trajectories,
     env=venv,
+    reward_net=reward_net,
+    rng=rng,
 )
-
-# Sposta reward_net su GPU se disponibile
-irl.reward_net.to(DEVICE)
 
 # Allenamento
 irl.train()
