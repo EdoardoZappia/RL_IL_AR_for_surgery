@@ -28,7 +28,7 @@ EARLY_STOPPING_EPISODES = 50
 CHECKPOINT_INTERVAL = 100
 
 now = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-RUN_DIR = f"Esperimento_1_/Translazioni-dinamiche/ddpg_mov_0.05_std_0.01_{now}"
+RUN_DIR = f"Esperimento_1_/Traslazioni-dinamiche/ddpg_mov_0.05_std_0.01_{now}"
 os.makedirs(RUN_DIR, exist_ok=True)
 
 class PolicyNet(nn.Module):
