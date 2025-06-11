@@ -113,7 +113,7 @@ class DDPGAgent(nn.Module):
         if rimbalzato:
             reward -= 5
 
-        return reward - 1
+        return reward - 1.0
 
     def update(self, gamma=GAMMA, tau=TAU):
         if len(self.buffer) < self.batch_size:
@@ -122,7 +122,8 @@ class DDPGAgent(nn.Module):
         states, actions, rewards, next_states, dones = zip(*transitions)
         states = torch.FloatTensor(np.array(states)).to(device)
         actions = torch.FloatTensor(np.array(actions)).to(device)
-        rewards = torch.FloatTensor(np.array(rewards)).unsqueeze(1).to(device)
+        #rewards = torch.FloatTensor(np.array(rewards)).unsqueeze(1).to(device)
+        rewards = torch.FloatTensor([r.item() if isinstance(r, torch.Tensor) else r for r in rewards]).unsqueeze(1).to(device)
         next_states = torch.FloatTensor(np.array(next_states)).to(device)
         dones = torch.FloatTensor(np.array(dones)).unsqueeze(1).to(device)
 
