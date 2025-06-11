@@ -1,4 +1,0 @@
-Traceback (most recent call last):
-  File "/orfeo/cephfs/home/dssc/ezappia/RL_IL_AR_for_surgery/irl_mce_rot_train.py", line 56, in <module>
-    irl = MCEIRL(demos=trajectories, venv=venv, deterministic_policy=False)
-TypeError: MCEIRL.__init__() got an unexpected keyword argument 'demos'

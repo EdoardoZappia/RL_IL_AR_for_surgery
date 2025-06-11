@@ -1,4 +1,0 @@
-Traceback (most recent call last):
-  File "/orfeo/cephfs/home/dssc/ezappia/RL_IL_AR_for_surgery/irl_mce_rot_train.py", line 55, in <module>
-    irl = MCEIRL(
-TypeError: MCEIRL.__init__() got an unexpected keyword argument 'venv'

@@ -1,4 +1,0 @@
-  File "/orfeo/cephfs/home/dssc/ezappia/RL_IL_AR_for_surgery/irl_mce_rot_train.py", line 58
-    )
-    ^
-SyntaxError: positional argument follows keyword argument
