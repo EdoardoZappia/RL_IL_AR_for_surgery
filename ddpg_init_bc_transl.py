@@ -240,7 +240,10 @@ def train_ddpg(env=None, num_episodes=10001):
                 agent.update()
             state = next_state
             real_state = real_next_state
-            total_reward += reward
+            #total_reward += reward
+
+            total_reward += reward.item() if isinstance(reward, torch.Tensor) else reward
+
 
         if attached_counter > 20:
             counter += 1
@@ -250,7 +253,9 @@ def train_ddpg(env=None, num_episodes=10001):
         else:
             success_history.append(0)
 
-        reward_history.append(total_reward)
+        #reward_history.append(total_reward)
+        reward_history.append(total_reward.item() if isinstance(total_reward, torch.Tensor) else total_reward)
+
 
         if episode % 10 == 0:
             print(f"Episode {episode}, Reward: {total_reward:.2f}, Attached_counter: {attached_counter}, Total attached counter: {total_attached_counter}, Successes: {counter}")
@@ -259,7 +264,7 @@ def train_ddpg(env=None, num_episodes=10001):
         if episode % 50 == 0 and episode > 0:
             save_trajectory_plot(trajectory, target_trajectory, episode)
 
-        if len(reward_history) > EARLY_STOPPING_EPISODES and np.mean(np.array(reward_history[-EARLY_STOPPING_EPISODES:])) > 2000:
+        if len(reward_history) > EARLY_STOPPING_EPISODES and np.mean(reward_history[-EARLY_STOPPING_EPISODES:]) > 2000:
            print(f"Early stopping at episode {episode}")
            save_checkpoint(agent, episode)
            save_trajectory_plot(trajectory, target_trajectory, episode)
