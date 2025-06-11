@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/orfeo/cephfs/home/dssc/ezappia/RL_IL_AR_for_surgery/irl_mce_rot_train.py", line 49, in <module>
+    venv = make_vec_env(
+  File "/u/dssc/ezappia/miniconda3/envs/tracking_env/lib/python3.10/site-packages/imitation/util/util.py", line 117, in make_vec_env
+    tmp_env = gym.make(env_name)
+  File "/u/dssc/ezappia/miniconda3/envs/tracking_env/lib/python3.10/site-packages/gymnasium/envs/registration.py", line 738, in make
+    assert isinstance(id, str)
+AssertionError

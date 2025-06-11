@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "/orfeo/cephfs/home/dssc/ezappia/RL_IL_AR_for_surgery/irl_mce_rot_train.py", line 46, in <module>
+    venv = make_vec_env(
+TypeError: make_vec_env() missing 1 required keyword-only argument: 'rng'

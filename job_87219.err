@@ -1,0 +1,12 @@
+Traceback (most recent call last):
+  File "/orfeo/cephfs/home/dssc/ezappia/RL_IL_AR_for_surgery/irl_mce_rot_train.py", line 94, in <module>
+    irl = MCEIRL(
+  File "/u/dssc/ezappia/miniconda3/envs/tracking_env/lib/python3.10/site-packages/imitation/algorithms/mce_irl.py", line 329, in __init__
+    super().__init__(
+  File "/u/dssc/ezappia/miniconda3/envs/tracking_env/lib/python3.10/site-packages/imitation/algorithms/base.py", line 164, in __init__
+    self.set_demonstrations(demonstrations)
+  File "/u/dssc/ezappia/miniconda3/envs/tracking_env/lib/python3.10/site-packages/imitation/algorithms/mce_irl.py", line 414, in set_demonstrations
+    self._set_demo_from_trajectories(demonstrations_it)
+  File "/u/dssc/ezappia/miniconda3/envs/tracking_env/lib/python3.10/site-packages/imitation/algorithms/mce_irl.py", line 358, in _set_demo_from_trajectories
+    self.demo_state_om = np.zeros((self.env.state_dim,))
+AttributeError: 'DummyVecEnv' object has no attribute 'state_dim'

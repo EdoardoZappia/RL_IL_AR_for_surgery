@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "/orfeo/cephfs/home/dssc/ezappia/RL_IL_AR_for_surgery/irl_mce_rot_train.py", line 32, in <module>
+    trajectories.append(Trajectory(obs=obs_traj, acts=acts_traj, infos=None, terminal=True))
+  File "<string>", line 7, in __init__
+  File "/u/dssc/ezappia/miniconda3/envs/tracking_env/lib/python3.10/site-packages/imitation/data/types.py", line 396, in __post_init__
+    raise ValueError(
+ValueError: expected one more observations than actions: 100 != 100 + 1
