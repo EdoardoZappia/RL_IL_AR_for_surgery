@@ -259,5 +259,6 @@ def train_ddpg(env=None, num_episodes=10001):
     return agent
 
 if __name__ == "__main__":
+    print("Inizio training")
     trained_agent = train_ddpg()
     print("Training completato. Modello salvato.")

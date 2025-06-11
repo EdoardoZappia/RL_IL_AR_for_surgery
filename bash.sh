@@ -9,5 +9,5 @@
 #SBATCH --output=job_%j.out
 #SBATCH --error=job_%j.err
 
-echo "Inizio training IRL"
+echo "Inizio training RL"
 python ddpg_init_bc_rot.py
