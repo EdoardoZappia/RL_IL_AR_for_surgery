@@ -55,9 +55,13 @@ class IRLEnvWrapper(gym.Wrapper):
         delta_after = target_t - theta_tp1  # target_t resta fisso
 
         with torch.no_grad():
-            delta_before_tensor = torch.tensor([[delta_before]], dtype=torch.float32, device=device)
-            delta_after_tensor  = torch.tensor([[delta_after]],  dtype=torch.float32, device=device)
-            action_tensor       = torch.tensor([[action]],       dtype=torch.float32, device=device)
+            delta_before_tensor = torch.tensor(delta_before, dtype=torch.float32, device=device).view(1, 1)
+            delta_after_tensor  = torch.tensor(delta_after,  dtype=torch.float32, device=device).view(1, 1)
+
+            if isinstance(action, np.ndarray):
+                action_tensor = torch.tensor(action, dtype=torch.float32, device=device).view(1, -1)
+            else:
+                action_tensor = torch.tensor([action], dtype=torch.float32, device=device).view(1, 1)
 
             reward = self.reward_net(delta_before_tensor, action_tensor, delta_after_tensor).item()
 
