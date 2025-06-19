@@ -73,6 +73,7 @@ class IRLEnvWrapper(gym.Wrapper):
 
 def preprocess_action(state, action):
     # Caso batch
+    action = torch.tensor(action, dtype=torch.float32, device=device)
     if state.ndim == 2 and action.ndim == 2:
         pos = state[:, :2]      # (B, 2)
         target = state[:, 2:4]  # (B, 2)
