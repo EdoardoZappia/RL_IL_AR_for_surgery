@@ -35,8 +35,8 @@ class RewardNetwork(nn.Module):
         ).to(device)
 
     def forward(self, state, action):
-        if action.ndim == 1:
-            action = action.unsqueeze(1)
+        #if action.ndim == 1:
+        #    action = action.unsqueeze(1)
         x = torch.cat([state, action], dim=-1)
         return self.model(x)
 
