@@ -48,7 +48,7 @@ class IRLEnvWrapper(gym.Wrapper):
 
     def step(self, action):
         state = self.env.data.qpos
-        state = torch.tensor(state, dtype=torch.float32, device=self.reward_net.model[0].weight.device)
+        #state = torch.tensor(state, dtype=torch.float32, device=self.reward_net.model[0].weight.device)
         #action = torch.tensor(action, dtype=torch.float32, device=self.reward_net.model[0].weight.device)
         obs, _, terminated, truncated, info = self.env.step(action)[:5]
         #step_result = self.env.step(action)
@@ -73,6 +73,7 @@ class IRLEnvWrapper(gym.Wrapper):
 
 def preprocess_action(state, action):
     # Caso batch
+    state = torch.tensor(state, dtype=torch.float32, device=device)
     action = torch.tensor(action, dtype=torch.float32, device=device)
     if state.ndim == 2 and action.ndim == 2:
         pos = state[:, :2]      # (B, 2)
