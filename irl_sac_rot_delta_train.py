@@ -76,6 +76,10 @@ def train_reward_net(reward_net, expert_obs, expert_act, policy_obs, policy_act,
     expert_delta_before = torch.tensor(expert_delta_before, dtype=torch.float32, device=device).unsqueeze(1)
     expert_delta_after  = torch.tensor(expert_delta_after,  dtype=torch.float32, device=device).unsqueeze(1)
     expert_a = expert_a[:-1]
+    if expert_a.ndim == 1:
+        expert_a = expert_a.unsqueeze(1)
+    elif expert_a.ndim == 3:
+        expert_a = expert_a.squeeze(2)
 
     # Delta prima e dopo per dati della policy
     policy_delta_before = policy_obs[:-1, 1] - policy_obs[:-1, 0]
@@ -83,6 +87,10 @@ def train_reward_net(reward_net, expert_obs, expert_act, policy_obs, policy_act,
     policy_delta_before = torch.tensor(policy_delta_before, dtype=torch.float32, device=device).unsqueeze(1)
     policy_delta_after  = torch.tensor(policy_delta_after,  dtype=torch.float32, device=device).unsqueeze(1)
     policy_a = policy_a[:-1]
+    if policy_a.ndim == 1:
+        policy_a = policy_a.unsqueeze(1)
+    elif policy_a.ndim == 3:
+        policy_a = policy_a.squeeze(2)
 
     # Calcolo dei reward
     r_expert = reward_net(expert_delta_before, expert_a, expert_delta_after)
