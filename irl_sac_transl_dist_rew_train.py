@@ -147,7 +147,7 @@ if __name__ == "__main__":
     agent = SAC("MlpPolicy", wrapped_env, verbose=1, device=device)
 
     # Ciclo IRL
-    for iter in range(1000):
+    for iter in range(100):
         print(f"=== Iterazione IRL {iter} ===")
 
         # 1. Raccogli dati della policy corrente
