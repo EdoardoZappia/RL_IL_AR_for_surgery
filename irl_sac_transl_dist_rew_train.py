@@ -115,8 +115,8 @@ def train_reward_net(reward_net, expert_obs, expert_act, policy_obs, policy_act,
     policy_s = torch.tensor(policy_obs, dtype=torch.float32, device=device)
     policy_a = torch.tensor(policy_act, dtype=torch.float32, device=device)
 
-    expert_action_prep = preprocess_action(expert_a)  # (B, 1)
-    policy_action_prep = preprocess_action(policy_a)  # (B, 1)
+    #expert_action_prep = preprocess_action(expert_a)  # (B, 1)
+    #policy_action_prep = preprocess_action(policy_a)  # (B, 1)
 
     dist_expert = expert_s[:, 2:4] - expert_s[:, 0:2]  # Calcola la distanza tra x e x target
     dist_policy = policy_s[:, 2:4] - policy_s[:, 0:2]
@@ -124,8 +124,8 @@ def train_reward_net(reward_net, expert_obs, expert_act, policy_obs, policy_act,
     #policy_dist_tensor = torch.tensor(dist_policy, dtype=torch.float32, device=device)
 
 
-    r_expert = reward_net(dist_expert, expert_action_prep)
-    r_policy = reward_net(dist_policy, policy_action_prep)
+    r_expert = reward_net(dist_expert, expert_a)
+    r_policy = reward_net(dist_policy, policy_a)
 
     loss = -r_expert.mean() + torch.logsumexp(r_policy, dim=0).mean()
     loss += lambda_reg * sum(torch.norm(p)**2 for p in reward_net.parameters())
