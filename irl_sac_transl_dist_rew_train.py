@@ -118,52 +118,53 @@ def train_reward_net(reward_net, expert_obs, expert_act, policy_obs, policy_act,
     optimizer.step()
     return loss.item()
 
-# Inizializzazione
-env = make_env()
-state_dim = 2 # relative distance between x and x target, y and y target
-action_dim = 1 # env.action_space.shape[0]
-reward_net = RewardNetwork(state_dim, action_dim).to(device)
-optimizer = optim.Adam(reward_net.parameters(), lr=1e-3)
+if __name__ == "__main__":
+    # Inizializzazione
+    env = make_env()
+    state_dim = 2 # relative distance between x and x target, y and y target
+    action_dim = 1 # env.action_space.shape[0]
+    reward_net = RewardNetwork(state_dim, action_dim).to(device)
+    optimizer = optim.Adam(reward_net.parameters(), lr=1e-3)
 
-wrapped_env = DummyVecEnv([lambda: IRLEnvWrapper(make_env(), reward_net)])
-agent = SAC("MlpPolicy", wrapped_env, verbose=1, device=device)
+    wrapped_env = DummyVecEnv([lambda: IRLEnvWrapper(make_env(), reward_net)])
+    agent = SAC("MlpPolicy", wrapped_env, verbose=1, device=device)
 
-# Ciclo IRL
-for iter in range(1000):
-    print(f"=== Iterazione IRL {iter} ===")
+    # Ciclo IRL
+    for iter in range(1000):
+        print(f"=== Iterazione IRL {iter} ===")
 
-    # 1. Raccogli dati della policy corrente
-    policy_obs, policy_act = [], []
-    obs, _ = env.reset()
-    for _ in range(1000):
-        act, _ = agent.predict(obs.reshape(1, -1), deterministic=True)
-        new_obs, _, done, truncated, _ = env.step(act[0])[:5]
-        policy_obs.append(obs)
-        policy_act.append(act[0])
+        # 1. Raccogli dati della policy corrente
+        policy_obs, policy_act = [], []
+        obs, _ = env.reset()
+        for _ in range(1000):
+            act, _ = agent.predict(obs.reshape(1, -1), deterministic=True)
+            new_obs, _, done, truncated, _ = env.step(act[0])[:5]
+            policy_obs.append(obs)
+            policy_act.append(act[0])
+            
+            obs = new_obs
+            if truncated:  # Episodio finito
+                obs, _ = env.reset()
+
+        policy_obs = np.array(policy_obs).squeeze()
+        policy_act = np.array(policy_act).squeeze()
+
+        # # 2. Allenamento multiplo della reward
+        for _ in range(5):
+            idx = np.random.choice(len(observations), size=policy_obs.shape[0], replace=False)
+            expert_obs = observations[idx]
+            expert_act = actions[idx]
+            loss = train_reward_net(reward_net, expert_obs, expert_act, policy_obs, policy_act, optimizer)
         
-        obs = new_obs
-        if truncated:  # Episodio finito
-            obs, _ = env.reset()
+        print(f"Loss reward (iter {iter}): {loss}")
 
-    policy_obs = np.array(policy_obs).squeeze()
-    policy_act = np.array(policy_act).squeeze()
+        # 3. Aggiorna la policy ogni 5 iterazioni
+        if iter % 2 == 0:
+            print(">>> Aggiorno la policy con SAC")
+            agent.learn(total_timesteps=1200)
 
-    # # 2. Allenamento multiplo della reward
-    for _ in range(5):
-        idx = np.random.choice(len(observations), size=policy_obs.shape[0], replace=False)
-        expert_obs = observations[idx]
-        expert_act = actions[idx]
-        loss = train_reward_net(reward_net, expert_obs, expert_act, policy_obs, policy_act, optimizer)
-    
-    print(f"Loss reward (iter {iter}): {loss}")
+    # Salva il reward appreso
+    torch.save(reward_net.state_dict(), "IL/DME_SAC/reward_network_transl_0.2_0.05_dist_rew.pt")
 
-    # 3. Aggiorna la policy ogni 5 iterazioni
-    if iter % 2 == 0:
-        print(">>> Aggiorno la policy con SAC")
-        agent.learn(total_timesteps=1200)
-
-# Salva il reward appreso
-torch.save(reward_net.state_dict(), "IL/DME_SAC/reward_network_transl_0.2_0.05_dist_rew.pt")
-
-agent.save("IL/SAC_POLICY/sac_with_learned_reward_transl_0.2_0.05_dist_rew_IRL_")
-print("Modello SAC salvato.")
+    agent.save("IL/SAC_POLICY/sac_with_learned_reward_transl_0.2_0.05_dist_rew_IRL_")
+    print("Modello SAC salvato.")
