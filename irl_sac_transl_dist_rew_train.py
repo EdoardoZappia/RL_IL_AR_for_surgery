@@ -47,7 +47,7 @@ class IRLEnvWrapper(gym.Wrapper):
         self.reward_net = reward_net
 
     def step(self, action):
-        state = self.env.data.qpos
+        #state = self.env.data.qpos
         #state = torch.tensor(state, dtype=torch.float32, device=self.reward_net.model[0].weight.device)
         #action = torch.tensor(action, dtype=torch.float32, device=self.reward_net.model[0].weight.device)
         obs, _, terminated, truncated, info = self.env.step(action)[:5]
@@ -58,8 +58,8 @@ class IRLEnvWrapper(gym.Wrapper):
         #else:
         #    obs, _, terminated, truncated, info = step_result
         with torch.no_grad():
-            dist_x = state[2] - state[0]  # Calcola la distanza tra x e x target
-            dist_y = state[3] - state[1]  # Calcola la distanza tra y e y target
+            dist_x = obs[2] - obs[0]  # Calcola la distanza tra x e x target
+            dist_y = obs[3] - obs[1]  # Calcola la distanza tra y e y target
             dist_tensor = torch.tensor([dist_x, dist_y], dtype=torch.float32, device=self.reward_net.model[0].weight.device).unsqueeze(0)
             #action_prep = preprocess_action(action)
             #state_tensor = torch.tensor(obs, dtype=torch.float32, device=self.reward_net.model[0].weight.device).unsqueeze(0)
@@ -167,7 +167,7 @@ if __name__ == "__main__":
         policy_act = np.array(policy_act).squeeze()
 
         # # 2. Allenamento multiplo della reward
-        for _ in range(5):
+        for _ in range(10):
             idx = np.random.choice(len(observations), size=policy_obs.shape[0], replace=False)
             expert_obs = observations[idx]
             expert_act = actions[idx]
@@ -176,9 +176,9 @@ if __name__ == "__main__":
         print(f"Loss reward (iter {iter}): {loss}")
 
         # 3. Aggiorna la policy ogni 5 iterazioni
-        if iter % 2 == 0:
+        if iter % 5 == 0:
             print(">>> Aggiorno la policy con SAC")
-            agent.learn(total_timesteps=1200)
+            agent.learn(total_timesteps=1000)
 
     # Salva il reward appreso
     torch.save(reward_net.state_dict(), "IL/DME_SAC/reward_network_transl_0.2_0.05_dist_rew.pt")
