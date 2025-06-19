@@ -46,7 +46,7 @@ class IRLEnvWrapper(gym.Wrapper):
         super().__init__(env)
         self.reward_net = reward_net
 
-    def step(self, action, state):
+    def step(self, action):
         state = self.env.data.qpos
         obs, _, terminated, truncated, info = self.env.step(action)[:5]
         #step_result = self.env.step(action)
@@ -142,7 +142,7 @@ if __name__ == "__main__":
         obs, _ = env.reset()
         for _ in range(1000):
             act, _ = agent.predict(obs.reshape(1, -1), deterministic=True)
-            new_obs, _, done, truncated, _ = env.step(act[0], obs)[:5]
+            new_obs, _, done, truncated, _ = env.step(act[0])[:5]
             policy_obs.append(obs)
             policy_act.append(act[0])
             
