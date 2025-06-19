@@ -98,6 +98,7 @@ class IRLEnvWrapper(gym.Wrapper):
 #         raise ValueError("Stato e azione devono essere entrambi batch (2D) o entrambi singoli (1D).")
 
 def preprocess_action(action):
+    action = torch.tensor(action, dtype=torch.float32, device=device)
     # Caso batch
     if action.ndim == 2:
         return F.normalize(action, dim=1)  # (B, 2)
