@@ -61,7 +61,7 @@ class IRLEnvWrapper(gym.Wrapper):
             dist_x = state[2] - state[0]  # Calcola la distanza tra x e x target
             dist_y = state[3] - state[1]  # Calcola la distanza tra y e y target
             dist_tensor = torch.tensor([dist_x, dist_y], dtype=torch.float32, device=self.reward_net.model[0].weight.device).unsqueeze(0)
-            action_prep = preprocess_action(state, action)
+            action_prep = preprocess_action(action)
             #state_tensor = torch.tensor(obs, dtype=torch.float32, device=self.reward_net.model[0].weight.device).unsqueeze(0)
             action_tensor = torch.tensor(action_prep, dtype=torch.float32, device=self.reward_net.model[0].weight.device)#.unsqueeze(0)
 
@@ -71,32 +71,40 @@ class IRLEnvWrapper(gym.Wrapper):
             reward = self.reward_net(dist_tensor, action_tensor).item()
         return obs, reward, terminated, truncated, info
 
-def preprocess_action(state, action):
+# def preprocess_action(state, action):
+#     # Caso batch
+#     state = torch.tensor(state, dtype=torch.float32, device=device)
+#     action = torch.tensor(action, dtype=torch.float32, device=device)
+#     if state.ndim == 2 and action.ndim == 2:
+#         pos = state[:, :2]      # (B, 2)
+#         target = state[:, 2:4]  # (B, 2)
+#         to_target = F.normalize(target - pos, dim=1)
+#         action_dir = F.normalize(action, dim=1)
+#         direction_reward = torch.sum(action_dir * to_target, dim=1)
+#         direction_penalty = 1.0 - direction_reward
+#         return direction_penalty.unsqueeze(1)  # (B, 1)
+
+#     # Caso singolo
+#     elif state.ndim == 1 and action.ndim == 1:
+#         pos = state[:2]
+#         target = state[2:4]
+#         to_target = F.normalize(target - pos, dim=0)
+#         action_dir = F.normalize(action, dim=0)
+#         direction_reward = torch.dot(action_dir, to_target)
+#         direction_penalty = 1.0 - direction_reward
+# #         return direction_penalty.unsqueeze(0)  # (1,)
+
+#     else:
+#         raise ValueError("Stato e azione devono essere entrambi batch (2D) o entrambi singoli (1D).")
+
+def preprocess_action(action):
     # Caso batch
-    state = torch.tensor(state, dtype=torch.float32, device=device)
-    action = torch.tensor(action, dtype=torch.float32, device=device)
     if state.ndim == 2 and action.ndim == 2:
-        pos = state[:, :2]      # (B, 2)
-        target = state[:, 2:4]  # (B, 2)
-        to_target = F.normalize(target - pos, dim=1)
-        action_dir = F.normalize(action, dim=1)
-        direction_reward = torch.sum(action_dir * to_target, dim=1)
-        direction_penalty = 1.0 - direction_reward
-        return direction_penalty.unsqueeze(1)  # (B, 1)
-
-    # Caso singolo
+        return F.normalize(action, dim=1)  # (B, 2)
     elif state.ndim == 1 and action.ndim == 1:
-        pos = state[:2]
-        target = state[2:4]
-        to_target = F.normalize(target - pos, dim=0)
-        action_dir = F.normalize(action, dim=0)
-        direction_reward = torch.dot(action_dir, to_target)
-        direction_penalty = 1.0 - direction_reward
-        return direction_penalty.unsqueeze(0)  # (1,)
-
+        return F.normalize(action, dim=0).unsqueeze(0)  # (1, 2)
     else:
-        raise ValueError("Stato e azione devono essere entrambi batch (2D) o entrambi singoli (1D).")
-
+        raise ValueError("Dimensioni non compatibili")
 
 # Funzione di training per la reward net
 def train_reward_net(reward_net, expert_obs, expert_act, policy_obs, policy_act, optimizer, lambda_reg=1e-3):
