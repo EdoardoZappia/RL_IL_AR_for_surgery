@@ -61,9 +61,9 @@ class IRLEnvWrapper(gym.Wrapper):
             dist_x = state[2] - state[0]  # Calcola la distanza tra x e x target
             dist_y = state[3] - state[1]  # Calcola la distanza tra y e y target
             dist_tensor = torch.tensor([dist_x, dist_y], dtype=torch.float32, device=self.reward_net.model[0].weight.device).unsqueeze(0)
-            action_prep = preprocess_action(action)
+            #action_prep = preprocess_action(action)
             #state_tensor = torch.tensor(obs, dtype=torch.float32, device=self.reward_net.model[0].weight.device).unsqueeze(0)
-            action_tensor = torch.tensor(action_prep, dtype=torch.float32, device=self.reward_net.model[0].weight.device)#.unsqueeze(0)
+            action_tensor = torch.tensor(action, dtype=torch.float32, device=self.reward_net.model[0].weight.device)#.unsqueeze(0)
 
             if action_tensor.ndim == 1:
                 action_tensor = action_tensor.unsqueeze(1)
@@ -97,15 +97,15 @@ class IRLEnvWrapper(gym.Wrapper):
 #     else:
 #         raise ValueError("Stato e azione devono essere entrambi batch (2D) o entrambi singoli (1D).")
 
-def preprocess_action(action):
-    action = torch.tensor(action, dtype=torch.float32, device=device)
-    # Caso batch
-    if action.ndim == 2:
-        return F.normalize(action, dim=1)  # (B, 2)
-    elif action.ndim == 1:
-        return F.normalize(action, dim=0).unsqueeze(0)  # (1, 2)
-    else:
-        raise ValueError("Dimensioni non compatibili")
+# def preprocess_action(action):
+#     action = torch.tensor(action, dtype=torch.float32, device=device)
+#     # Caso batch
+#     if action.ndim == 2:
+#         return F.normalize(action, dim=1)  # (B, 2)
+#     elif action.ndim == 1:
+#         return F.normalize(action, dim=0).unsqueeze(0)  # (1, 2)
+#     else:
+#         raise ValueError("Dimensioni non compatibili")
 
 # Funzione di training per la reward net
 def train_reward_net(reward_net, expert_obs, expert_act, policy_obs, policy_act, optimizer, lambda_reg=1e-3):
