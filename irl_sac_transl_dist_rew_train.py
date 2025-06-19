@@ -24,7 +24,7 @@ actions = data["actions"]
 
 # Reward Network
 class RewardNetwork(nn.Module):
-    def __init__(self, state_dim=2, action_dim=2):
+    def __init__(self, state_dim=2, action_dim=1):
         super().__init__()
         self.model = nn.Sequential(
             nn.Linear(state_dim + action_dim, 256),
@@ -121,7 +121,7 @@ def train_reward_net(reward_net, expert_obs, expert_act, policy_obs, policy_act,
 # Inizializzazione
 env = make_env()
 state_dim = 2 # relative distance between x and x target, y and y target
-action_dim = env.action_space.shape[0]
+action_dim = 1 # env.action_space.shape[0]
 reward_net = RewardNetwork(state_dim, action_dim).to(device)
 optimizer = optim.Adam(reward_net.parameters(), lr=1e-3)
 

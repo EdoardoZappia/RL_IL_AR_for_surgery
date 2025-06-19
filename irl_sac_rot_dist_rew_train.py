@@ -59,8 +59,8 @@ class IRLEnvWrapper(gym.Wrapper):
 def train_reward_net(reward_net, expert_obs, expert_act, policy_obs, policy_act, optimizer, lambda_reg=1e-3):
     reward_net.train()
     #expert_s = torch.tensor(expert_obs, dtype=torch.float32, device=device)
-    #expert_a = torch.tensor(expert_act, dtype=torch.float32, device=device)
-    policy_s = torch.tensor(policy_obs, dtype=torch.float32, device=device)
+    expert_a = torch.tensor(expert_act, dtype=torch.float32, device=device)
+    #policy_s = torch.tensor(policy_obs, dtype=torch.float32, device=device)
     policy_a = torch.tensor(policy_act, dtype=torch.float32, device=device)
 
     if expert_a.ndim == 1:
