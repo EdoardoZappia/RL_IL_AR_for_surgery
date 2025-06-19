@@ -56,8 +56,8 @@ class IRLEnvWrapper(gym.Wrapper):
         #else:
         #    obs, _, terminated, truncated, info = step_result
         with torch.no_grad():
-            dist_x = np.abs(obs[0] - obs[2])  # Calcola la distanza tra x e x target
-            dist_y = np.abs(obs[1] - obs[3])  # Calcola la distanza tra y e y target
+            dist_x = obs[2] - obs[0]  # Calcola la distanza tra x e x target
+            dist_y = obs[3] - obs[1]  # Calcola la distanza tra y e y target
             dist_tensor = torch.tensor([dist_x, dist_y], dtype=torch.float32, device=self.reward_net.model[0].weight.device).unsqueeze(0)
             action_prep = preprocess_action(state, action)
             #state_tensor = torch.tensor(obs, dtype=torch.float32, device=self.reward_net.model[0].weight.device).unsqueeze(0)
@@ -101,8 +101,8 @@ def train_reward_net(reward_net, expert_obs, expert_act, policy_obs, policy_act,
     expert_action_prep = preprocess_action(expert_s, expert_a)  # (B, 1)
     policy_action_prep = preprocess_action(policy_s, policy_a)  # (B, 1)
 
-    dist_expert = np.abs(expert_s[:, 0] - expert_s[:, 2])  # Calcola la distanza tra x e x target
-    dist_policy = np.abs(policy_s[:, 0] - policy_s[:, 2])
+    dist_expert = expert_s[:, 2] - expert_s[:, 0]  # Calcola la distanza tra x e x target
+    dist_policy = policy_s[:, 2] - policy_s[:, 0]
     expert_dist_tensor = torch.tensor(dist_expert, dtype=torch.float32, device=device)
     policy_dist_tensor = torch.tensor(dist_policy, dtype=torch.float32, device=device)
 

@@ -48,7 +48,7 @@ class IRLEnvWrapper(gym.Wrapper):
     def step(self, action):
         obs, _, terminated, truncated, info = self.env.step(action)
         with torch.no_grad():
-            dist_theta = np.abs(obs[0] - obs[1])  # Calcola la distanza tra theta e theta target
+            dist_theta = obs[1] - obs[0]  # Calcola la distanza relativa tra theta_target e theta
             dist_theta_tensor = torch.tensor(dist_theta, dtype=torch.float32, device=self.reward_net.model[0].weight.device).unsqueeze(0)
             action_tensor = torch.tensor(action, dtype=torch.float32, device=self.reward_net.model[0].weight.device)#.unsqueeze(0)
             reward = self.reward_net(dist_theta_tensor, action_tensor).item()
@@ -68,8 +68,8 @@ def train_reward_net(reward_net, expert_obs, expert_act, policy_obs, policy_act,
     if policy_a.ndim == 1:
         policy_a = policy_a.unsqueeze(1)
 
-    expert_dist = np.abs(expert_obs[:, 0] - expert_obs[:, 1])  # Calcola la distanza tra theta e theta target
-    policy_dist = np.abs(policy_obs[:, 0] - policy_obs[:, 1])
+    expert_dist = expert_obs[:, 1] - expert_obs[:, 0]  # Calcola la distanza tra theta e theta target
+    policy_dist = policy_obs[:, 1] - policy_obs[:, 0]
     expert_dist_tensor = torch.tensor(expert_dist, dtype=torch.float32, device=device).unsqueeze(1)
     policy_dist_tensor = torch.tensor(policy_dist, dtype=torch.float32, device=device).unsqueeze(1)
 
