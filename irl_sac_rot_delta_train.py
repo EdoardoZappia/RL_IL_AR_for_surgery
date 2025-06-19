@@ -122,7 +122,7 @@ if __name__ == "__main__":
     agent = SAC("MlpPolicy", wrapped_env, verbose=1, device=device)
 
     # Ciclo IRL
-    for iter in range(1000):
+    for iter in range(500):
         print(f"=== Iterazione IRL {iter} ===")
 
         # 1. Raccogli dati della policy corrente
@@ -147,7 +147,7 @@ if __name__ == "__main__":
         policy_act = np.array(policy_act).squeeze()
 
         # # 2. Allenamento multiplo della reward
-        for _ in range(10):
+        for _ in range(5):
             idx = np.random.choice(len(observations), size=policy_obs.shape[0], replace=False)
             expert_obs = observations[idx]
             expert_act = actions[idx]
@@ -156,9 +156,9 @@ if __name__ == "__main__":
         print(f"Loss reward (iter {iter}): {loss}")
 
         # 3. Aggiorna la policy ogni 5 iterazioni
-        if iter % 5 == 0:
+        if iter % 2 == 0:
             print(">>> Aggiorno la policy con SAC")
-            agent.learn(total_timesteps=1000)
+            agent.learn(total_timesteps=1200)
 
     # Salva il reward appreso
     torch.save(reward_net.state_dict(), "IL/DME_SAC/reward_network_rot_0.5_0.01_delta.pt")
