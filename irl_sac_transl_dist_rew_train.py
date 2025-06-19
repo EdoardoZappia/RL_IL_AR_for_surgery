@@ -65,6 +65,9 @@ class IRLEnvWrapper(gym.Wrapper):
             #state_tensor = torch.tensor(obs, dtype=torch.float32, device=self.reward_net.model[0].weight.device).unsqueeze(0)
             action_tensor = torch.tensor(action_prep, dtype=torch.float32, device=self.reward_net.model[0].weight.device)#.unsqueeze(0)
 
+            if action_tensor.ndim == 1:
+                action_tensor = action_tensor.unsqueeze(1) 
+            
             print(f"dist_tensor: {dist_tensor.shape}, action_tensor: {action_prep.shape}")
 
 
@@ -73,7 +76,7 @@ class IRLEnvWrapper(gym.Wrapper):
 
 def preprocess_action(state, action):
     # Caso batch
-    state = torch.tensor(state, dtype=torch.float32, device=device)
+    #state = torch.tensor(state, dtype=torch.float32, device=device)
     action = torch.tensor(action, dtype=torch.float32, device=device)
     if state.ndim == 2 and action.ndim == 2:
         pos = state[:, :2]      # (B, 2)
