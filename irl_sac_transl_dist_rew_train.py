@@ -48,6 +48,8 @@ class IRLEnvWrapper(gym.Wrapper):
 
     def step(self, action):
         state = self.env.data.qpos
+        state = torch.tensor(state, dtype=torch.float32, device=self.reward_net.model[0].weight.device)
+        action = torch.tensor(action, dtype=torch.float32, device=self.reward_net.model[0].weight.device)
         obs, _, terminated, truncated, info = self.env.step(action)[:5]
         #step_result = self.env.step(action)
     
@@ -61,12 +63,12 @@ class IRLEnvWrapper(gym.Wrapper):
             dist_tensor = torch.tensor([dist_x, dist_y], dtype=torch.float32, device=self.reward_net.model[0].weight.device).unsqueeze(0)
             action_prep = preprocess_action(state, action)
             #state_tensor = torch.tensor(obs, dtype=torch.float32, device=self.reward_net.model[0].weight.device).unsqueeze(0)
-            action_tensor = torch.tensor(action_prep, dtype=torch.float32, device=self.reward_net.model[0].weight.device)#.unsqueeze(0)
+            #action_tensor = torch.tensor(action_prep, dtype=torch.float32, device=self.reward_net.model[0].weight.device)#.unsqueeze(0)
 
-            print(f"dist_tensor: {dist_tensor.shape}, action_tensor: {action_tensor.shape}")
+            print(f"dist_tensor: {dist_tensor.shape}, action_tensor: {action_prep.shape}")
 
 
-            reward = self.reward_net(dist_tensor, action_tensor).item()
+            reward = self.reward_net(dist_tensor, action_prep).item()
         return obs, reward, terminated, truncated, info
 
 def preprocess_action(state, action):
