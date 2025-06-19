@@ -71,7 +71,7 @@ def train_reward_net(reward_net, expert_obs, expert_act, policy_obs, policy_act,
     expert_dist = np.abs(expert_obs[:, 0] - expert_obs[:, 1])  # Calcola la distanza tra theta e theta target
     policy_dist = np.abs(policy_obs[:, 0] - policy_obs[:, 1])
     expert_dist_tensor = torch.tensor(expert_dist, dtype=torch.float32, device=device).unsqueeze(1)
-    policy_dist_tensor = torch.tensor(policy_dist, dtype=torch.float32, device=device).uns
+    policy_dist_tensor = torch.tensor(policy_dist, dtype=torch.float32, device=device).unsqueeze(1)
 
     r_expert = reward_net(expert_dist_tensor, expert_a)
     r_policy = reward_net(policy_dist_tensor, policy_a)
