@@ -71,7 +71,7 @@ class IRLEnvWrapper(gym.Wrapper):
             print(f"dist_tensor: {dist_tensor.shape}, action_tensor: {action_prep.shape}")
 
 
-            reward = self.reward_net(dist_tensor, action_prep).item()
+            reward = self.reward_net(dist_tensor, action_tensor).item()
         return obs, reward, terminated, truncated, info
 
 def preprocess_action(state, action):
