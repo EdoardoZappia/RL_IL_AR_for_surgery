@@ -99,9 +99,9 @@ class IRLEnvWrapper(gym.Wrapper):
 
 def preprocess_action(action):
     # Caso batch
-    if state.ndim == 2 and action.ndim == 2:
+    if action.ndim == 2:
         return F.normalize(action, dim=1)  # (B, 2)
-    elif state.ndim == 1 and action.ndim == 1:
+    elif action.ndim == 1:
         return F.normalize(action, dim=0).unsqueeze(0)  # (1, 2)
     else:
         raise ValueError("Dimensioni non compatibili")
