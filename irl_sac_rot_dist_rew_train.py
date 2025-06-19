@@ -68,13 +68,13 @@ def train_reward_net(reward_net, expert_obs, expert_act, policy_obs, policy_act,
     if policy_a.ndim == 1:
         policy_a = policy_a.unsqueeze(1)
 
-    expert_dist = np.abs(expert_s[:, 0] - expert_s[:, 1])  # Calcola la distanza tra theta e theta target
-    policy_dist = np.abs(policy_s[:, 0] - policy_s[:, 1])
+    expert_dist = np.abs(expert_obs[:, 0] - expert_obs[:, 1])  # Calcola la distanza tra theta e theta target
+    policy_dist = np.abs(policy_obs[:, 0] - policy_obs[:, 1])
     expert_dist_tensor = torch.tensor(expert_dist, dtype=torch.float32, device=device).unsqueeze(1)
     policy_dist_tensor = torch.tensor(policy_dist, dtype=torch.float32, device=device).uns
 
-    r_expert = reward_net(expert_s, expert_a)
-    r_policy = reward_net(policy_s, policy_a)
+    r_expert = reward_net(expert_dist_tensor, expert_a)
+    r_policy = reward_net(policy_dist_tensor, policy_a)
 
     loss = -r_expert.mean() + torch.logsumexp(r_policy, dim=0).mean()
     loss += lambda_reg * sum(torch.norm(p)**2 for p in reward_net.parameters())
