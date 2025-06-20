@@ -101,7 +101,10 @@ def train_reward_net(reward_net, expert_obs, expert_act, policy_obs, policy_act,
     r_policy = reward_net(policy_delta_before, policy_a, policy_delta_after)
 
     loss = -r_expert.mean() + torch.logsumexp(r_policy, dim=0).mean()
-    loss += lambda_reg * sum(torch.norm(p)**2 for p in reward_net.parameters())
+    l2_penalty = sum((p ** 2).sum() for p in reward_net.parameters())
+    loss += lambda_reg * l2_penalty
+
+    #loss += lambda_reg * sum(torch.norm(p)**2 for p in reward_net.parameters())
 
     optimizer.zero_grad()
     loss.backward()
