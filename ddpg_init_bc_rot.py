@@ -24,11 +24,12 @@ LR_ACTOR = 0.001
 LR_CRITIC = 0.001
 GAMMA = 0.99
 TAU = 0.005
-EARLY_STOPPING_EPISODES = 30
+EARLY_STOPPING_EPISODES = 50
 CHECKPOINT_INTERVAL = 100
+PRETRAIN_CRITIC_EPISODES = 200
 
 now = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-RUN_DIR = f"Esperimento_1_/Rotazioni-dinamiche/ddpg_mov_0.01_std_0.002_{now}"
+RUN_DIR = f"Esperimento_1_/Rotazioni-dinamiche/ddpg_mov_0.01_std_0.002_frozen_policy_{now}"
 os.makedirs(RUN_DIR, exist_ok=True)
 
 class PolicyNet(nn.Module):
@@ -94,7 +95,7 @@ class DDPGAgent(nn.Module):
             reward += 100
         return reward - 1.0
 
-    def update(self, gamma=GAMMA, tau=TAU):
+    def update(self, gamma=GAMMA, tau=TAU, update_actor=False):
         if len(self.buffer) < self.batch_size:
             return
         transitions = random.sample(self.buffer.buffer, self.batch_size)
@@ -117,13 +118,15 @@ class DDPGAgent(nn.Module):
         critic_loss.backward()
         self.optimizer_critic.step()
 
-        actor_loss = -self.critic(states, self.actor(states)).mean()
-        self.optimizer_actor.zero_grad()
-        actor_loss.backward()
-        self.optimizer_actor.step()
+        if update_actor:
+            actor_loss = -self.critic(states, self.actor(states)).mean()
+            self.optimizer_actor.zero_grad()
+            actor_loss.backward()
+            self.optimizer_actor.step()
 
-        for target_param, param in zip(self.actor_target.parameters(), self.actor.parameters()):
-            target_param.data.copy_(tau * param.data + (1.0 - tau) * target_param.data)
+            for target_param, param in zip(self.actor_target.parameters(), self.actor.parameters()):
+                target_param.data.copy_(tau * param.data + (1.0 - tau) * target_param.data)
+
         for target_param, param in zip(self.critic_target.parameters(), self.critic.parameters()):
             target_param.data.copy_(tau * param.data + (1.0 - tau) * target_param.data)
 
@@ -183,6 +186,7 @@ def train_ddpg(env=None, num_episodes=10001):
     tolerance = 0.01
 
     for episode in range(num_episodes):
+        train_actor = episode >= PRETRAIN_CRITIC_EPISODES
         state, _ = env.reset()
         done = False
         total_reward = 0
@@ -224,7 +228,8 @@ def train_ddpg(env=None, num_episodes=10001):
             transition = (state.cpu().numpy(), action_tensor.cpu().numpy(), reward, next_state.cpu().numpy(), float(done))
             agent.buffer.push(transition)
             if len(agent.buffer) > 1000:
-                agent.update()
+                agent.update(update_actor=train_actor)
+
             state = next_state
             real_state = real_next_state
             total_reward += reward
