@@ -26,10 +26,12 @@ GAMMA = 0.99
 TAU = 0.005
 EARLY_STOPPING_EPISODES = 50
 CHECKPOINT_INTERVAL = 100
-PRETRAIN_CRITIC_EPISODES = 50
+#PRETRAIN_CRITIC_EPISODES = 50
+PRETRAIN_CRITIC_EPISODES = 0
 
 now = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-RUN_DIR = f"Esperimento_1_/Traslazioni-dinamiche/ddpg_mov_0.05_std_0.006_frozen_policy_{now}"
+#RUN_DIR = f"Esperimento_1_/Traslazioni-dinamiche/ddpg_mov_0.05_std_0.006_frozen_policy_{now}"
+RUN_DIR = f"TEST_NOISE/Traslazioni-dinamiche/ddpg_mov_0.05_std_0.006_{now}"
 os.makedirs(RUN_DIR, exist_ok=True)
 
 class PolicyNet(nn.Module):
@@ -88,15 +90,15 @@ class DDPGAgent(nn.Module):
         self.min_noise_std = 0.01
         self.noise_decay = 0.999
 
-        # Carica policy pre-addestrata
-        pretrained_path = "IL/bc_policy_transl_0.2_0.05_std_0.005.pth"
-        if os.path.exists(pretrained_path):
-            state_dict = torch.load(pretrained_path, map_location=device)
-            self.actor.load_state_dict(state_dict)
-            self.actor_target.load_state_dict(state_dict)
-            print(f"Policy caricata da {pretrained_path}")
-        else:
-            print(f"Attenzione: file {pretrained_path} non trovato.")
+        # # Carica policy pre-addestrata
+        # pretrained_path = "IL/bc_policy_transl_0.2_0.05_std_0.005.pth"
+        # if os.path.exists(pretrained_path):
+        #     state_dict = torch.load(pretrained_path, map_location=device)
+        #     self.actor.load_state_dict(state_dict)
+        #     self.actor_target.load_state_dict(state_dict)
+        #     print(f"Policy caricata da {pretrained_path}")
+        # else:
+        #     print(f"Attenzione: file {pretrained_path} non trovato.")
 
     def reward_function(self, state, action, next_state, step, tolerance, rimbalzato, attached_counter):
         pos = state[:2]
