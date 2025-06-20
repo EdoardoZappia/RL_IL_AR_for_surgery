@@ -115,7 +115,7 @@ if __name__ == "__main__":
     state_dim = 2 # relative distance between theta and theta target
     action_dim = 1 # rotation speed
     reward_net = RewardNetwork(state_dim, action_dim).to(device)
-    optimizer = optim.Adam(reward_net.parameters(), lr=1e-3)
+    optimizer = optim.Adam(reward_net.parameters(), lr=1e-4)
 
     wrapped_env = DummyVecEnv([lambda: IRLEnvWrapper(make_env(), reward_net)])
     agent = SAC("MlpPolicy", wrapped_env, verbose=1, device=device)
