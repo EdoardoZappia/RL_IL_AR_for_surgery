@@ -119,7 +119,7 @@ if __name__ == "__main__":
     optimizer = optim.Adam(reward_net.parameters(), lr=1e-3)
 
     wrapped_env = DummyVecEnv([lambda: IRLEnvWrapper(make_env(), reward_net)])
-    agent = SAC("MlpPolicy", wrapped_env, learning_rate=1e-4, verbose=1, device=device)
+    agent = SAC("MlpPolicy", wrapped_env, learning_rate=3e-5, verbose=1, device=device)
 
     # Ciclo IRL
     for iter in range(500):
