@@ -30,7 +30,7 @@ PRETRAIN_CRITIC_EPISODES = 0 #50
 
 now = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
 #RUN_DIR = f"Esperimento_1_/Rotazioni-dinamiche/ddpg_mov_0.01_std_0.004_frozen_policy_{now}"
-RUN_DIR = f"TEST_NOISE/Rotazioni-dinamiche/ddpg_mov_0.01_std_0.004_{now}"
+RUN_DIR = f"TEST_NOISE/Rotazioni-dinamiche/ddpg_mov_0.01_std_0.008_{now}"
 os.makedirs(RUN_DIR, exist_ok=True)
 
 class PolicyNet(nn.Module):
@@ -194,7 +194,7 @@ def train_ddpg(env=None, num_episodes=10001):
         real_state = torch.tensor(state, dtype=torch.float32).to(device)
         state = torch.tensor(state, dtype=torch.float32).to(device)
         state = state.clone()
-        state[1:] += torch.normal(mean=0.0, std=0.004, size=(1,), device=state.device)
+        state[1:] += torch.normal(mean=0.0, std=0.008, size=(1,), device=state.device)
 
         agent.noise_std = max(agent.min_noise_std, agent.noise_std * agent.noise_decay)
         trajectory, target_trajectory = [], []
@@ -213,7 +213,7 @@ def train_ddpg(env=None, num_episodes=10001):
             real_next_state = torch.tensor(next_state, dtype=torch.float32).to(device)
             next_state = torch.tensor(next_state, dtype=torch.float32).to(device)
             next_state = next_state.clone()
-            next_state[1:] += torch.normal(mean=0.0, std=0.004, size=(1,), device=next_state.device)
+            next_state[1:] += torch.normal(mean=0.0, std=0.008, size=(1,), device=next_state.device)
 
             if torch.norm(real_next_state[0] - real_state[1]) < tolerance:
                 total_attached_counter += 1
