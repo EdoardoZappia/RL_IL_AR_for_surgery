@@ -119,7 +119,7 @@ if __name__ == "__main__":
     optimizer = optim.Adam(reward_net.parameters(), lr=1e-3)
 
     wrapped_env = DummyVecEnv([lambda: IRLEnvWrapper(make_env(), reward_net)])
-    agent = SAC("MlpPolicy", wrapped_env, verbose=1, device=device)
+    agent = SAC("MlpPolicy", wrapped_env, learning_rate=1e-4, verbose=1, device=device)
 
     # Ciclo IRL
     for iter in range(500):
@@ -147,7 +147,7 @@ if __name__ == "__main__":
         policy_act = np.array(policy_act).squeeze()
 
         # # 2. Allenamento multiplo della reward
-        for _ in range(5):
+        for _ in range(10):
             idx = np.random.choice(len(observations), size=policy_obs.shape[0], replace=False)
             expert_obs = observations[idx]
             expert_act = actions[idx]
@@ -156,7 +156,7 @@ if __name__ == "__main__":
         print(f"Loss reward (iter {iter}): {loss}")
 
         # 3. Aggiorna la policy ogni 5 iterazioni
-        if iter % 2 == 0:
+        if iter % 5 == 0:
             print(">>> Aggiorno la policy con SAC")
             agent.learn(total_timesteps=1200)
 
