@@ -25,13 +25,13 @@ class BCModel(torch.nn.Module):
         self.fc2 = torch.nn.Linear(128, 128)
         self.fc3 = torch.nn.Linear(128, output_dim)
 
-    def forward(self, x):
-        x = torch.relu(self.fc1(x))
+    def forward(self, state):
+        x = torch.relu(self.fc1(state))
         x = torch.relu(self.fc2(x))
-        x = self.fc3(x)
-        return x
+        action = torch.tanh(self.fc3(x)) * 5.0
+        return action
 
-def train_bc_model(model, dataloader, num_epochs=200, learning_rate=1e-3, device=None, save_path="IL/bc_policy_rot_0.5_0.01_std_0.004.pth"):
+def train_bc_model(model, dataloader, num_epochs=200, learning_rate=1e-3, device=None, save_path="IL/BC_correct/bc_policy_rot_0.5_0.01_std_0.004.pth"):
 
     # Crea la cartella se non esiste
     os.makedirs(os.path.dirname(save_path), exist_ok=True)
@@ -69,4 +69,3 @@ def train_bc_model(model, dataloader, num_epochs=200, learning_rate=1e-3, device
 if __name__ == "__main__":
     model = BCModel(input_dim=2, output_dim=1)
     train_bc_model(model, dataloader)
-
