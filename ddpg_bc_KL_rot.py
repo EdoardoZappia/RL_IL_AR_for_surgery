@@ -39,8 +39,8 @@ class PolicyNet(nn.Module):
         self.fc1 = nn.Linear(state_dim, NUM_NEURONS)
         self.fc2 = nn.Linear(NUM_NEURONS, NUM_NEURONS)
         self.fc3 = nn.Linear(NUM_NEURONS, action_dim)
-        nn.init.uniform_(self.fc3.weight, -3e-3, 3e-3)
-        nn.init.uniform_(self.fc3.bias, -3e-3, 3e-3)
+        #nn.init.uniform_(self.fc3.weight, -3e-3, 3e-3)
+        #nn.init.uniform_(self.fc3.bias, -3e-3, 3e-3)
 
     def forward(self, state):
         x = F.relu(self.fc1(state))
