@@ -89,7 +89,7 @@ class DDPGAgent(nn.Module):
         self.min_noise_std = 0.01
         self.noise_decay = 0.999
 
-        self.expert_actor = PolicyNet(state_dim, action_dim).to(device)
+        self.actor_expert = PolicyNet(state_dim, action_dim).to(device)
 
     def reward_function(self, state, action, next_state, tolerance):
         rot_error = torch.norm(state[1]-next_state[0])
