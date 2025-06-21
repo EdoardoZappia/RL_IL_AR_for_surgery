@@ -26,7 +26,7 @@ GAMMA = 0.99
 TAU = 0.005
 EARLY_STOPPING_EPISODES = 50
 CHECKPOINT_INTERVAL = 100
-PRETRAIN_CRITIC_EPISODES = 0 #50
+PRETRAIN_CRITIC_EPISODES = 50
 
 now = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
 RUN_DIR = f"Esperimento_1_/KL/Rotazioni-dinamiche/ddpg_mov_0.01_std_0.005_{now}"
@@ -85,8 +85,8 @@ class DDPGAgent(nn.Module):
         self.optimizer_critic = optim.Adam(self.critic.parameters(), lr=LR_CRITIC)
         self.buffer = ReplayBuffer(50000) 
         self.batch_size = 128
-        self.noise_std = 0#0.5
-        self.min_noise_std = 0#0.01
+        self.noise_std = 0.5
+        self.min_noise_std = 0.01
         self.noise_decay = 0.999
 
         self.actor_expert = PolicyNet(state_dim, action_dim).to(device)
@@ -184,7 +184,7 @@ def train_ddpg(env=None, num_episodes=10001):
     action_dim = 1
     agent = DDPGAgent(state_dim, action_dim)
 
-    pretrained_path = "IL/bc_policy_rot_0.5_0.01_std_0.004.pth"
+    pretrained_path = "IL/BC_correct/bc_policy_rot_0.5_0.01_std_0.004.pth"
     if os.path.exists(pretrained_path):
         state_dict = torch.load(pretrained_path, map_location=device)
         agent.actor.load_state_dict(state_dict)
