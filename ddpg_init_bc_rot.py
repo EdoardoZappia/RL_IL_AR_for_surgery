@@ -29,7 +29,7 @@ CHECKPOINT_INTERVAL = 100
 PRETRAIN_CRITIC_EPISODES = 0 #50
 
 now = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-RUN_DIR = f"Esperimento_1_/Rotazioni-dinamiche/ddpg_mov_0.01_std_0.005_{now}"
+RUN_DIR = f"Esperimento_1_corretto/Rotazioni-dinamiche/ddpg_mov_0.01_std_0.005_{now}"
 #RUN_DIR = f"TEST_NOISE/Rotazioni-dinamiche/ddpg_mov_0.01_std_0.004_{now}"
 os.makedirs(RUN_DIR, exist_ok=True)
 
@@ -173,7 +173,7 @@ def train_ddpg(env=None, num_episodes=10001):
     action_dim = 1
     agent = DDPGAgent(state_dim, action_dim)
 
-    pretrained_path = "IL/bc_policy_rot_0.5_0.01_std_0.004.pth"
+    pretrained_path = "IL/BC_correct/bc_policy_rot_0.5_0.01_std_0.004.pth"
     if os.path.exists(pretrained_path):
         state_dict = torch.load(pretrained_path, map_location=device)
         agent.actor.load_state_dict(state_dict)
