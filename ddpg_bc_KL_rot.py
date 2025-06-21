@@ -45,7 +45,7 @@ class PolicyNet(nn.Module):
     def forward(self, state):
         x = F.relu(self.fc1(state))
         x = F.relu(self.fc2(x))
-        action = torch.tanh(self.fc3(x)) * 5.0
+        action = torch.tanh(self.fc3(x))# * 5.0
         return action
 
 class QNet(nn.Module):
