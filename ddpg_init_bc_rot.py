@@ -26,10 +26,10 @@ GAMMA = 0.99
 TAU = 0.005
 EARLY_STOPPING_EPISODES = 50
 CHECKPOINT_INTERVAL = 100
-PRETRAIN_CRITIC_EPISODES = 50
+PRETRAIN_CRITIC_EPISODES = 0 #50
 
 now = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-RUN_DIR = f"Esperimento_1_/Rotazioni-dinamiche/ddpg_mov_0.01_std_0.005_frozen_policy_{now}"
+RUN_DIR = f"Esperimento_1_/Rotazioni-dinamiche/ddpg_mov_0.01_std_0.005_{now}"
 #RUN_DIR = f"TEST_NOISE/Rotazioni-dinamiche/ddpg_mov_0.01_std_0.004_{now}"
 os.makedirs(RUN_DIR, exist_ok=True)
 
