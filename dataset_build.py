@@ -17,8 +17,8 @@ def load_agents(checkpoint_path_transl, checkpoint_path_rot, env=None):
     agent_transl = DDPGTranslAgent(state_dim_trasl, 2)
     agent_rot = DDPGRotAgent(state_dim_rot, 1)
 
-    ckpt_transl = torch.load(checkpoint_path_transl, map_location=torch.device('cuda'))
-    ckpt_rot = torch.load(checkpoint_path_rot, map_location=torch.device('cuda'))
+    ckpt_transl = torch.load(checkpoint_path_transl, map_location=torch.device('cpu'))
+    ckpt_rot = torch.load(checkpoint_path_rot, map_location=torch.device('cpu'))
 
     agent_transl.actor.load_state_dict(ckpt_transl['actor_state_dict'])
     agent_rot.actor.load_state_dict(ckpt_rot['actor_state_dict'])
