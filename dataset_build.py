@@ -3,7 +3,9 @@ import torch
 import numpy as np
 from rototransl_env import TrackingEnv
 from ddpg_dyn import DDPGAgent as DDPGTranslAgent
-from ddpg_rot_dyn import DDPGAgent as DDPGRotAgent
+#from ddpg_rot_dyn import DDPGAgent as DDPGRotAgent
+
+from ddpg_init_bc_rot import DDPGAgent as DDPGRotAgent
 
 def load_agents(checkpoint_path_transl, checkpoint_path_rot, env=None):
     if env is None:
