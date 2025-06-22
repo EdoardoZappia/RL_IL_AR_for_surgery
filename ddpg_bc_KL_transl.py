@@ -93,7 +93,7 @@ class DDPGAgent(nn.Module):
         self.actor_expert.eval()  # Non addestrare la policy esperta
 
         # Carica policy pre-addestrata
-        pretrained_path = "IL/BC_correct/bc_policy_transl_0.2_0.05_std_0.006.pth"
+        pretrained_path = "IL/BC_correct/bc_policy_transl_0.2_0.05_std_0.005.pth"
         if os.path.exists(pretrained_path):
             state_dict = torch.load(pretrained_path, map_location=device)
             self.actor.load_state_dict(state_dict)
