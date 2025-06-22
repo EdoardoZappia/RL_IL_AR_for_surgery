@@ -95,7 +95,7 @@ class DDPGAgent(nn.Module):
         rot_error = torch.norm(state[1]-next_state[0])
         reward = - rot_error.item() * 3
         if torch.norm(next_state[0] - state[1]) < tolerance:
-            reward += 100
+            reward += 10 #100
         return reward - 1.0
 
     def update(self, lambda_kl, gamma=GAMMA, tau=TAU, update_actor=False):
@@ -240,8 +240,9 @@ def train_ddpg(env=None, num_episodes=10001):
 
             reward = agent.reward_function(state, action_tensor, next_state, tolerance)
 
-            if attached_counter > 20 or truncated or (total_attached_counter > 0 and torch.norm(real_next_state[0] - real_state[1]) > tolerance):
-                done = True
+            done = truncated
+            #if attached_counter > 20 or truncated or (total_attached_counter > 0 and torch.norm(real_next_state[0] - real_state[1]) > tolerance):
+            #    done = True
 
             transition = (state.cpu().numpy(), action_tensor.cpu().numpy(), reward, next_state.cpu().numpy(), float(done))
             agent.buffer.push(transition)
@@ -270,7 +271,7 @@ def train_ddpg(env=None, num_episodes=10001):
         if episode % 50 == 0 and episode > 0:
             save_trajectory_plot(trajectory, target_trajectory, episode)
 
-        if len(reward_history) > EARLY_STOPPING_EPISODES and np.mean(reward_history[-EARLY_STOPPING_EPISODES:]) > 2000:
+        if len(reward_history) > EARLY_STOPPING_EPISODES and np.mean(reward_history[-EARLY_STOPPING_EPISODES:]) > 900: #2000:
             print(f"Early stopping at episode {episode}")
             save_checkpoint(agent, episode)
             save_trajectory_plot(trajectory, target_trajectory, episode)
