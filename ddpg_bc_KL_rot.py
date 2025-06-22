@@ -24,12 +24,12 @@ LR_ACTOR = 0.001
 LR_CRITIC = 0.001
 GAMMA = 0.99
 TAU = 0.005
-EARLY_STOPPING_EPISODES = 100
+EARLY_STOPPING_EPISODES = 50
 CHECKPOINT_INTERVAL = 100
 PRETRAIN_CRITIC_EPISODES = 100
 
 now = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-RUN_DIR = f"Esperimento_1_corretto/KL/Rotazioni-dinamiche/ddpg_mov_0.01_std_0.004_{now}"
+RUN_DIR = f"Esperimento_1_corretto/KL/Rotazioni-dinamiche/ddpg_mov_0.01_std_0.005_RL_{now}"
 #RUN_DIR = f"TEST_NOISE/Rotazioni-dinamiche/ddpg_mov_0.01_std_0.004_{now}"
 os.makedirs(RUN_DIR, exist_ok=True)
 
@@ -184,7 +184,8 @@ def train_ddpg(env=None, num_episodes=10001):
     action_dim = 1
     agent = DDPGAgent(state_dim, action_dim)
 
-    pretrained_path = "IL/BC_correct/bc_policy_rot_0.5_0.01_std_0.004.pth"
+    #pretrained_path = "IL/BC_correct/bc_policy_rot_0.5_0.01_std_0.004.pth"
+    pretrained_path = "Esperimento_1_corretto/KL/Rotazioni-dinamiche/ddpg_mov_0.01_std_0.005_20250621_193058/checkpoint_ep2782.pth"
     if os.path.exists(pretrained_path):
         state_dict = torch.load(pretrained_path, map_location=device)
         agent.actor.load_state_dict(state_dict)
@@ -211,7 +212,7 @@ def train_ddpg(env=None, num_episodes=10001):
         real_state = torch.tensor(state, dtype=torch.float32).to(device)
         state = torch.tensor(state, dtype=torch.float32).to(device)
         state = state.clone()
-        state[1:] += torch.normal(mean=0.0, std=0.004, size=(1,), device=state.device)
+        state[1:] += torch.normal(mean=0.0, std=0.005, size=(1,), device=state.device)
 
         agent.noise_std = max(agent.min_noise_std, agent.noise_std * agent.noise_decay)
         trajectory, target_trajectory = [], []
@@ -230,7 +231,7 @@ def train_ddpg(env=None, num_episodes=10001):
             real_next_state = torch.tensor(next_state, dtype=torch.float32).to(device)
             next_state = torch.tensor(next_state, dtype=torch.float32).to(device)
             next_state = next_state.clone()
-            next_state[1:] += torch.normal(mean=0.0, std=0.004, size=(1,), device=next_state.device)
+            next_state[1:] += torch.normal(mean=0.0, std=0.005, size=(1,), device=next_state.device)
 
             if torch.norm(real_next_state[0] - real_state[1]) < tolerance:
                 total_attached_counter += 1
