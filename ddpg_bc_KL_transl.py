@@ -26,7 +26,7 @@ GAMMA = 0.99
 TAU = 0.005
 EARLY_STOPPING_EPISODES = 50
 CHECKPOINT_INTERVAL = 100
-PRETRAIN_CRITIC_EPISODES = 100
+PRETRAIN_CRITIC_EPISODES = 0
 
 now = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
 RUN_DIR = f"Esperimento_1_corretto/KL/Traslazioni-dinamiche/ddpg_mov_0.05_std_0.005_{now}"
