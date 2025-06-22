@@ -24,12 +24,12 @@ LR_ACTOR = 0.001
 LR_CRITIC = 0.001
 GAMMA = 0.99
 TAU = 0.005
-EARLY_STOPPING_EPISODES = 50
+EARLY_STOPPING_EPISODES = 100
 CHECKPOINT_INTERVAL = 100
 PRETRAIN_CRITIC_EPISODES = 100
 
 now = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-RUN_DIR = f"Esperimento_1_corretto/KL/Rotazioni-dinamiche/ddpg_mov_0.01_std_0.005_{now}"
+RUN_DIR = f"Esperimento_1_corretto/KL/Rotazioni-dinamiche/ddpg_mov_0.01_std_0.004_{now}"
 #RUN_DIR = f"TEST_NOISE/Rotazioni-dinamiche/ddpg_mov_0.01_std_0.004_{now}"
 os.makedirs(RUN_DIR, exist_ok=True)
 
@@ -95,7 +95,7 @@ class DDPGAgent(nn.Module):
         rot_error = torch.norm(state[1]-next_state[0])
         reward = - rot_error.item() * 3
         if torch.norm(next_state[0] - state[1]) < tolerance:
-            reward += 10 #100
+            reward += 100
         return reward - 1.0
 
     def update(self, lambda_kl, gamma=GAMMA, tau=TAU, update_actor=False):
@@ -211,7 +211,7 @@ def train_ddpg(env=None, num_episodes=10001):
         real_state = torch.tensor(state, dtype=torch.float32).to(device)
         state = torch.tensor(state, dtype=torch.float32).to(device)
         state = state.clone()
-        state[1:] += torch.normal(mean=0.0, std=0.005, size=(1,), device=state.device)
+        state[1:] += torch.normal(mean=0.0, std=0.004, size=(1,), device=state.device)
 
         agent.noise_std = max(agent.min_noise_std, agent.noise_std * agent.noise_decay)
         trajectory, target_trajectory = [], []
@@ -230,7 +230,7 @@ def train_ddpg(env=None, num_episodes=10001):
             real_next_state = torch.tensor(next_state, dtype=torch.float32).to(device)
             next_state = torch.tensor(next_state, dtype=torch.float32).to(device)
             next_state = next_state.clone()
-            next_state[1:] += torch.normal(mean=0.0, std=0.005, size=(1,), device=next_state.device)
+            next_state[1:] += torch.normal(mean=0.0, std=0.004, size=(1,), device=next_state.device)
 
             if torch.norm(real_next_state[0] - real_state[1]) < tolerance:
                 total_attached_counter += 1
@@ -240,22 +240,23 @@ def train_ddpg(env=None, num_episodes=10001):
 
             reward = agent.reward_function(state, action_tensor, next_state, tolerance)
 
-            done = truncated
-            #if attached_counter > 20 or truncated or (total_attached_counter > 0 and torch.norm(real_next_state[0] - real_state[1]) > tolerance):
-            #    done = True
+            if attached_counter > 20 or truncated or (total_attached_counter > 0 and torch.norm(real_next_state[0] - real_state[1]) > tolerance):
+                done = True
 
             transition = (state.cpu().numpy(), action_tensor.cpu().numpy(), reward, next_state.cpu().numpy(), float(done))
             agent.buffer.push(transition)
             if len(agent.buffer) > 1000:
-                lambda_kl = max(0.05, 1.0 * (0.995 ** episode))  # parte da 1.0 e scende lentamente
+                if episode > 100:
+                    lambda_kl = max(0.05, 1.0 * (0.999 ** episode))  # parte da 1.0 e scende lentamente
+                else:
+                    lambda_kl = 1
                 agent.update(lambda_kl, update_actor=train_actor)
 
             state = next_state
             real_state = real_next_state
             total_reward += reward
 
-        #if attached_counter > 20:
-        if total_attached_counter > 85:
+        if attached_counter > 20:
             counter += 1
             success_history.append(1)
             if counter % 100 == 0:
@@ -272,7 +273,7 @@ def train_ddpg(env=None, num_episodes=10001):
         if episode % 50 == 0 and episode > 0:
             save_trajectory_plot(trajectory, target_trajectory, episode)
 
-        if len(reward_history) > EARLY_STOPPING_EPISODES and np.mean(reward_history[-EARLY_STOPPING_EPISODES:]) > 850: #2000:
+        if len(reward_history) > EARLY_STOPPING_EPISODES and np.mean(reward_history[-EARLY_STOPPING_EPISODES:]) > 2000:
             print(f"Early stopping at episode {episode}")
             save_checkpoint(agent, episode)
             save_trajectory_plot(trajectory, target_trajectory, episode)
