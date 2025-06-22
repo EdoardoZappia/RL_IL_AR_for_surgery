@@ -26,7 +26,7 @@ GAMMA = 0.99
 TAU = 0.005
 EARLY_STOPPING_EPISODES = 50
 CHECKPOINT_INTERVAL = 100
-PRETRAIN_CRITIC_EPISODES = 100
+PRETRAIN_CRITIC_EPISODES = 0 #100
 
 now = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
 RUN_DIR = f"Esperimento_1_corretto/KL/Rotazioni-dinamiche/ddpg_mov_0.01_std_0.005_RL_{now}"
@@ -186,19 +186,30 @@ def train_ddpg(env=None, num_episodes=10001):
 
     #pretrained_path = "IL/BC_correct/bc_policy_rot_0.5_0.01_std_0.004.pth"
     pretrained_path = "Esperimento_1_corretto/KL/Rotazioni-dinamiche/ddpg_mov_0.01_std_0.005_20250621_193058/checkpoint_ep2782.pth"
-    if os.path.exists(pretrained_path):
-        state_dict = torch.load(pretrained_path, map_location=device)
-        agent.actor.load_state_dict(state_dict)
-        agent.actor_target.load_state_dict(state_dict)
-        print(f"Policy caricata da {pretrained_path}")
+    # if os.path.exists(pretrained_path):
+    #     state_dict = torch.load(pretrained_path, map_location=device)
+    #     agent.actor.load_state_dict(state_dict)
+    #     agent.actor_target.load_state_dict(state_dict)
+    #     print(f"Policy caricata da {pretrained_path}")
 
-        agent.actor_expert.load_state_dict(state_dict)
-        agent.actor_expert.eval()
-        for p in agent.actor_expert.parameters():
-            p.requires_grad = False
+    #     agent.actor_expert.load_state_dict(state_dict)
+    #     agent.actor_expert.eval()
+    #     for p in agent.actor_expert.parameters():
+    #         p.requires_grad = False
 
-    else:
-        print(f"Attenzione: File {pretrained_path} non trovato. Policy non inizializzata.")
+    # else:
+    #     print(f"Attenzione: File {pretrained_path} non trovato. Policy non inizializzata.")
+
+    checkpoint = torch.load(pretrained_path, map_location=device)
+    agent.actor.load_state_dict(checkpoint['actor_state_dict'])
+    agent.actor_target.load_state_dict(checkpoint['actor_state_dict'])
+    agent.critic.load_state_dict(checkpoint['critic_state_dict'])
+    agent.critic_target.load_state_dict(checkpoint['critic_state_dict'])
+    agent.actor_expert.load_state_dict(checkpoint['actor_state_dict'])
+    agent.actor_expert.eval()
+    for p in agent.actor_expert.parameters():
+        p.requires_grad = False
+
 
     reward_history, success_history = [], []
     counter = 0
@@ -247,10 +258,9 @@ def train_ddpg(env=None, num_episodes=10001):
             transition = (state.cpu().numpy(), action_tensor.cpu().numpy(), reward, next_state.cpu().numpy(), float(done))
             agent.buffer.push(transition)
             if len(agent.buffer) > 1000:
-                if episode > 100:
-                    lambda_kl = max(0.05, 1.0 * (0.999 ** episode))  # parte da 1.0 e scende lentamente
-                else:
-                    lambda_kl = 1
+                
+                lambda_kl = max(0.05, 1.0 * (0.999 ** episode))  # parte da 1.0 e scende lentamente
+                
                 agent.update(lambda_kl, update_actor=train_actor)
 
             state = next_state
