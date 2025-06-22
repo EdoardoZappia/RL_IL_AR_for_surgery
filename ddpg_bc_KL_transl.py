@@ -73,6 +73,7 @@ class ReplayBuffer:
     def __len__(self):
         return len(self.buffer)
 
+
 class DDPGAgent(nn.Module):
     def __init__(self, state_dim, action_dim):
         super(DDPGAgent, self).__init__()
@@ -120,7 +121,7 @@ class DDPGAgent(nn.Module):
 
         return reward - 1.0
 
-    def update(self, lambda_kl, gamma=GAMMA, tau=TAU, update_actor=False):
+    def update(self, gamma=GAMMA, tau=TAU, update_actor=False):
         if len(self.buffer) < self.batch_size:
             return
         transitions = random.sample(self.buffer.buffer, self.batch_size)
@@ -147,13 +148,16 @@ class DDPGAgent(nn.Module):
         if update_actor:
 
             current_actions = self.actor(states)
-            actor_loss = -self.critic(states, current_actions).mean()
+            bc_loss = F.mse_loss(current_actions, actions)
 
-            if lambda_kl > 0.0:
-                with torch.no_grad():
-                    expert_actions = self.actor_expert(states)
-                kl_loss = F.mse_loss(current_actions, expert_actions)
-                actor_loss += lambda_kl * kl_loss
+            with torch.no_grad():
+                q_values = self.critic(states, actions)
+                q_abs_mean = q_values.abs().mean().item()
+
+            alpha = 2.5  # iperparametro: forza della regolarizzazione BC
+            lambda_bc = alpha / (q_abs_mean + 1e-5)
+
+            actor_loss = -lambda_bc * self.critic(states, current_actions).mean() + bc_loss
 
             self.optimizer_actor.zero_grad()
             actor_loss.backward()
@@ -256,10 +260,8 @@ def train_ddpg(env=None, num_episodes=10001):
             transition = (state.cpu().numpy(), action_tensor.cpu().numpy(), reward, next_state.cpu().numpy(), float(done))
             agent.buffer.push(transition)
             if len(agent.buffer) > 1000:
+                agent.update(update_actor=update_actor)
 
-                lambda_kl = max(0.05, 1.0 * (0.999 ** episode))
-
-                agent.update(lambda_kl, update_actor=update_actor)
             state = next_state
             real_state = real_next_state
             #total_reward += reward
