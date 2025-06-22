@@ -27,11 +27,11 @@ TAU = 0.005
 EARLY_STOPPING_EPISODES = 50
 CHECKPOINT_INTERVAL = 100
 #PRETRAIN_CRITIC_EPISODES = 50
-PRETRAIN_CRITIC_EPISODES = 0
+PRETRAIN_CRITIC_EPISODES = 100
 
 now = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
 #RUN_DIR = f"Esperimento_1_/Traslazioni-dinamiche/ddpg_mov_0.05_std_0.006_frozen_policy_{now}"
-RUN_DIR = f"TEST_NOISE/Traslazioni-dinamiche/ddpg_mov_0.05_std_0.006_{now}"
+RUN_DIR = f"TEST_NOISE/Traslazioni-dinamiche/PROVA{now}"
 os.makedirs(RUN_DIR, exist_ok=True)
 
 class PolicyNet(nn.Module):
@@ -90,15 +90,16 @@ class DDPGAgent(nn.Module):
         self.min_noise_std = 0.01
         self.noise_decay = 0.999
 
-        # # Carica policy pre-addestrata
-        # pretrained_path = "IL/bc_policy_transl_0.2_0.05_std_0.005.pth"
-        # if os.path.exists(pretrained_path):
-        #     state_dict = torch.load(pretrained_path, map_location=device)
-        #     self.actor.load_state_dict(state_dict)
-        #     self.actor_target.load_state_dict(state_dict)
-        #     print(f"Policy caricata da {pretrained_path}")
-        # else:
-        #     print(f"Attenzione: file {pretrained_path} non trovato.")
+        # Carica policy pre-addestrata
+        #pretrained_path = "IL/bc_policy_transl_0.2_0.05_std_0.005.pth"
+        pretrained_path = "IL/BC_correct/bc_policy_transl_0.2_0.05_std_0.005.pth"
+        if os.path.exists(pretrained_path):
+            state_dict = torch.load(pretrained_path, map_location=device)
+            self.actor.load_state_dict(state_dict)
+            self.actor_target.load_state_dict(state_dict)
+            print(f"Policy caricata da {pretrained_path}")
+        else:
+            print(f"Attenzione: file {pretrained_path} non trovato.")
 
     def reward_function(self, state, action, next_state, step, tolerance, rimbalzato, attached_counter):
         pos = state[:2]
@@ -189,7 +190,7 @@ def save_trajectory_plot(trajectory, target_trajectory, episode, tag="trajectory
     plt.savefig(os.path.join(RUN_DIR, f"{tag}_ep{episode}.png"))
     plt.close()
 
-def train_ddpg(env=None, num_episodes=20001):
+def train_ddpg(env=None, num_episodes=10001):
     if env is None:
         env = TrackingEnv()
     state_dim = env.observation_space.shape[0]
@@ -206,7 +207,7 @@ def train_ddpg(env=None, num_episodes=20001):
         real_state = torch.tensor(state, dtype=torch.float32).to(device)
         state = torch.tensor(state, dtype=torch.float32).to(device)
         state = state.clone()
-        state[2:4] += torch.normal(mean=0.0, std=0.006, size=(2,), device=device)
+        state[2:4] += torch.normal(mean=0.0, std=0.005, size=(2,), device=device)
 
         agent.noise_std = max(agent.min_noise_std, agent.noise_std * agent.noise_decay)
         trajectory, target_trajectory = [], []
@@ -227,7 +228,7 @@ def train_ddpg(env=None, num_episodes=20001):
             real_next_state = torch.tensor(next_state, dtype=torch.float32).to(device)
             next_state = torch.tensor(next_state, dtype=torch.float32).to(device)
             next_state = next_state.clone()
-            next_state[2:4] += torch.normal(mean=0.0, std=0.006, size=(2,), device=device)
+            next_state[2:4] += torch.normal(mean=0.0, std=0.005, size=(2,), device=device)
 
             if torch.norm(real_next_state[:2] - real_state[2:4]) < tolerance:
                 total_attached_counter += 1
