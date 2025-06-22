@@ -255,7 +255,7 @@ def train_ddpg(env=None, num_episodes=10001):
 
                 lambda_kl = max(0.05, 1.0 * (0.999 ** episode))
 
-                agent.update(update_actor=update_actor)
+                agent.update(lambda_kl, update_actor=update_actor)
             state = next_state
             real_state = real_next_state
             #total_reward += reward
