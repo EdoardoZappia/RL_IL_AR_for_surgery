@@ -254,7 +254,8 @@ def train_ddpg(env=None, num_episodes=10001):
             real_state = real_next_state
             total_reward += reward
 
-        if attached_counter > 20:
+        #if attached_counter > 20:
+        if total_attached_counter > 85:
             counter += 1
             success_history.append(1)
             if counter % 100 == 0:
@@ -271,7 +272,7 @@ def train_ddpg(env=None, num_episodes=10001):
         if episode % 50 == 0 and episode > 0:
             save_trajectory_plot(trajectory, target_trajectory, episode)
 
-        if len(reward_history) > EARLY_STOPPING_EPISODES and np.mean(reward_history[-EARLY_STOPPING_EPISODES:]) > 900: #2000:
+        if len(reward_history) > EARLY_STOPPING_EPISODES and np.mean(reward_history[-EARLY_STOPPING_EPISODES:]) > 850: #2000:
             print(f"Early stopping at episode {episode}")
             save_checkpoint(agent, episode)
             save_trajectory_plot(trajectory, target_trajectory, episode)
