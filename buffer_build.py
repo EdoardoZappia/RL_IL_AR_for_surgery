@@ -1,5 +1,6 @@
 import os
 import torch
+import torch.nn.functional as F
 import numpy as np
 from rototransl_env import TrackingEnv
 from ddpg_dyn import DDPGAgent as DDPGTranslAgent
