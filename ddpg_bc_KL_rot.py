@@ -29,7 +29,7 @@ CHECKPOINT_INTERVAL = 100
 PRETRAIN_CRITIC_EPISODES = 0 #100
 
 now = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-RUN_DIR = f"Esperimento_1_corretto/KL/Rotazioni-dinamiche/ddpg_mov_0.01_std_0.004_buffer_pieno_{now}"
+RUN_DIR = f"Esperimento_1_corretto/KL/Rotazioni-dinamiche/ddpg_mov_0.01_std_0.004_buffer_pieno_RL_{now}"
 #RUN_DIR = f"TEST_NOISE/Rotazioni-dinamiche/ddpg_mov_0.01_std_0.004_{now}"
 os.makedirs(RUN_DIR, exist_ok=True)
 
@@ -191,31 +191,45 @@ def train_ddpg(env=None, num_episodes=10001):
     action_dim = 1
     agent = DDPGAgent(state_dim, action_dim)
 
-    pretrained_path = "IL/BC_correct/bc_policy_rot_0.5_0.01_std_0.004_.pth"
-    #pretrained_path = "Esperimento_1_corretto/KL/Rotazioni-dinamiche/ddpg_mov_0.01_std_0.004_20250623_112606/checkpoint_ep1912.pth"
-    if os.path.exists(pretrained_path):
-        state_dict = torch.load(pretrained_path, map_location=device)
-        agent.actor.load_state_dict(state_dict)
-        agent.actor_target.load_state_dict(state_dict)
-        print(f"Policy caricata da {pretrained_path}")
-
-        agent.actor_expert.load_state_dict(state_dict)
-        agent.actor_expert.eval()
-        for p in agent.actor_expert.parameters():
-            p.requires_grad = False
-
+        # 1. Caricamento del dataset esperto (transizioni)
+    dataset_path = "trajectories/buffer_transitions_rot_std_0.004.npz"
+    if os.path.exists(dataset_path):
+        print(f"Caricamento dataset esperto da: {dataset_path}")
+        data = np.load(dataset_path, allow_pickle=True)
+        transitions = data['transitions']
+        for transition in transitions:
+            state, action, reward, next_state, done = transition
+            agent.buffer.push((state, action, reward, next_state, done))
+        print(f"Buffer inizializzato con {len(agent.buffer)} transizioni")
     else:
-        print(f"Attenzione: File {pretrained_path} non trovato. Policy non inizializzata.")
+        print(f"Attenzione: dataset {dataset_path} non trovato. Il buffer sarà vuoto.")
 
-    # checkpoint = torch.load(pretrained_path, map_location=device, weights_only=False)
-    # agent.actor.load_state_dict(checkpoint['actor_state_dict'])
-    # agent.actor_target.load_state_dict(checkpoint['actor_state_dict'])
-    # agent.critic.load_state_dict(checkpoint['critic_state_dict'])
-    # agent.critic_target.load_state_dict(checkpoint['critic_state_dict'])
-    # agent.actor_expert.load_state_dict(checkpoint['actor_state_dict'])
-    # agent.actor_expert.eval()
-    # for p in agent.actor_expert.parameters():
-    #     p.requires_grad = False
+
+    #pretrained_path = "IL/BC_correct/bc_policy_rot_0.5_0.01_std_0.004_.pth"
+    pretrained_path = "Esperimento_1_corretto/KL/Rotazioni-dinamiche/ddpg_mov_0.01_std_0.004_20250623_112606/checkpoint_ep1912.pth"
+    # if os.path.exists(pretrained_path):
+    #     state_dict = torch.load(pretrained_path, map_location=device)
+    #     agent.actor.load_state_dict(state_dict)
+    #     agent.actor_target.load_state_dict(state_dict)
+    #     print(f"Policy caricata da {pretrained_path}")
+
+    #     agent.actor_expert.load_state_dict(state_dict)
+    #     agent.actor_expert.eval()
+    #     for p in agent.actor_expert.parameters():
+    #         p.requires_grad = False
+
+    # else:
+    #     print(f"Attenzione: File {pretrained_path} non trovato. Policy non inizializzata.")
+
+    checkpoint = torch.load(pretrained_path, map_location=device, weights_only=False)
+    agent.actor.load_state_dict(checkpoint['actor_state_dict'])
+    agent.actor_target.load_state_dict(checkpoint['actor_state_dict'])
+    agent.critic.load_state_dict(checkpoint['critic_state_dict'])
+    agent.critic_target.load_state_dict(checkpoint['critic_state_dict'])
+    agent.actor_expert.load_state_dict(checkpoint['actor_state_dict'])
+    agent.actor_expert.eval()
+    for p in agent.actor_expert.parameters():
+        p.requires_grad = False
 
 
     reward_history, success_history = [], []
