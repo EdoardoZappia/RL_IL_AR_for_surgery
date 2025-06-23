@@ -188,7 +188,7 @@ def train_ddpg(env=None, num_episodes=10001):
     agent = DDPGAgent(state_dim, action_dim)
 
     #pretrained_path = "IL/BC_correct/bc_policy_rot_0.5_0.01_std_0.004.pth"
-    pretrained_path = "Esperimento_1_corretto/KL/Rotazioni-dinamiche/ddpg_mov_0.01_std_0.005_20250621_193058/checkpoint_ep2782.pth"
+    pretrained_path = "TEST_NOISE/Rotazioni-dinamiche/ddpg_mov_0.01_std_0.004_20250620_222306/success_ep2444.png"
     # if os.path.exists(pretrained_path):
     #     state_dict = torch.load(pretrained_path, map_location=device)
     #     agent.actor.load_state_dict(state_dict)
