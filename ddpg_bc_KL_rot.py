@@ -124,7 +124,11 @@ class DDPGAgent(nn.Module):
         if update_actor:
 
             current_actions = self.actor(states)
-            bc_loss = F.mse_loss(current_actions, actions)
+            with torch.no_grad():
+                expert_actions = self.actor_expert(states)
+            bc_loss = F.mse_loss(current_actions, expert_actions)
+
+            #bc_loss = F.mse_loss(current_actions, actions)
 
             with torch.no_grad():
                 q_values = self.critic(states, actions)
