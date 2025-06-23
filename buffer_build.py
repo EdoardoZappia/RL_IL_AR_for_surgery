@@ -150,10 +150,10 @@ def test_dual_agents(agent_transl, agent_rot, env=None, num_episodes=10001, tole
     env.close()
 
     if all_obs_xy and all_obs_rot:
-        os.makedirs("trajectories", exist_ok=True)
-        np.savez("trajectories/buffer_transitions_rot_std_0.004.npz",
+        os.makedirs("trajectories_correct", exist_ok=True)
+        np.savez("trajectories_correct/buffer_transitions_rot_std_0.004.npz",
                  transitions=np.array(all_obs_rot[:max_transitions], dtype=object))
-        np.savez("trajectories/buffer_transitions_transl_std_0.004.npz",
+        np.savez("trajectories_correct/buffer_transitions_transl_std_0.004.npz",
                  transitions=np.array(all_obs_xy[:max_transitions], dtype=object))
         print(f"\nDataset salvato con {len(all_obs_xy[:max_transitions])} passi totali da {saved_counter} episodi validi")
         print(f"Dataset salvato con {len(all_obs_rot[:max_transitions])} passi totali da {saved_counter} episodi validi")
