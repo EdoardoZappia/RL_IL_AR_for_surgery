@@ -135,7 +135,7 @@ def test_dual_agents(agent_transl, agent_rot, env=None, num_episodes=10001, tole
             state = next_state
             real_state = real_next_state
 
-        if total_attached_counter_rot > 90:
+        if total_attached_counter > 90:
             all_obs_xy.extend(episode_obs_xy)
             all_obs_rot.extend(episode_obs_rot)
             saved_counter += 1
