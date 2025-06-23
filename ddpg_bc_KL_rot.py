@@ -203,7 +203,7 @@ def train_ddpg(env=None, num_episodes=10001):
     # else:
     #     print(f"Attenzione: File {pretrained_path} non trovato. Policy non inizializzata.")
 
-    checkpoint = torch.load(pretrained_path, map_location=device)
+    checkpoint = torch.load(pretrained_path, map_location=device, weights_only=False)
     agent.actor.load_state_dict(checkpoint['actor_state_dict'])
     agent.actor_target.load_state_dict(checkpoint['actor_state_dict'])
     agent.critic.load_state_dict(checkpoint['critic_state_dict'])
