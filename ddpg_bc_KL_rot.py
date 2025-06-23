@@ -191,7 +191,7 @@ def train_ddpg(env=None, num_episodes=10001):
     action_dim = 1
     agent = DDPGAgent(state_dim, action_dim)
 
-        # 1. Caricamento del dataset esperto (transizioni)
+        # Caricamento del dataset esperto (transizioni)
     dataset_path = "trajectories_correct/buffer_transitions_rot_std_0.004.npz"
     if os.path.exists(dataset_path):
         print(f"Caricamento dataset esperto da: {dataset_path}")
