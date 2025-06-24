@@ -94,7 +94,7 @@ class DDPGAgent(nn.Module):
 
         # Carica policy pre-addestrata
         #pretrained_path = "IL/BC_dataset_correct/bc_policy_transl_0.2_0.05_std_0.005.pth"
-        pretrained_path = "Traslazioni-dinamiche/Noisy/ddpg_run_dyn_mov_0.05_noisy_target_0.00520250504_150841/checkpoint_ep3639.pth"
+        pretrained_path = "Esperimento_1_corretto/KL/Traslazioni-dinamiche/ddpg_mov_0.05_std_0.005_buffer_pieno_no_init_20250624_110210/checkpoint_ep1815.pth"
         # if os.path.exists(pretrained_path):
         #     state_dict = torch.load(pretrained_path, map_location=device)
         #     self.actor.load_state_dict(state_dict)
