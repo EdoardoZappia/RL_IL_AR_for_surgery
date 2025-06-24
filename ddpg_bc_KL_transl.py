@@ -29,7 +29,7 @@ CHECKPOINT_INTERVAL = 100
 PRETRAIN_CRITIC_EPISODES = 0
 
 now = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-RUN_DIR = f"Esperimento_1_corretto/KL/Traslazioni-dinamiche/ddpg_mov_0.05_std_0.005_buffer_pieno_pre-tr_{now}"
+RUN_DIR = f"Esperimento_1_corretto/KL/Traslazioni-dinamiche/ddpg_mov_0.05_std_0.005_buffer_pieno_pre-tr_RL_{now}"
 os.makedirs(RUN_DIR, exist_ok=True)
 
 class PolicyNet(nn.Module):
@@ -93,15 +93,26 @@ class DDPGAgent(nn.Module):
         self.actor_expert.eval()  # Non addestrare la policy esperta
 
         # Carica policy pre-addestrata
-        pretrained_path = "IL/BC_dataset_correct/bc_policy_transl_0.2_0.05_std_0.005.pth"
-        if os.path.exists(pretrained_path):
-            state_dict = torch.load(pretrained_path, map_location=device)
-            self.actor.load_state_dict(state_dict)
-            self.actor_target.load_state_dict(state_dict)
-            self.actor_expert.load_state_dict(state_dict)
-            print(f"Policy caricata da {pretrained_path}")
-        else:
-            print(f"Attenzione: file {pretrained_path} non trovato.")
+        #pretrained_path = "IL/BC_dataset_correct/bc_policy_transl_0.2_0.05_std_0.005.pth"
+        pretrained_path = "Traslazioni-dinamiche/Noisy/ddpg_run_dyn_mov_0.05_noisy_target_0.00520250504_150841/checkpoint_ep3639.pth"
+        # if os.path.exists(pretrained_path):
+        #     state_dict = torch.load(pretrained_path, map_location=device)
+        #     self.actor.load_state_dict(state_dict)
+        #     self.actor_target.load_state_dict(state_dict)
+        #     self.actor_expert.load_state_dict(state_dict)
+        #     print(f"Policy caricata da {pretrained_path}")
+        # else:
+        #     print(f"Attenzione: file {pretrained_path} non trovato.")
+
+        checkpoint = torch.load(pretrained_path, map_location=device, weights_only=False)
+        agent.actor.load_state_dict(checkpoint['actor_state_dict'])
+        agent.actor_target.load_state_dict(checkpoint['actor_state_dict'])
+        agent.critic.load_state_dict(checkpoint['critic_state_dict'])
+        agent.critic_target.load_state_dict(checkpoint['critic_state_dict'])
+        agent.actor_expert.load_state_dict(checkpoint['actor_state_dict'])
+        agent.actor_expert.eval()
+        for p in agent.actor_expert.parameters():
+            p.requires_grad = False
 
     def reward_function(self, state, action, next_state, step, tolerance, rimbalzato, attached_counter):
         pos = state[:2]
