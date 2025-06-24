@@ -29,7 +29,7 @@ CHECKPOINT_INTERVAL = 100
 PRETRAIN_CRITIC_EPISODES = 0
 
 now = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-RUN_DIR = f"Esperimento_1_corretto/KL/Traslazioni-dinamiche/ddpg_mov_0.05_std_0.005_buffer_pieno_{now}"
+RUN_DIR = f"Esperimento_1_corretto/KL/Traslazioni-dinamiche/ddpg_mov_0.05_std_0.005_buffer_pieno_no_init_{now}"
 os.makedirs(RUN_DIR, exist_ok=True)
 
 class PolicyNet(nn.Module):
