@@ -105,13 +105,13 @@ class DDPGAgent(nn.Module):
         #     print(f"Attenzione: file {pretrained_path} non trovato.")
 
         checkpoint = torch.load(pretrained_path, map_location=device, weights_only=False)
-        agent.actor.load_state_dict(checkpoint['actor_state_dict'])
-        agent.actor_target.load_state_dict(checkpoint['actor_state_dict'])
-        agent.critic.load_state_dict(checkpoint['critic_state_dict'])
-        agent.critic_target.load_state_dict(checkpoint['critic_state_dict'])
-        agent.actor_expert.load_state_dict(checkpoint['actor_state_dict'])
-        agent.actor_expert.eval()
-        for p in agent.actor_expert.parameters():
+        self.actor.load_state_dict(checkpoint['actor_state_dict'])
+        self.actor_target.load_state_dict(checkpoint['actor_state_dict'])
+        self.critic.load_state_dict(checkpoint['critic_state_dict'])
+        self.critic_target.load_state_dict(checkpoint['critic_state_dict'])
+        self.actor_expert.load_state_dict(checkpoint['actor_state_dict'])
+        self.actor_expert.eval()
+        for p in self.actor_expert.parameters():
             p.requires_grad = False
 
     def reward_function(self, state, action, next_state, step, tolerance, rimbalzato, attached_counter):
@@ -217,7 +217,7 @@ def save_trajectory_plot(trajectory, target_trajectory, episode, tag="trajectory
     plt.savefig(os.path.join(RUN_DIR, f"{tag}_ep{episode}.png"))
     plt.close()
 
-def train_ddpg(env=None, num_episodes=2001):
+def train_ddpg(env=None, num_episodes=10001):
     if env is None:
         env = TrackingEnv()
     state_dim = env.observation_space.shape[0]
@@ -314,16 +314,16 @@ def train_ddpg(env=None, num_episodes=2001):
         if episode % 50 == 0 and episode > 0:
             save_trajectory_plot(trajectory, target_trajectory, episode)
 
-        if episode == num_episodes - 1:
-            print(f"Training completato dopo {num_episodes} episodi.")
-            save_checkpoint(agent, episode)
-            save_trajectory_plot(trajectory, target_trajectory, episode, tag="final")
+        # if episode == num_episodes - 1:
+        #     print(f"Training completato dopo {num_episodes} episodi.")
+        #     save_checkpoint(agent, episode)
+        #     save_trajectory_plot(trajectory, target_trajectory, episode, tag="final")
 
-        # if len(reward_history) > EARLY_STOPPING_EPISODES and np.mean(reward_history[-EARLY_STOPPING_EPISODES:]) > 2000:
-        #    print(f"Early stopping at episode {episode}")
-        #    save_checkpoint(agent, episode)
-        #    save_trajectory_plot(trajectory, target_trajectory, episode)
-        #    break
+        if len(reward_history) > EARLY_STOPPING_EPISODES and np.mean(reward_history[-EARLY_STOPPING_EPISODES:]) > 2000:
+           print(f"Early stopping at episode {episode}")
+           save_checkpoint(agent, episode)
+           save_trajectory_plot(trajectory, target_trajectory, episode)
+           break
 
     np.save(os.path.join(RUN_DIR, 'rewards.npy'), reward_history)
     np.save(os.path.join(RUN_DIR, 'successes.npy'), success_history)
