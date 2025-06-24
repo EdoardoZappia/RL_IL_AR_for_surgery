@@ -206,7 +206,7 @@ def save_trajectory_plot(trajectory, target_trajectory, episode, tag="trajectory
     plt.savefig(os.path.join(RUN_DIR, f"{tag}_ep{episode}.png"))
     plt.close()
 
-def train_ddpg(env=None, num_episodes=10001):
+def train_ddpg(env=None, num_episodes=2001):
     if env is None:
         env = TrackingEnv()
     state_dim = env.observation_space.shape[0]
@@ -303,11 +303,16 @@ def train_ddpg(env=None, num_episodes=10001):
         if episode % 50 == 0 and episode > 0:
             save_trajectory_plot(trajectory, target_trajectory, episode)
 
-        if len(reward_history) > EARLY_STOPPING_EPISODES and np.mean(reward_history[-EARLY_STOPPING_EPISODES:]) > 2000:
-           print(f"Early stopping at episode {episode}")
-           save_checkpoint(agent, episode)
-           save_trajectory_plot(trajectory, target_trajectory, episode)
-           break
+        if episode == num_episodes - 1:
+            print(f"Training completato dopo {num_episodes} episodi.")
+            save_checkpoint(agent, episode)
+            save_trajectory_plot(trajectory, target_trajectory, episode, tag="final")
+
+        # if len(reward_history) > EARLY_STOPPING_EPISODES and np.mean(reward_history[-EARLY_STOPPING_EPISODES:]) > 2000:
+        #    print(f"Early stopping at episode {episode}")
+        #    save_checkpoint(agent, episode)
+        #    save_trajectory_plot(trajectory, target_trajectory, episode)
+        #    break
 
     np.save(os.path.join(RUN_DIR, 'rewards.npy'), reward_history)
     np.save(os.path.join(RUN_DIR, 'successes.npy'), success_history)
