@@ -15,9 +15,9 @@ import datetime
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f"Dispositivo utilizzato: {device}")
 
-SEED = 42
-torch.manual_seed(SEED)
-np.random.seed(SEED)
+#SEED = 42
+#torch.manual_seed(SEED)
+#np.random.seed(SEED)
 
 NUM_NEURONS = 128
 LR_ACTOR = 0.001
