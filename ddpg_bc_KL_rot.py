@@ -29,7 +29,7 @@ CHECKPOINT_INTERVAL = 100
 PRETRAIN_CRITIC_EPISODES = 0 #100
 
 now = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-RUN_DIR = f"Esperimento_1_corretto/KL/Rotazioni-dinamiche/ddpg_mov_0.01_std_0.005_buffer_pieno_pre-tr_{now}"
+RUN_DIR = f"Esperimento_1_corretto/KL/Rotazioni-dinamiche/ddpg_mov_0.01_std_0.005_buffer_pieno_pre-tr_exp_PROVA_{now}"
 #RUN_DIR = f"TEST_NOISE/Rotazioni-dinamiche/ddpg_mov_0.01_std_0.004_{now}"
 os.makedirs(RUN_DIR, exist_ok=True)
 
@@ -85,9 +85,9 @@ class DDPGAgent(nn.Module):
         self.optimizer_critic = optim.Adam(self.critic.parameters(), lr=LR_CRITIC)
         self.buffer = ReplayBuffer(50000) 
         self.batch_size = 128
-        self.noise_std = 0.05
-        self.min_noise_std = 0.001
-        self.noise_decay = 0.999
+        self.noise_std = 0
+        self.min_noise_std = 0
+        self.noise_decay = 0
 
         self.actor_expert = PolicyNet(state_dim, action_dim).to(device)
         self.actor_expert.eval()
