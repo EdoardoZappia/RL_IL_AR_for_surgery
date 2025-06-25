@@ -29,7 +29,7 @@ CHECKPOINT_INTERVAL = 100
 PRETRAIN_CRITIC_EPISODES = 0 #100
 
 now = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-RUN_DIR = f"Esperimento_1_corretto/KL/Rotazioni-dinamiche/ddpg_mov_0.01_std_0.005_buffer_pieno_pre-tr_exp_{now}"
+RUN_DIR = f"Esperimento_1_corretto/KL/Rotazioni-dinamiche/ddpg_mov_0.01_std_0.005_buffer_pieno_no_init_exp_{now}"
 #RUN_DIR = f"TEST_NOISE/Rotazioni-dinamiche/ddpg_mov_0.01_std_0.004_{now}"
 os.makedirs(RUN_DIR, exist_ok=True)
 
@@ -96,8 +96,8 @@ class DDPGAgent(nn.Module):
         # #pretrained_path = "Esperimento_1_corretto/KL/Rotazioni-dinamiche/ddpg_mov_0.01_std_0.004_20250623_112606/checkpoint_ep1912.pth"
         if os.path.exists(pretrained_path):
             state_dict = torch.load(pretrained_path, map_location=device)
-            self.actor.load_state_dict(state_dict)
-            self.actor_target.load_state_dict(state_dict)
+            #self.actor.load_state_dict(state_dict)
+            #self.actor_target.load_state_dict(state_dict)
             print(f"Policy caricata da {pretrained_path}")
 
             self.actor_expert.load_state_dict(state_dict)
@@ -151,11 +151,11 @@ class DDPGAgent(nn.Module):
         if update_actor:
 
             current_actions = self.actor(states)
-            # with torch.no_grad():
-            #     expert_actions = self.actor_expert(states)
-            # bc_loss = F.mse_loss(current_actions, expert_actions)
+            with torch.no_grad():
+                expert_actions = self.actor_expert(states)
+            bc_loss = F.mse_loss(current_actions, expert_actions)
 
-            bc_loss = F.mse_loss(current_actions, actions)
+            #bc_loss = F.mse_loss(current_actions, actions)
 
             with torch.no_grad():
                 q_values = self.critic(states, actions)
