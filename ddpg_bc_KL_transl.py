@@ -29,7 +29,7 @@ CHECKPOINT_INTERVAL = 100
 PRETRAIN_CRITIC_EPISODES = 0
 
 now = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-RUN_DIR = f"Esperimento_1_corretto/KL/Traslazioni-dinamiche/ddpg_mov_0.05_std_0.005_buffer_pieno_pre-tr_exp_{now}"
+RUN_DIR = f"Esperimento_1_corretto/KL/Traslazioni-dinamiche/ddpg_mov_0.05_std_0.005_buffer_pieno_no_init_exp_{now}"
 os.makedirs(RUN_DIR, exist_ok=True)
 
 class PolicyNet(nn.Module):
@@ -93,16 +93,16 @@ class DDPGAgent(nn.Module):
         self.actor_expert.eval()  # Non addestrare la policy esperta
 
         # Carica policy pre-addestrata
-        pretrained_path = "IL/BC_dataset_correct/bc_policy_transl_0.2_0.05_std_0.005.pth"
-        #pretrained_path = "Esperimento_1_corretto/KL/Traslazioni-dinamiche/ddpg_mov_0.05_std_0.005_buffer_pieno_no_init_20250624_110210/checkpoint_ep1815.pth"
-        if os.path.exists(pretrained_path):
-            state_dict = torch.load(pretrained_path, map_location=device)
-            self.actor.load_state_dict(state_dict)
-            self.actor_target.load_state_dict(state_dict)
-            self.actor_expert.load_state_dict(state_dict)
-            print(f"Policy caricata da {pretrained_path}")
-        else:
-            print(f"Attenzione: file {pretrained_path} non trovato.")
+        # pretrained_path = "IL/BC_dataset_correct/bc_policy_transl_0.2_0.05_std_0.005.pth"
+        # #pretrained_path = "Esperimento_1_corretto/KL/Traslazioni-dinamiche/ddpg_mov_0.05_std_0.005_buffer_pieno_no_init_20250624_110210/checkpoint_ep1815.pth"
+        # if os.path.exists(pretrained_path):
+        #     state_dict = torch.load(pretrained_path, map_location=device)
+        #     self.actor.load_state_dict(state_dict)
+        #     self.actor_target.load_state_dict(state_dict)
+        #     self.actor_expert.load_state_dict(state_dict)
+        #     print(f"Policy caricata da {pretrained_path}")
+        # else:
+        #     print(f"Attenzione: file {pretrained_path} non trovato.")
 
         # checkpoint = torch.load(pretrained_path, map_location=device, weights_only=False)
         # self.actor.load_state_dict(checkpoint['actor_state_dict'])
