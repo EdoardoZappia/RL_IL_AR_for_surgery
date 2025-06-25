@@ -15,9 +15,9 @@ import datetime
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f"Utilizzo del dispositivo: {device}")
 
-SEED = 42
-torch.manual_seed(SEED)
-np.random.seed(SEED)
+# SEED = 42
+# torch.manual_seed(SEED)
+# np.random.seed(SEED)
 
 NUM_NEURONS = 128
 LR_ACTOR = 0.001
@@ -29,7 +29,7 @@ CHECKPOINT_INTERVAL = 100
 PRETRAIN_CRITIC_EPISODES = 0 #100
 
 now = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-RUN_DIR = f"Esperimento_1_corretto/KL/Rotazioni-dinamiche/ddpg_mov_0.01_std_0.004_buffer_pieno_{now}"
+RUN_DIR = f"Esperimento_1_corretto/KL/Rotazioni-dinamiche/ddpg_mov_0.01_std_0.004_buffer_pieno_no_init_{now}"
 #RUN_DIR = f"TEST_NOISE/Rotazioni-dinamiche/ddpg_mov_0.01_std_0.004_{now}"
 os.makedirs(RUN_DIR, exist_ok=True)
 
@@ -205,21 +205,20 @@ def train_ddpg(env=None, num_episodes=10001):
         print(f"Attenzione: dataset {dataset_path} non trovato. Il buffer sarà vuoto.")
 
 
-    pretrained_path = "IL/BC_dataset_correct/bc_policy_rot_0.5_0.01_std_0.004.pth"
-    #pretrained_path = "Esperimento_1_corretto/KL/Rotazioni-dinamiche/ddpg_mov_0.01_std_0.004_20250623_112606/checkpoint_ep1912.pth"
-    if os.path.exists(pretrained_path):
-        state_dict = torch.load(pretrained_path, map_location=device)
-        agent.actor.load_state_dict(state_dict)
-        agent.actor_target.load_state_dict(state_dict)
-        print(f"Policy caricata da {pretrained_path}")
+    # pretrained_path = "IL/BC_dataset_correct/bc_policy_rot_0.5_0.01_std_0.004.pth"
+    # #pretrained_path = "Esperimento_1_corretto/KL/Rotazioni-dinamiche/ddpg_mov_0.01_std_0.004_20250623_112606/checkpoint_ep1912.pth"
+    # if os.path.exists(pretrained_path):
+    #     state_dict = torch.load(pretrained_path, map_location=device)
+    #     agent.actor.load_state_dict(state_dict)
+    #     agent.actor_target.load_state_dict(state_dict)
+    #     print(f"Policy caricata da {pretrained_path}")
 
-        agent.actor_expert.load_state_dict(state_dict)
-        agent.actor_expert.eval()
-        for p in agent.actor_expert.parameters():
-            p.requires_grad = False
-
-    else:
-        print(f"Attenzione: File {pretrained_path} non trovato. Policy non inizializzata.")
+    #     agent.actor_expert.load_state_dict(state_dict)
+    #     agent.actor_expert.eval()
+    #     for p in agent.actor_expert.parameters():
+    #         p.requires_grad = False
+    # else:
+    #     print(f"Attenzione: File {pretrained_path} non trovato. Policy non inizializzata.")
 
     # checkpoint = torch.load(pretrained_path, map_location=device, weights_only=False)
     # agent.actor.load_state_dict(checkpoint['actor_state_dict'])
