@@ -26,10 +26,10 @@ GAMMA = 0.99
 TAU = 0.005
 EARLY_STOPPING_EPISODES = 50
 CHECKPOINT_INTERVAL = 100
-PRETRAIN_CRITIC_EPISODES = 100
+PRETRAIN_CRITIC_EPISODES = 0 #100
 
 now = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-RUN_DIR = f"Esperimento_1_corretto/KL/Rotazioni-dinamiche/ddpg_mov_0.01_std_0.004_buffer_pieno_pre-tr_exp_frozen_{now}"
+RUN_DIR = f"Esperimento_1_corretto/KL/Rotazioni-dinamiche/ddpg_mov_0.01_std_0.004_buffer_pieno_pre-tr_exp_PROVA_{now}"
 #RUN_DIR = f"TEST_NOISE/Rotazioni-dinamiche/ddpg_mov_0.01_std_0.004_{now}"
 os.makedirs(RUN_DIR, exist_ok=True)
 
@@ -85,9 +85,9 @@ class DDPGAgent(nn.Module):
         self.optimizer_critic = optim.Adam(self.critic.parameters(), lr=LR_CRITIC)
         self.buffer = ReplayBuffer(50000) 
         self.batch_size = 128
-        self.noise_std = 0.5
-        self.min_noise_std = 0.01
-        self.noise_decay = 0.999
+        self.noise_std = 0 #0.5
+        self.min_noise_std = 0 #0.01
+        self.noise_decay = 0 #0.999
 
         self.actor_expert = PolicyNet(state_dim, action_dim).to(device)
         self.actor_expert.eval()
@@ -246,7 +246,7 @@ def train_ddpg(env=None, num_episodes=10001):
         state = state.clone()
         state[1:] += torch.normal(mean=0.0, std=0.004, size=(1,), device=state.device)
 
-        agent.noise_std = max(agent.min_noise_std, agent.noise_std * agent.noise_decay)
+        agent.noise_std = 0 #max(agent.min_noise_std, agent.noise_std * agent.noise_decay)
         trajectory, target_trajectory = [], []
         attached_counter = 0
         total_attached_counter = 0
