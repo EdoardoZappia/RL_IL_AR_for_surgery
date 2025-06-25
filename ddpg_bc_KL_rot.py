@@ -29,7 +29,7 @@ CHECKPOINT_INTERVAL = 100
 PRETRAIN_CRITIC_EPISODES = 0 #100
 
 now = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-RUN_DIR = f"Esperimento_1_corretto/KL/Rotazioni-dinamiche/ddpg_mov_0.01_std_0.004_buffer_pieno_pre-tr_exp_{now}"
+RUN_DIR = f"Esperimento_1_corretto/KL/Rotazioni-dinamiche/ddpg_mov_0.01_std_0.005_buffer_pieno_pre-tr_exp_{now}"
 #RUN_DIR = f"TEST_NOISE/Rotazioni-dinamiche/ddpg_mov_0.01_std_0.004_{now}"
 os.makedirs(RUN_DIR, exist_ok=True)
 
@@ -134,7 +134,7 @@ class DDPGAgent(nn.Module):
                 q_values = self.critic(states, actions)
                 q_abs_mean = q_values.abs().mean().item()
 
-            alpha = 2.5  # iperparametro: forza della regolarizzazione BC
+            alpha = 1.5  # iperparametro: forza della regolarizzazione BC
             lambda_bc = alpha / (q_abs_mean + 1e-5)
 
             actor_loss = -lambda_bc * self.critic(states, current_actions).mean() + bc_loss
@@ -243,7 +243,7 @@ def train_ddpg(env=None, num_episodes=10001):
         real_state = torch.tensor(state, dtype=torch.float32).to(device)
         state = torch.tensor(state, dtype=torch.float32).to(device)
         state = state.clone()
-        state[1:] += torch.normal(mean=0.0, std=0.004, size=(1,), device=state.device)
+        state[1:] += torch.normal(mean=0.0, std=0.005, size=(1,), device=state.device)
 
         agent.noise_std = max(agent.min_noise_std, agent.noise_std * agent.noise_decay)
         trajectory, target_trajectory = [], []
@@ -262,7 +262,7 @@ def train_ddpg(env=None, num_episodes=10001):
             real_next_state = torch.tensor(next_state, dtype=torch.float32).to(device)
             next_state = torch.tensor(next_state, dtype=torch.float32).to(device)
             next_state = next_state.clone()
-            next_state[1:] += torch.normal(mean=0.0, std=0.004, size=(1,), device=next_state.device)
+            next_state[1:] += torch.normal(mean=0.0, std=0.005, size=(1,), device=next_state.device)
 
             if torch.norm(real_next_state[0] - real_state[1]) < tolerance:
                 total_attached_counter += 1
