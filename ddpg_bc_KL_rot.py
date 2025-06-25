@@ -96,25 +96,25 @@ class DDPGAgent(nn.Module):
         # #pretrained_path = "Esperimento_1_corretto/KL/Rotazioni-dinamiche/ddpg_mov_0.01_std_0.004_20250623_112606/checkpoint_ep1912.pth"
         if os.path.exists(pretrained_path):
             state_dict = torch.load(pretrained_path, map_location=device)
-            agent.actor.load_state_dict(state_dict)
-            agent.actor_target.load_state_dict(state_dict)
+            self.actor.load_state_dict(state_dict)
+            self.actor_target.load_state_dict(state_dict)
             print(f"Policy caricata da {pretrained_path}")
 
-            agent.actor_expert.load_state_dict(state_dict)
-            agent.actor_expert.eval()
-            for p in agent.actor_expert.parameters():
+            self.actor_expert.load_state_dict(state_dict)
+            self.actor_expert.eval()
+            for p in self.actor_expert.parameters():
                 p.requires_grad = False
         else:
             print(f"Attenzione: File {pretrained_path} non trovato. Policy non inizializzata.")
 
         # checkpoint = torch.load(pretrained_path, map_location=device, weights_only=False)
-        # agent.actor.load_state_dict(checkpoint['actor_state_dict'])
-        # agent.actor_target.load_state_dict(checkpoint['actor_state_dict'])
-        # agent.critic.load_state_dict(checkpoint['critic_state_dict'])
-        # agent.critic_target.load_state_dict(checkpoint['critic_state_dict'])
-        # agent.actor_expert.load_state_dict(checkpoint['actor_state_dict'])
-        # agent.actor_expert.eval()
-        # for p in agent.actor_expert.parameters():
+        # self.actor.load_state_dict(checkpoint['actor_state_dict'])
+        # self.actor_target.load_state_dict(checkpoint['actor_state_dict'])
+        # self.critic.load_state_dict(checkpoint['critic_state_dict'])
+        # self.critic_target.load_state_dict(checkpoint['critic_state_dict'])
+        # self.actor_expert.load_state_dict(checkpoint['actor_state_dict'])
+        # self.actor_expert.eval()
+        # for p in self.actor_expert.parameters():
         #     p.requires_grad = False
 
 
