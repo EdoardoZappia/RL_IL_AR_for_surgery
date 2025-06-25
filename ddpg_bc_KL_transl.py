@@ -93,16 +93,16 @@ class DDPGAgent(nn.Module):
         self.actor_expert.eval()  # Non addestrare la policy esperta
 
         # Carica policy pre-addestrata
-        # pretrained_path = "IL/BC_dataset_correct/bc_policy_transl_0.2_0.05_std_0.005.pth"
+        pretrained_path = "IL/BC_dataset_correct/bc_policy_transl_0.2_0.05_std_0.005.pth"
         # #pretrained_path = "Esperimento_1_corretto/KL/Traslazioni-dinamiche/ddpg_mov_0.05_std_0.005_buffer_pieno_no_init_20250624_110210/checkpoint_ep1815.pth"
-        # if os.path.exists(pretrained_path):
-        #     state_dict = torch.load(pretrained_path, map_location=device)
+        if os.path.exists(pretrained_path):
+            state_dict = torch.load(pretrained_path, map_location=device)
         #     self.actor.load_state_dict(state_dict)
         #     self.actor_target.load_state_dict(state_dict)
-        #     self.actor_expert.load_state_dict(state_dict)
-        #     print(f"Policy caricata da {pretrained_path}")
-        # else:
-        #     print(f"Attenzione: file {pretrained_path} non trovato.")
+            self.actor_expert.load_state_dict(state_dict)
+            print(f"Policy caricata da {pretrained_path}")
+        else:
+            print(f"Attenzione: file {pretrained_path} non trovato.")
 
         # checkpoint = torch.load(pretrained_path, map_location=device, weights_only=False)
         # self.actor.load_state_dict(checkpoint['actor_state_dict'])
