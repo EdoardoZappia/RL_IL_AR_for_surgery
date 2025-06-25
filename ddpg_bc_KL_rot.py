@@ -161,7 +161,7 @@ class DDPGAgent(nn.Module):
                 q_values = self.critic(states, actions)
                 q_abs_mean = q_values.abs().mean().item()
 
-            alpha = 1.5  # iperparametro: forza della regolarizzazione BC
+            alpha = 2.5  # iperparametro: forza della regolarizzazione BC
             lambda_bc = alpha / (q_abs_mean + 1e-5)
 
             actor_loss = -lambda_bc * self.critic(states, current_actions).mean() + bc_loss
