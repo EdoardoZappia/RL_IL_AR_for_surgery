@@ -29,7 +29,7 @@ CHECKPOINT_INTERVAL = 100
 PRETRAIN_CRITIC_EPISODES = 0
 
 now = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-RUN_DIR = f"Esperimento_1_corretto/KL/Traslazioni-dinamiche/ddpg_mov_0.05_std_0.006_buffer_pieno_no_init_{now}"
+RUN_DIR = f"Esperimento_1_corretto/KL/Traslazioni-dinamiche/ddpg_mov_0.05_std_0.005_buffer_pieno_pre-tr_exp_{now}"
 os.makedirs(RUN_DIR, exist_ok=True)
 
 class PolicyNet(nn.Module):
@@ -93,16 +93,16 @@ class DDPGAgent(nn.Module):
         self.actor_expert.eval()  # Non addestrare la policy esperta
 
         # Carica policy pre-addestrata
-        # pretrained_path = "IL/BC_dataset_correct/bc_policy_transl_0.2_0.05_std_0.005.pth"
-        # #pretrained_path = "Esperimento_1_corretto/KL/Traslazioni-dinamiche/ddpg_mov_0.05_std_0.005_buffer_pieno_no_init_20250624_110210/checkpoint_ep1815.pth"
-        # if os.path.exists(pretrained_path):
-        #     state_dict = torch.load(pretrained_path, map_location=device)
-        #     self.actor.load_state_dict(state_dict)
-        #     self.actor_target.load_state_dict(state_dict)
-        #     self.actor_expert.load_state_dict(state_dict)
-        #     print(f"Policy caricata da {pretrained_path}")
-        # else:
-        #     print(f"Attenzione: file {pretrained_path} non trovato.")
+        pretrained_path = "IL/BC_dataset_correct/bc_policy_transl_0.2_0.05_std_0.005.pth"
+        #pretrained_path = "Esperimento_1_corretto/KL/Traslazioni-dinamiche/ddpg_mov_0.05_std_0.005_buffer_pieno_no_init_20250624_110210/checkpoint_ep1815.pth"
+        if os.path.exists(pretrained_path):
+            state_dict = torch.load(pretrained_path, map_location=device)
+            self.actor.load_state_dict(state_dict)
+            self.actor_target.load_state_dict(state_dict)
+            self.actor_expert.load_state_dict(state_dict)
+            print(f"Policy caricata da {pretrained_path}")
+        else:
+            print(f"Attenzione: file {pretrained_path} non trovato.")
 
         # checkpoint = torch.load(pretrained_path, map_location=device, weights_only=False)
         # self.actor.load_state_dict(checkpoint['actor_state_dict'])
@@ -159,7 +159,10 @@ class DDPGAgent(nn.Module):
         if update_actor:
 
             current_actions = self.actor(states)
-            bc_loss = F.mse_loss(current_actions, actions)
+            with torch.no_grad():
+                expert_actions = self.actor_expert(states)
+            bc_loss = F.mse_loss(current_actions, expert_actions)
+            #bc_loss = F.mse_loss(current_actions, actions)
 
             with torch.no_grad():
                 q_values = self.critic(states, actions)
@@ -249,7 +252,7 @@ def train_ddpg(env=None, num_episodes=10001):
         real_state = torch.tensor(state, dtype=torch.float32).to(device)
         state = torch.tensor(state, dtype=torch.float32).to(device)
         state = state.clone()
-        state[2:4] += torch.normal(mean=0.0, std=0.006, size=(2,), device=device)
+        state[2:4] += torch.normal(mean=0.0, std=0.005, size=(2,), device=device)
 
         agent.noise_std = max(agent.min_noise_std, agent.noise_std * agent.noise_decay)
         trajectory, target_trajectory = [], []
@@ -270,7 +273,7 @@ def train_ddpg(env=None, num_episodes=10001):
             real_next_state = torch.tensor(next_state, dtype=torch.float32).to(device)
             next_state = torch.tensor(next_state, dtype=torch.float32).to(device)
             next_state = next_state.clone()
-            next_state[2:4] += torch.normal(mean=0.0, std=0.006, size=(2,), device=device)
+            next_state[2:4] += torch.normal(mean=0.0, std=0.005, size=(2,), device=device)
 
             if torch.norm(real_next_state[:2] - real_state[2:4]) < tolerance:
                 total_attached_counter += 1
