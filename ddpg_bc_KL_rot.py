@@ -85,7 +85,7 @@ class DDPGAgent(nn.Module):
         self.optimizer_critic = optim.Adam(self.critic.parameters(), lr=LR_CRITIC)
         self.buffer = ReplayBuffer(50000) 
         self.batch_size = 128
-        self.noise_std = 0.01
+        self.noise_std = 0.1
         self.min_noise_std = 0.001
         self.noise_decay = 0.999
 
