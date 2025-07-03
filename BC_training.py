@@ -15,7 +15,7 @@ class TrajectoryDataset(Dataset):
     def __getitem__(self, idx):
         return self.observations[idx], self.actions[idx]
 
-dataset = TrajectoryDataset("trajectories_correct/dataset_transl_std_0.005.npz")
+dataset = TrajectoryDataset("trajectories_correct/dataset_transl_std_0.003.npz")
 dataloader = DataLoader(dataset, batch_size=64, shuffle=True)
 
 class BCModel(torch.nn.Module):
@@ -31,7 +31,7 @@ class BCModel(torch.nn.Module):
         action = torch.tanh(self.fc3(x)) * 5.0
         return action
 
-def train_bc_model(model, dataloader, num_epochs=200, learning_rate=1e-3, device=None, save_path="IL/BC_dataset_correct/bc_policy_transl_0.2_0.05_std_0.005.pth"):
+def train_bc_model(model, dataloader, num_epochs=200, learning_rate=1e-3, device=None, save_path="IL/BC_dataset_correct/bc_policy_transl_0.2_0.05_std_0.003.pth"):
 
     # Crea la cartella se non esiste
     os.makedirs(os.path.dirname(save_path), exist_ok=True)
