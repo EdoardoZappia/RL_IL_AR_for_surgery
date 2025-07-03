@@ -42,7 +42,7 @@ def test_dual_agents(agent_transl, agent_rot, env=None, num_episodes=2001, toler
         state, _ = env.reset()
         state = torch.tensor(state, dtype=torch.float32)
 
-        state[3:5] += torch.normal(mean=0.0, std=0.005, size=(2,), device=state.device)
+        state[3:5] += torch.normal(mean=0.0, std=0.003, size=(2,), device=state.device)
         state[5:] += torch.normal(mean=0.0, std=0.004, size=(1,), device=state.device)
 
         done = False
@@ -74,7 +74,7 @@ def test_dual_agents(agent_transl, agent_rot, env=None, num_episodes=2001, toler
             next_state, _, done, truncated, _, _ = env.step(action)
             next_state = torch.tensor(next_state, dtype=torch.float32)
 
-            next_state[3:5] += torch.normal(mean=0.0, std=0.005, size=(2,), device=next_state.device)
+            next_state[3:5] += torch.normal(mean=0.0, std=0.003, size=(2,), device=next_state.device)
             next_state[5:] += torch.normal(mean=0.0, std=0.004, size=(1,), device=next_state.device)
 
             dist_transl = torch.norm(next_state[:2] - state[3:5])
@@ -109,12 +109,12 @@ def test_dual_agents(agent_transl, agent_rot, env=None, num_episodes=2001, toler
 
     if all_obs_xy and all_obs_rot:
         os.makedirs("trajectories_correct", exist_ok=True)
-        np.savez("trajectories_correct/dataset_transl_std_0.005.npz",
+        np.savez("trajectories_correct/dataset_transl_std_0.003.npz",
                  observations=np.array(all_obs_xy),
                  actions=np.array(all_actions_xy))
-        np.savez("trajectories_correct/dataset_rot_std_0.004.npz",
-                    observations=np.array(all_obs_rot),
-                    actions=np.array(all_actions_rot))
+        # np.savez("trajectories_correct/dataset_rot_std_0.004.npz",
+        #             observations=np.array(all_obs_rot),
+        #             actions=np.array(all_actions_rot))
         print(f"\nDataset salvato con {len(all_obs_xy)} passi totali da {saved_counter} episodi validi")
         print(f"Dataset salvato con {len(all_obs_rot)} passi totali da {saved_counter} episodi validi")
     else:
@@ -122,7 +122,7 @@ def test_dual_agents(agent_transl, agent_rot, env=None, num_episodes=2001, toler
 
 # --- MAIN ---
 if __name__ == "__main__":
-    ckpt_transl = "Traslazioni-dinamiche/Noisy/ddpg_run_dyn_mov_0.05_noisy_target_0.00520250504_150841/checkpoint_ep3639.pth"
+    ckpt_transl = "Traslazioni-dinamiche/Noisy/ddpg_run_dyn_mov_0.05_noisy_target_0.003_20250703_174313/checkpoint_ep4127.pth"
     ckpt_rot = "TEST_NOISE/Rotazioni-dinamiche/ddpg_mov_0.01_std_0.004_20250620_222306/checkpoint_ep2471.pth"
     agent_transl, agent_rot = load_agents(ckpt_transl, ckpt_rot)
     test_dual_agents(agent_transl, agent_rot)
