@@ -29,7 +29,7 @@ CHECKPOINT_INTERVAL = 100
 PRETRAIN_CRITIC_EPISODES = 0
 
 now = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-RUN_DIR = f"Esperimento_1_corretto/KL/Traslazioni-dinamiche/Combinazioni_test/ddpg_mov_0.05_std_0.003_buffer_pieno_0.005_pre-tr_exp_0.005_{now}"
+RUN_DIR = f"Esperimento_1_corretto/KL/Traslazioni-dinamiche/Combinazioni_test/ddpg_mov_0.05_std_0.005_buffer_pieno_0.003_no_init_{now}"
 os.makedirs(RUN_DIR, exist_ok=True)
 
 class PolicyNet(nn.Module):
@@ -97,8 +97,8 @@ class DDPGAgent(nn.Module):
         # #pretrained_path = "Esperimento_1_corretto/KL/Traslazioni-dinamiche/ddpg_mov_0.05_std_0.005_buffer_pieno_no_init_20250624_110210/checkpoint_ep1815.pth"
         if os.path.exists(pretrained_path):
             state_dict = torch.load(pretrained_path, map_location=device)
-            self.actor.load_state_dict(state_dict)
-            self.actor_target.load_state_dict(state_dict)
+            # self.actor.load_state_dict(state_dict)
+            # self.actor_target.load_state_dict(state_dict)
             self.actor_expert.load_state_dict(state_dict)
             print(f"Policy caricata da {pretrained_path}")
         else:
@@ -161,8 +161,8 @@ class DDPGAgent(nn.Module):
             current_actions = self.actor(states)
             with torch.no_grad():
                 expert_actions = self.actor_expert(states)
-            bc_loss = F.mse_loss(current_actions, expert_actions)
-            #bc_loss = F.mse_loss(current_actions, actions)
+            #bc_loss = F.mse_loss(current_actions, expert_actions)
+            bc_loss = F.mse_loss(current_actions, actions)
 
             with torch.no_grad():
                 q_values = self.critic(states, actions)
@@ -228,7 +228,7 @@ def train_ddpg(env=None, num_episodes=10001):
     agent = DDPGAgent(state_dim, action_dim)
 
     # 1. Caricamento del dataset esperto (transizioni)
-    dataset_path = "trajectories_correct/buffer_transitions_transl_std_0.005.npz"
+    dataset_path = "trajectories_correct/buffer_transitions_transl_std_0.003.npz"
     if os.path.exists(dataset_path):
         print(f"Caricamento dataset esperto da: {dataset_path}")
         data = np.load(dataset_path, allow_pickle=True)
@@ -252,7 +252,7 @@ def train_ddpg(env=None, num_episodes=10001):
         real_state = torch.tensor(state, dtype=torch.float32).to(device)
         state = torch.tensor(state, dtype=torch.float32).to(device)
         state = state.clone()
-        state[2:4] += torch.normal(mean=0.0, std=0.003, size=(2,), device=device)
+        state[2:4] += torch.normal(mean=0.0, std=0.005, size=(2,), device=device)
 
         agent.noise_std = max(agent.min_noise_std, agent.noise_std * agent.noise_decay)
         trajectory, target_trajectory = [], []
@@ -273,7 +273,7 @@ def train_ddpg(env=None, num_episodes=10001):
             real_next_state = torch.tensor(next_state, dtype=torch.float32).to(device)
             next_state = torch.tensor(next_state, dtype=torch.float32).to(device)
             next_state = next_state.clone()
-            next_state[2:4] += torch.normal(mean=0.0, std=0.003, size=(2,), device=device)
+            next_state[2:4] += torch.normal(mean=0.0, std=0.005, size=(2,), device=device)
 
             if torch.norm(real_next_state[:2] - real_state[2:4]) < tolerance:
                 total_attached_counter += 1
