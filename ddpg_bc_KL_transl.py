@@ -29,7 +29,7 @@ CHECKPOINT_INTERVAL = 100
 PRETRAIN_CRITIC_EPISODES = 0
 
 now = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-RUN_DIR = f"Esperimento_1_corretto/KL/Traslazioni-dinamiche/Combinazioni_test/ddpg_mov_0.05_std_0.005_buffer_pieno_0.003_pre-tr_0.003_exp_{now}"
+RUN_DIR = f"Esperimento_1_corretto/KL/Traslazioni-dinamiche/Combinazioni_test/ddpg_mov_0.05_std_0.005_buffer_pieno_0.005_pre-tr_0.005_exp_{now}"
 os.makedirs(RUN_DIR, exist_ok=True)
 
 class PolicyNet(nn.Module):
@@ -93,7 +93,7 @@ class DDPGAgent(nn.Module):
         self.actor_expert.eval()  # Non addestrare la policy esperta
 
         # Carica policy pre-addestrata
-        pretrained_path = "IL/BC_dataset_correct/bc_policy_transl_0.2_0.05_std_0.003.pth"
+        pretrained_path = "IL/BC_dataset_correct/bc_policy_transl_0.2_0.05_std_0.005.pth"
         # #pretrained_path = "Esperimento_1_corretto/KL/Traslazioni-dinamiche/ddpg_mov_0.05_std_0.005_buffer_pieno_no_init_20250624_110210/checkpoint_ep1815.pth"
         if os.path.exists(pretrained_path):
             state_dict = torch.load(pretrained_path, map_location=device)
@@ -228,7 +228,7 @@ def train_ddpg(env=None, num_episodes=10001):
     agent = DDPGAgent(state_dim, action_dim)
 
     # 1. Caricamento del dataset esperto (transizioni)
-    dataset_path = "trajectories_correct/buffer_transitions_transl_std_0.003.npz"
+    dataset_path = "trajectories_correct/buffer_transitions_transl_std_0.005.npz"
     if os.path.exists(dataset_path):
         print(f"Caricamento dataset esperto da: {dataset_path}")
         data = np.load(dataset_path, allow_pickle=True)
