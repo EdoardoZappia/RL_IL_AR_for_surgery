@@ -145,7 +145,7 @@ class DDPGAgent(nn.Module):
         else:
             if len(self.buffer) < self.batch_size // 2 or len(self.expert_buffer) < self.batch_size // 2:
                 return
-            agent_transitions = random.sample(self.buffer.buffer, self.batch_size // 2)
+            agent_transitions = random.sample(self.agent_buffer.buffer, self.batch_size // 2)
             expert_transitions = random.sample(self.expert_buffer.buffer, self.batch_size // 2)
             transitions = expert_transitions + agent_transitions
 
@@ -311,7 +311,7 @@ def train_ddpg(env=None, num_episodes=10001):
                 done = True
 
             transition = (state.cpu().numpy(), action_tensor.cpu().numpy(), reward, next_state.cpu().numpy(), float(done))
-            agent.buffer.push(transition)
+            agent.agent_buffer.push(transition)
             #if len(agent.buffer) > 1000:
             agent.update(update_actor=update_actor)
 
