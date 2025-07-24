@@ -136,7 +136,7 @@ class DDPGAgent(nn.Module):
 
     def update(self, gamma=GAMMA, tau=TAU, update_actor=False):
         # Se il buffer dell'agente è ancora troppo piccolo, usa solo esperto
-        use_only_expert = len(self.buffer) < 500    #self.batch_size // 2
+        use_only_expert = len(self.agent_buffer) < 500    #self.batch_size // 2
 
         if use_only_expert:
             if len(self.expert_buffer) < self.batch_size:
