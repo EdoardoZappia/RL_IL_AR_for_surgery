@@ -143,7 +143,7 @@ class DDPGAgent(nn.Module):
                 return  # Non abbastanza dati esperti
             transitions = random.sample(self.expert_buffer.buffer, self.batch_size)
         else:
-            if len(self.buffer) < self.batch_size // 2 or len(self.expert_buffer) < self.batch_size // 2:
+            if len(self.agent_buffer) < self.batch_size // 2 or len(self.expert_buffer) < self.batch_size // 2:
                 return
             agent_transitions = random.sample(self.agent_buffer.buffer, self.batch_size // 2)
             expert_transitions = random.sample(self.expert_buffer.buffer, self.batch_size // 2)
