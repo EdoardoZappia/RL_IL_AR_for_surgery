@@ -29,7 +29,7 @@ CHECKPOINT_INTERVAL = 100
 PRETRAIN_CRITIC_EPISODES = 0
 
 now = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-RUN_DIR = f"Esperimento_1_corretto/CoL/Traslazioni-dinamiche/Combinazioni_test/ddpg_mov_0.05_std_0.005_buffer_pieno_0.005_no-init_{now}"
+RUN_DIR = f"Esperimento_1_corretto/CoL/Traslazioni-dinamiche/Combinazioni_test/ddpg_mov_0.05_std_0.005_buffer_pieno_0.003_no-init_75_25_{now}"
 os.makedirs(RUN_DIR, exist_ok=True)
 
 class PolicyNet(nn.Module):
@@ -143,10 +143,10 @@ class DDPGAgent(nn.Module):
                 return  # Non abbastanza dati esperti
             transitions = random.sample(self.expert_buffer.buffer, self.batch_size)
         else:
-            if len(self.agent_buffer) < self.batch_size // 2 or len(self.expert_buffer) < self.batch_size // 2:
+            if len(self.agent_buffer) < ((self.batch_size * 3) // 4) or len(self.expert_buffer) < (self.batch_size // 4):
                 return
-            agent_transitions = random.sample(self.agent_buffer.buffer, self.batch_size // 2)
-            expert_transitions = random.sample(self.expert_buffer.buffer, self.batch_size // 2)
+            agent_transitions = random.sample(self.agent_buffer.buffer, (self.batch_size * 3) // 4)
+            expert_transitions = random.sample(self.expert_buffer.buffer, self.batch_size // 4)
             transitions = expert_transitions + agent_transitions
 
         # --- Estrai i dati dal batch ---
@@ -177,7 +177,7 @@ class DDPGAgent(nn.Module):
                 expert_actions = actions
             else:
                 # Prendi solo la prima metà del batch come esperto
-                expert_states, expert_actions, _, _, _ = zip(*transitions[:self.batch_size // 2])
+                expert_states, expert_actions, _, _, _ = zip(*transitions[:self.batch_size // 4])
                 expert_states = torch.FloatTensor(np.array(expert_states)).to(device)
                 expert_actions = torch.FloatTensor(np.array(expert_actions)).to(device)
 
@@ -252,7 +252,7 @@ def train_ddpg(env=None, num_episodes=10001):
     agent = DDPGAgent(state_dim, action_dim)
 
     # 1. Caricamento del dataset esperto (transizioni)
-    dataset_path = "trajectories_correct/buffer_transitions_transl_std_0.005.npz"
+    dataset_path = "trajectories_correct/buffer_transitions_transl_std_0.003.npz"
     if os.path.exists(dataset_path):
         print(f"Caricamento dataset esperto da: {dataset_path}")
         data = np.load(dataset_path, allow_pickle=True)
