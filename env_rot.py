@@ -46,7 +46,7 @@ class TrackingEnv(gym.Env):
         mujoco.mj_step(self.model, self.data)
 
         # ROTAZIONI
-        theta = np.random.uniform(-0.02, 0.02)  # angolo di rotazione casuale
+        theta = np.random.uniform(-0.01, 0.01)  # angolo di rotazione casuale
         proposed_theta = self.data.qpos[5] + theta
         proposed_theta = torch.tensor(proposed_theta, dtype=torch.float32)
 
