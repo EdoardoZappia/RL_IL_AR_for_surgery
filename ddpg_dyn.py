@@ -15,7 +15,7 @@ import datetime
 #torch.manual_seed(SEED)
 #np.random.seed(SEED)
 
-NUM_NEURONS = 128 #256
+NUM_NEURONS = 256 #128 #256
 LR_ACTOR = 0.001 #0.0008   #0.001
 LR_CRITIC = 0.001 #0.0008  #0.001
 GAMMA = 0.99

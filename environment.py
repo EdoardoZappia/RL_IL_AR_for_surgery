@@ -97,7 +97,7 @@ class TrackingEnv(gym.Env):
         displacement = proposed_pos - self.target_center
         if np.linalg.norm(displacement) <= 1 and proposed_pos[0] >= -2 and proposed_pos[0] <= 2 and proposed_pos[1] >= -2 and proposed_pos[1] <= 2:
             self.data.qpos[2:4] = proposed_pos  # accetta lo spostamento
-        # else: nessun movimento (rimane fermo)
+        else: nessun movimento (rimane fermo)
 
         # # Movimento rettilineo
         # self.data.qpos[2:4] += self.target_velocity
@@ -108,7 +108,7 @@ class TrackingEnv(gym.Env):
         # # (facoltativo) Mantieni il target entro un'area
         # displacement = proposed_pos - self.target_center
         # if np.linalg.norm(displacement) > 0.1: # raggio di 0.1
-        #     self.target_velocity *= -1  # inverte direzione quando esce dal raggio
+        #    self.target_velocity *= -1  # inverte direzione quando esce dal raggio
 
 
 
